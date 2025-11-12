@@ -7,15 +7,15 @@ function ProfileRegistrationScreen({
     const [formData, setFormData] = React.useState({
         name: '',
         age: '',
-        country: '',
+        prefecture: '',
         activeTime: '',
         bio: ''
     });
 
     const handleSubmit = () => {
         // 必須項目のチェック
-        if (!formData.name || !formData.age || !formData.country) {
-            alert('名前、年代、国は必須項目です');
+        if (!formData.name || !formData.age || !formData.prefecture) {
+            alert('名前、年代、都道府県は必須項目です');
             return;
         }
 
@@ -115,20 +115,62 @@ function ProfileRegistrationScreen({
 
                     <div style={{ marginBottom: '20px' }}>
                         <label style={{ display: 'block', fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>
-                            国 <span style={{ color: '#f00' }}>*</span>
+                            都道府県 <span style={{ color: '#f00' }}>*</span>
                         </label>
                         <select
-                            value={formData.country}
-                            onChange={(e) => setFormData({...formData, country: e.target.value})}
+                            value={formData.prefecture}
+                            onChange={(e) => setFormData({...formData, prefecture: e.target.value})}
                             className="wire-text"
                             style={{ width: '100%', borderRadius: '8px' }}
                         >
                             <option value="">選択してください</option>
-                            <option value="日本">日本</option>
-                            <option value="アメリカ">アメリカ</option>
-                            <option value="中国">中国</option>
-                            <option value="韓国">韓国</option>
-                            <option value="その他">その他</option>
+                            <option>北海道</option>
+                            <option>青森県</option>
+                            <option>岩手県</option>
+                            <option>宮城県</option>
+                            <option>秋田県</option>
+                            <option>山形県</option>
+                            <option>福島県</option>
+                            <option>茨城県</option>
+                            <option>栃木県</option>
+                            <option>群馬県</option>
+                            <option>埼玉県</option>
+                            <option>千葉県</option>
+                            <option>東京都</option>
+                            <option>神奈川県</option>
+                            <option>新潟県</option>
+                            <option>富山県</option>
+                            <option>石川県</option>
+                            <option>福井県</option>
+                            <option>山梨県</option>
+                            <option>長野県</option>
+                            <option>岐阜県</option>
+                            <option>静岡県</option>
+                            <option>愛知県</option>
+                            <option>三重県</option>
+                            <option>滋賀県</option>
+                            <option>京都府</option>
+                            <option>大阪府</option>
+                            <option>兵庫県</option>
+                            <option>奈良県</option>
+                            <option>和歌山県</option>
+                            <option>鳥取県</option>
+                            <option>島根県</option>
+                            <option>岡山県</option>
+                            <option>広島県</option>
+                            <option>山口県</option>
+                            <option>徳島県</option>
+                            <option>香川県</option>
+                            <option>愛媛県</option>
+                            <option>高知県</option>
+                            <option>福岡県</option>
+                            <option>佐賀県</option>
+                            <option>長崎県</option>
+                            <option>熊本県</option>
+                            <option>大分県</option>
+                            <option>宮崎県</option>
+                            <option>鹿児島県</option>
+                            <option>沖縄県</option>
                         </select>
                     </div>
 

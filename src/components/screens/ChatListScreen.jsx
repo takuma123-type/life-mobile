@@ -16,7 +16,7 @@ function ChatListScreen({
     const [showResultsModal, setShowResultsModal] = useState(false);
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [selectedProfileUser, setSelectedProfileUser] = useState(null);
-    const [searchFilters, setSearchFilters] = useState({ keyword: '', category: '', age: '', country: '', activeTime: '' });
+    const [searchFilters, setSearchFilters] = useState({ keyword: '', category: '', age: '', region: '', activeTime: '' });
     const [searchResults, setSearchResults] = useState(null);
     const [appliedFilters, setAppliedFilters] = useState(null);
     const [isFollowing, setIsFollowing] = useState({});
@@ -56,8 +56,11 @@ function ChatListScreen({
                 results = results.filter(u => u.age === searchFilters.age);
             }
             
-            if (searchFilters.country) {
-                results = results.filter(u => u.country === searchFilters.country);
+            if (searchFilters.region) {
+                results = results.filter(u => 
+                    u.region.toLowerCase().includes(searchFilters.region.toLowerCase()) ||
+                    (u.city && u.city.toLowerCase().includes(searchFilters.region.toLowerCase()))
+                );
             }
             
             if (searchFilters.activeTime) {
@@ -90,7 +93,7 @@ function ChatListScreen({
     const clearSearch = () => {
         setSearchResults(null);
         setAppliedFilters(null);
-        setSearchFilters({ keyword: '', category: '', age: '', country: '', activeTime: '' });
+        setSearchFilters({ keyword: '', category: '', age: '', region: '', activeTime: '' });
         setShowResultsModal(false);
     };
 
@@ -285,19 +288,61 @@ function ChatListScreen({
                                 </div>
 
                                 <div style={{ marginBottom: '16px' }}>
-                                    <label style={{ display: 'block', fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>国</label>
+                                    <label style={{ display: 'block', fontSize: '14px', fontWeight: 'bold', marginBottom: '8px' }}>都道府県</label>
                                     <select
-                                        value={searchFilters.country}
-                                        onChange={(e) => setSearchFilters({...searchFilters, country: e.target.value})}
+                                        value={searchFilters.region}
+                                        onChange={(e) => setSearchFilters({...searchFilters, region: e.target.value})}
                                         className="wire-text"
                                         style={{ width: '100%', borderRadius: '8px' }}
                                     >
                                         <option value="">選択してください</option>
-                                        <option>日本</option>
-                                        <option>アメリカ</option>
-                                        <option>中国</option>
-                                        <option>韓国</option>
-                                        <option>その他</option>
+                                        <option>北海道</option>
+                                        <option>青森県</option>
+                                        <option>岩手県</option>
+                                        <option>宮城県</option>
+                                        <option>秋田県</option>
+                                        <option>山形県</option>
+                                        <option>福島県</option>
+                                        <option>茨城県</option>
+                                        <option>栃木県</option>
+                                        <option>群馬県</option>
+                                        <option>埼玉県</option>
+                                        <option>千葉県</option>
+                                        <option>東京都</option>
+                                        <option>神奈川県</option>
+                                        <option>新潟県</option>
+                                        <option>富山県</option>
+                                        <option>石川県</option>
+                                        <option>福井県</option>
+                                        <option>山梨県</option>
+                                        <option>長野県</option>
+                                        <option>岐阜県</option>
+                                        <option>静岡県</option>
+                                        <option>愛知県</option>
+                                        <option>三重県</option>
+                                        <option>滋賀県</option>
+                                        <option>京都府</option>
+                                        <option>大阪府</option>
+                                        <option>兵庫県</option>
+                                        <option>奈良県</option>
+                                        <option>和歌山県</option>
+                                        <option>鳥取県</option>
+                                        <option>島根県</option>
+                                        <option>岡山県</option>
+                                        <option>広島県</option>
+                                        <option>山口県</option>
+                                        <option>徳島県</option>
+                                        <option>香川県</option>
+                                        <option>愛媛県</option>
+                                        <option>高知県</option>
+                                        <option>福岡県</option>
+                                        <option>佐賀県</option>
+                                        <option>長崎県</option>
+                                        <option>熊本県</option>
+                                        <option>大分県</option>
+                                        <option>宮崎県</option>
+                                        <option>鹿児島県</option>
+                                        <option>沖縄県</option>
                                     </select>
                                 </div>
 
@@ -618,14 +663,35 @@ function ChatListScreen({
 
                         {/* 基本情報 */}
                         <div className="wire-box" style={{ padding: '18px', marginBottom: '18px' }}>
-                            <h3 style={{ fontSize: '15px', fontWeight: 'bold', marginBottom: '14px' }}>基本情報</h3>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+                                <h3 style={{ fontSize: '15px', fontWeight: 'bold' }}>基本情報</h3>
+                                {selectedProfileUser.verified && (
+                                    <div style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        padding: '4px 8px',
+                                        background: '#4CAF50',
+                                        color: 'white',
+                                        borderRadius: '12px',
+                                        fontSize: '11px',
+                                        fontWeight: 'bold'
+                                    }}>
+                                        <span>✓</span>
+                                        <span>本人確認済み</span>
+                                    </div>
+                                )}
+                            </div>
                             <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid #e0e0e0' }}>
                                 <p style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>年代</p>
                                 <p style={{ fontSize: '14px', fontWeight: 'bold' }}>{selectedProfileUser.age}</p>
                             </div>
                             <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid #e0e0e0' }}>
-                                <p style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>国</p>
-                                <p style={{ fontSize: '14px', fontWeight: 'bold' }}>{selectedProfileUser.country}</p>
+                                <p style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>地域</p>
+                                <p style={{ fontSize: '14px', fontWeight: 'bold' }}>
+                                    {selectedProfileUser.region}
+                                    {selectedProfileUser.city && ` / ${selectedProfileUser.city}`}
+                                </p>
                             </div>
                             <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid #e0e0e0' }}>
                                 <p style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>よく使う時間帯</p>

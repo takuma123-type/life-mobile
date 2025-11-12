@@ -1,15 +1,15 @@
 // Mock User Data
 const mockUsers = [
-    { id: 1, name: '寅斗', age: '10代前半', message: 'よろ!', time: '14秒前', online: true, avatar: '寅', bio: 'ゲームとアニメが好きです!よろしくお願いします!', gender: '男性', country: '日本', region: '北海道', activeTime: 'いつでも' },
-    { id: 2, name: 'たろ', age: '10代後半', message: '通話しよー', time: '1分前', online: true, avatar: 'た', bio: '音楽を聴くのが好きです。バンドやってます!', gender: '男性', country: '日本', region: '東京', activeTime: '夜（18:00-24:00）' },
-    { id: 3, name: 'みう', age: '10代前半', message: '中1女子です!よろしく!', time: '5分前', online: false, avatar: 'み', bio: 'アニメ鑑賞とYouTube見るのが趣味です。よろしくね!', gender: '女性', country: '日本', region: '大阪', activeTime: '昼（12:00-18:00）' },
-    { id: 4, name: 'めん', age: '10代前半', message: '気軽に話しかけてね!', time: '10分前', online: true, avatar: 'め', bio: 'イラスト描くのが好き。趣味友達募集中!', gender: 'その他', country: '日本', region: '福岡', activeTime: 'いつでも' },
-    { id: 5, name: 'たくと', age: '10代前半', message: '13歳です年近い人なかよくなりたいです!', time: '15分前', online: false, avatar: 'た', bio: 'サッカーとゲームが好きです。気軽に話しかけてください!', gender: '男性', country: '日本', region: '東京', activeTime: '朝（6:00-12:00）' },
-    { id: 6, name: 'Emma', age: '10代後半', message: 'Hello! Nice to meet you!', time: '20分前', online: true, avatar: 'E', bio: 'I love Japanese anime and manga! Learning Japanese now.', gender: '女性', country: 'アメリカ', region: 'California', activeTime: '夜（18:00-24:00）' },
-    { id: 7, name: 'Li Wei', age: '20代', message: '你好！很高兴认识你', time: '25分前', online: true, avatar: 'L', bio: '喜欢日本文化和动漫。正在学习日语。', gender: '男性', country: '中国', region: 'Shanghai', activeTime: 'いつでも' },
-    { id: 8, name: 'Min-jun', age: '10代後半', message: '안녕하세요! 잘 부탁드립니다', time: '30分前', online: false, avatar: 'M', bio: 'K-POPと日本のアニメが好きです。友達になりましょう！', gender: '男性', country: '韓国', region: 'Seoul', activeTime: '昼（12:00-18:00）' },
-    { id: 9, name: 'Sophie', age: '10代後半', message: 'Bonjour! I want to learn Japanese', time: '35分前', online: true, avatar: 'S', bio: 'French student who loves Japanese culture. Let\'s be friends!', gender: '女性', country: 'フランス', region: 'Paris', activeTime: '朝（6:00-12:00）' },
-    { id: 10, name: 'Carlos', age: '20代', message: '¡Hola! Me encanta el anime', time: '40分前', online: false, avatar: 'C', bio: 'Español aprendiendo japonés. Me gusta el anime y los videojuegos.', gender: '男性', country: 'スペイン', region: 'Madrid', activeTime: '夜（18:00-24:00）' },
+    { id: 1, name: '寅斗', age: '10代前半', message: 'よろ!', time: '14秒前', online: true, avatar: '寅', bio: 'ゲームとアニメが好きです!よろしくお願いします!', gender: '男性', country: '日本', region: '北海道', city: '札幌市', verified: true, activeTime: 'いつでも' },
+    { id: 2, name: 'たろ', age: '10代後半', message: '通話しよー', time: '1分前', online: true, avatar: 'た', bio: '音楽を聴くのが好きです。バンドやってます!', gender: '男性', country: '日本', region: '東京都', city: '渋谷区', verified: true, activeTime: '夜（18:00-24:00）' },
+    { id: 3, name: 'みう', age: '10代前半', message: '中1女子です!よろしく!', time: '5分前', online: false, avatar: 'み', bio: 'アニメ鑑賞とYouTube見るのが趣味です。よろしくね!', gender: '女性', country: '日本', region: '大阪府', city: '大阪市', verified: false, activeTime: '昼（12:00-18:00）' },
+    { id: 4, name: 'めん', age: '10代前半', message: '気軽に話しかけてね!', time: '10分前', online: true, avatar: 'め', bio: 'イラスト描くのが好き。趣味友達募集中!', gender: 'その他', country: '日本', region: '福岡県', city: '福岡市', verified: true, activeTime: 'いつでも' },
+    { id: 5, name: 'たくと', age: '10代前半', message: '13歳です年近い人なかよくなりたいです!', time: '15分前', online: false, avatar: 'た', bio: 'サッカーとゲームが好きです。気軽に話しかけてください!', gender: '男性', country: '日本', region: '東京都', city: '新宿区', verified: false, activeTime: '朝（6:00-12:00）' },
+    { id: 6, name: 'Emma', age: '10代後半', message: 'Hello! Nice to meet you!', time: '20分前', online: true, avatar: 'E', bio: 'I love Japanese anime and manga! Learning Japanese now.', gender: '女性', country: 'アメリカ', region: 'California', city: 'Los Angeles', verified: true, activeTime: '夜（18:00-24:00）' },
+    { id: 7, name: 'Li Wei', age: '20代', message: '你好！很高兴认识你', time: '25分前', online: true, avatar: 'L', bio: '喜欢日本文化和动漫。正在学习日语。', gender: '男性', country: '中国', region: 'Shanghai', city: 'Pudong', verified: true, activeTime: 'いつでも' },
+    { id: 8, name: 'Min-jun', age: '10代後半', message: '안녕하세요! 잘 부탁드립니다', time: '30分前', online: false, avatar: 'M', bio: 'K-POPと日本のアニメが好きです。友達になりましょう！', gender: '男性', country: '韓国', region: 'Seoul', city: 'Gangnam', verified: false, activeTime: '昼（12:00-18:00）' },
+    { id: 9, name: 'Sophie', age: '10代後半', message: 'Bonjour! I want to learn Japanese', time: '35分前', online: true, avatar: 'S', bio: 'French student who loves Japanese culture. Let\'s be friends!', gender: '女性', country: 'フランス', region: 'Île-de-France', city: 'Paris', verified: true, activeTime: '朝（6:00-12:00）' },
+    { id: 10, name: 'Carlos', age: '20代', message: '¡Hola! Me encanta el anime', time: '40分前', online: false, avatar: 'C', bio: 'Español aprendiendo japonés. Me gusta el anime y los videojuegos.', gender: '男性', country: 'スペイン', region: 'Madrid', city: 'Madrid', verified: false, activeTime: '夜（18:00-24:00）' },
 ];
 
 // Mock Community Data

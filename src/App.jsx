@@ -145,9 +145,9 @@ function App() {
             )}
             
             {showAuthModal && (
-                <GoogleAuthModal 
+                <SmsVerificationModal 
                     onClose={() => setShowAuthModal(false)}
-                    onAuthSuccess={handleAuthSuccess}
+                    onVerificationComplete={handleAuthSuccess}
                 />
             )}
         </div>

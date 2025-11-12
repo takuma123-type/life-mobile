@@ -7,6 +7,8 @@ function MyPageScreen({
 }) {
     const [showProfileModal, setShowProfileModal] = React.useState(false);
     const [showLanguageModal, setShowLanguageModal] = React.useState(false);
+    const [showSmsModal, setShowSmsModal] = React.useState(false);
+    const [isVerified, setIsVerified] = React.useState(false);
     const [language, setLanguage] = React.useState(LanguageManager.getLanguage());
 
     React.useEffect(() => {
@@ -25,7 +27,8 @@ function MyPageScreen({
         name: 'ゲストユーザー',
         avatar: 'GU',
         age: '20代',
-        country: '日本',
+        region: '東京都',
+        city: '渋谷区',
         activeTime: '夜',
         bio: 'よろしくお願いします！',
         online: true
@@ -65,6 +68,7 @@ function MyPageScreen({
 
                 <div className="wire-box" style={{ marginBottom: '14px' }}>
                     {[
+                        { Icon: Icons.User, label: 'SMS本人確認', badge: !isVerified ? '未認証' : '✓', screen: null, action: () => setShowSmsModal(true), verified: isVerified },
                         { Icon: Icons.Users, label: 'フレンド申請', badge: '3', screen: 'followRequests' },
                         { Icon: Icons.Heart, label: 'スタンプ購入', screen: 'stampShop' },
                         { Icon: Icons.Settings, label: '言語設定', action: () => setShowLanguageModal(true) }
@@ -87,7 +91,13 @@ function MyPageScreen({
                             <item.Icon />
                             <span style={{ flex: 1, fontSize: '15px' }}>{item.label}</span>
                             {item.badge && (
-                                <span className="wire-badge" style={{ background: '#f00' }}>{item.badge}</span>
+                                <span className="wire-badge" style={{ 
+                                    background: item.verified ? '#4CAF50' : '#f00',
+                                    color: 'white',
+                                    padding: '4px 8px',
+                                    borderRadius: '12px',
+                                    fontSize: '11px'
+                                }}>{item.badge}</span>
                             )}
                         </button>
                     ))}
@@ -180,8 +190,8 @@ function MyPageScreen({
                                 <p style={{ fontSize: '14px', fontWeight: 'bold' }}>{myProfile.age}</p>
                             </div>
                             <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid #e0e0e0' }}>
-                                <p style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>国</p>
-                                <p style={{ fontSize: '14px', fontWeight: 'bold' }}>{myProfile.country}</p>
+                                <p style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>地域</p>
+                                <p style={{ fontSize: '14px', fontWeight: 'bold' }}>{myProfile.region} / {myProfile.city}</p>
                             </div>
                             <div style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid #e0e0e0' }}>
                                 <p style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>よく使う時間帯</p>
@@ -290,6 +300,17 @@ function MyPageScreen({
                         </button>
                     </div>
                 </div>
+            )}
+
+            {/* SMS認証モーダル */}
+            {showSmsModal && (
+                <SmsVerificationModal 
+                    onClose={() => setShowSmsModal(false)}
+                    onVerificationComplete={() => {
+                        setIsVerified(true);
+                        setShowSmsModal(false);
+                    }}
+                />
             )}
 
             <BottomNav 
