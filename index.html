@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LIFE</title>
+    <link rel="stylesheet" href="src/styles/styles.css">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- Load all components -->
+    <script type="text/babel" src="src/utils/i18n.js"></script>
+    <script type="text/babel" src="src/data/mockData.js"></script>
+    <script type="text/babel" src="src/components/common/Icons.jsx"></script>
+    <script type="text/babel" src="src/components/common/Layout.jsx"></script>
+    <script type="text/babel" src="src/components/screens/SplashScreen.jsx"></script>
+    <script type="text/babel" src="src/components/screens/LoginScreen.jsx"></script>
+    <script type="text/babel" src="src/components/screens/UserProfileView.jsx"></script>
+    <script type="text/babel" src="src/components/screens/ChatListScreen.jsx"></script>
+    <script type="text/babel" src="src/components/screens/ChatDetailScreen.jsx"></script>
+    <script type="text/babel" src="src/components/screens/GroupChatScreen.jsx"></script>
+    <script type="text/babel" src="src/components/screens/CommunityDetailScreen.jsx"></script>
+    <script type="text/babel" src="src/components/screens/MyPageScreen.jsx"></script>
+    <script type="text/babel" src="src/components/screens/FollowRequestsScreen.jsx"></script>
+    <script type="text/babel" src="src/components/screens/EditProfileScreen.jsx"></script>
+    <script type="text/babel" src="src/components/screens/StampShopScreen.jsx"></script>
+    <script type="text/babel" src="src/components/screens/ProfileRegistrationScreen.jsx"></script>
+    <script type="text/babel" src="src/components/modals/GoogleAuthModal.jsx"></script>
+    <script type="text/babel" src="src/App.jsx"></script>
+    
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
