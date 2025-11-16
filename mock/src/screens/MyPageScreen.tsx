@@ -34,8 +34,30 @@ const MyPageScreen: React.FC = () => {
           </div>
           <h3 style={{ margin:'0 0 20px' }}>{me?.name || 'ゲストユーザー'}</h3>
           <button 
-            className='view-profile' 
+            style={{
+              background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)',
+              border: 'none',
+              color: '#fff',
+              width: '100%',
+              padding: '12px 16px',
+              borderRadius: 10,
+              fontSize: 14,
+              cursor: 'pointer',
+              fontWeight: 600,
+              transition: 'all .2s ease',
+              boxShadow: 'var(--shadow-primary)'
+            }}
             onClick={()=>dispatch(me ? openProfileModal() : openGuestProfileModal())}
+            onMouseOver={e => {
+              e.currentTarget.style.opacity = '0.9';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-primary-lg)';
+            }}
+            onMouseOut={e => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-primary)';
+            }}
           >
             タップしてプロフィールを見る
           </button>

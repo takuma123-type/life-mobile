@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-// ロゴ画像 (ユーザー提供の PNG を /mock/icon/image.png に配置してください)
-// Vite の相対 import: screens から ../../icon/image.png
+// ロゴ画像 (ユーザー提供の PNG を /mock/icon/splash.png に配置してください)
+// Vite の相対 import: screens から ../../icon/splash.png
 // まだ存在しない場合はビルド時に警告が出るため画像を追加してください。
 // @ts-ignore
-import logoUrl from '../../icon/image.png';
+import logoUrl from '../../icon/splash.png';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { hideSplash } from '../store/uiSlice';
 import type { RootState } from '../store/store';

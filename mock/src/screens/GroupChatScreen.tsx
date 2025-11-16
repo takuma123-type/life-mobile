@@ -206,7 +206,7 @@ const GroupChatScreen: React.FC = () => {
                       disabled={translating === msg.id}
                       style={{
                         background: '#fff',
-                        border: '1px solid #e5e5e5',
+                        border: '1.5px solid var(--color-border)',
                         borderRadius: 12,
                         padding: '4px 10px',
                         fontSize: 11,
@@ -215,11 +215,17 @@ const GroupChatScreen: React.FC = () => {
                         alignItems: 'center',
                         gap: 4,
                         fontWeight: 600,
-                        color: '#666',
+                        color: 'var(--color-primary)',
                         transition: 'all .2s ease'
                       }}
-                      onMouseOver={e => (e.currentTarget.style.background = '#f9f9f9')}
-                      onMouseOut={e => (e.currentTarget.style.background = '#fff')}
+                      onMouseOver={e => {
+                        e.currentTarget.style.background = 'var(--color-surface-alt)';
+                        e.currentTarget.style.borderColor = 'var(--color-primary)';
+                      }}
+                      onMouseOut={e => {
+                        e.currentTarget.style.background = '#fff';
+                        e.currentTarget.style.borderColor = 'var(--color-border)';
+                      }}
                     >
                       <IconGlobe size={12} />
                       {translating === msg.id ? '翻訳中...' : '翻訳'}
@@ -303,11 +309,20 @@ const GroupChatScreen: React.FC = () => {
           style={{
             flex: 1,
             padding: '12px 16px',
-            border: '1px solid #e5e5e5',
+            border: '1.5px solid var(--color-border)',
             borderRadius: 24,
             fontSize: 15,
             outline: 'none',
-            background: '#f9f9f9'
+            background: '#fff',
+            transition: 'var(--transition)'
+          }}
+          onFocus={e => {
+            e.target.style.borderColor = 'var(--color-primary)';
+            e.target.style.boxShadow = '0 0 0 3px rgba(14, 165, 233, 0.1)';
+          }}
+          onBlur={e => {
+            e.target.style.borderColor = 'var(--color-border)';
+            e.target.style.boxShadow = 'none';
           }}
         />
 
@@ -316,7 +331,9 @@ const GroupChatScreen: React.FC = () => {
           aria-label='送信'
           disabled={!message.trim()}
           style={{
-            background: message.trim() ? '#000' : '#e5e5e5',
+            background: message.trim() 
+              ? 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)' 
+              : '#e5e5e5',
             color: message.trim() ? '#fff' : '#999',
             border: 'none',
             cursor: message.trim() ? 'pointer' : 'not-allowed',
@@ -327,7 +344,18 @@ const GroupChatScreen: React.FC = () => {
             alignItems: 'center',
             justifyContent: 'center',
             transition: 'all .2s ease',
-            flexShrink: 0
+            flexShrink: 0,
+            boxShadow: message.trim() ? 'var(--shadow-primary)' : 'none'
+          }}
+          onMouseOver={e => {
+            if (message.trim()) {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-primary-lg)';
+            }
+          }}
+          onMouseOut={e => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = message.trim() ? 'var(--shadow-primary)' : 'none';
           }}
         >
           <IconSend size={20} />

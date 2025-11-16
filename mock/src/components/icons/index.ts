@@ -14,4 +14,16 @@ export { default as IconLogout } from './IconLogout';
 export { default as IconX } from './IconX';
 export { default as IconSend } from './IconSend';
 export { default as IconPlus } from './IconPlus';
+
+// New modern icons
+export { IconMessageCircle } from './IconMessageCircle';
+export { IconCalendar } from './IconCalendar';
+export { IconMapPin } from './IconMapPin';
+export { IconClock } from './IconClock';
+export { IconFileText } from './IconFileText';
+export { IconLock } from './IconLock';
+export { IconPlane } from './IconPlane';
+export { IconGamepad } from './IconGamepad';
+export { IconTv } from './IconTv';
+
 export type { IconProps } from './IconBase';

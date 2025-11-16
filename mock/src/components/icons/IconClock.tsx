@@ -1,0 +1,9 @@
+import React from 'react';
+import IconBase, { IconProps } from './IconBase';
+
+export const IconClock: React.FC<IconProps> = (props) => (
+  <IconBase {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
+  </IconBase>
+);

@@ -35,6 +35,12 @@ const ChatListScreen: React.FC = () => {
   const [communityCategory, setCommunityCategory] = useState('');
   const [communityShowResults, setCommunityShowResults] = useState(false);
   const [communitySearchResults, setCommunitySearchResults] = useState<any[]>([]);
+  
+  // ユーザー表示モード（フレンドか全てのユーザーか）
+  const [userMode, setUserMode] = useState<'friends' | 'all'>('all');
+  
+  // コミュニティ表示モード
+  const [communityMode, setCommunityMode] = useState<'all' | 'joined' | 'popular'>('all');
 
   const handleSearch = () => {
     const results = users.filter((u:any) => {
@@ -74,13 +80,42 @@ const ChatListScreen: React.FC = () => {
     setCommunitySearchResults([]);
   };
 
-  const filteredUsers = users.filter((u:any)=> !keyword || u.name.toLowerCase().includes(keyword.toLowerCase()) || (u.message||'').toLowerCase().includes(keyword.toLowerCase()));
-  const filteredCommunities = communities.filter((c:any)=> !keyword || c.name.toLowerCase().includes(keyword.toLowerCase()));
+  // ユーザーのフィルタリング
+  const getFilteredUsers = () => {
+    let filtered = users.filter((u:any)=> !keyword || u.name.toLowerCase().includes(keyword.toLowerCase()) || (u.message||'').toLowerCase().includes(keyword.toLowerCase()));
+    
+    // モードによる絞り込み
+    if (userMode === 'friends') {
+      // フレンドモード: フォロー中のユーザーのみ（デモ用に最初の5人）
+      filtered = filtered.slice(0, 5);
+    }
+    // 'all' の場合は全てのユーザーを表示
+    
+    return filtered;
+  };
   
-  // ログイン前またはフレンドが0人の場合は新規作成順のユーザーを表示（無限スクロール対応）
-  const displayUsers = (!isAuthenticated || !me || following.length === 0) 
-    ? users.slice(0, displayCount) 
-    : filteredUsers;
+  // コミュニティのフィルタリング
+  const getFilteredCommunities = () => {
+    let filtered = communities.filter((c:any)=> !keyword || c.name.toLowerCase().includes(keyword.toLowerCase()));
+    
+    // モードによる絞り込みと並び替え
+    if (communityMode === 'joined') {
+      // 参加中のコミュニティのみ（デモ用に最初の2つ）
+      filtered = filtered.slice(0, 2);
+    } else if (communityMode === 'popular') {
+      // 人気順（メンバー数が多い順）
+      filtered = [...filtered].sort((a, b) => b.members - a.members);
+    }
+    // 'all' の場合は全てのコミュニティをデフォルト順で表示
+    
+    return filtered;
+  };
+  
+  const filteredUsers = getFilteredUsers();
+  const filteredCommunities = getFilteredCommunities();
+  
+  // ユーザー表示（無限スクロール対応）
+  const displayUsers = filteredUsers.slice(0, displayCount);
 
   // スクロール検知
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -119,7 +154,7 @@ const ChatListScreen: React.FC = () => {
             transition:'all .2s ease'
           }}
         >
-          フレンド
+          ユーザー
         </button>
         <button 
           onClick={()=>setTab('open')}
@@ -142,7 +177,47 @@ const ChatListScreen: React.FC = () => {
 
       {tab==='following' && (
         <div style={{ padding:'20px', background:'var(--color-bg)' }}>
-          {/* ログイン前またはフレンド0人の場合の案内メッセージ */}
+          {/* ユーザーモード切り替えボタン */}
+          <div style={{ 
+            display:'flex', 
+            gap:8,
+            marginBottom:16
+          }}>
+            <button
+              onClick={() => setUserMode('all')}
+              style={{
+                flex:1,
+                padding:'10px 16px',
+                background: userMode === 'all' ? '#000' : '#fff',
+                color: userMode === 'all' ? '#fff' : 'var(--color-text-soft)',
+                border: '1px solid var(--color-border)',
+                borderRadius:12,
+                fontSize:14,
+                fontWeight:600,
+                cursor:'pointer',
+                transition:'all .2s ease'
+              }}
+            >
+              すべて
+            </button>
+            <button
+              onClick={() => setUserMode('friends')}
+              style={{
+                flex:1,
+                padding:'10px 16px',
+                background: userMode === 'friends' ? '#000' : '#fff',
+                color: userMode === 'friends' ? '#fff' : 'var(--color-text-soft)',
+                border: '1px solid var(--color-border)',
+                borderRadius:12,
+                fontSize:14,
+                fontWeight:600,
+                cursor:'pointer',
+                transition:'all .2s ease'
+              }}
+            >
+              フレンド
+            </button>
+          </div>
 
           <div style={{ 
             display:'grid', 
@@ -280,8 +355,67 @@ const ChatListScreen: React.FC = () => {
 
       {tab==='open' && (
         <div style={{ padding:'20px', background:'var(--color-bg)' }}>
-          {/* 参加中セクション - ログイン時のみ表示 */}
-          {isAuthenticated && me && (
+          {/* コミュニティモード切り替えボタン */}
+          <div style={{ 
+            display:'flex', 
+            gap:8,
+            marginBottom:16
+          }}>
+            <button
+              onClick={() => setCommunityMode('all')}
+              style={{
+                flex:1,
+                padding:'10px 12px',
+                background: communityMode === 'all' ? '#000' : '#fff',
+                color: communityMode === 'all' ? '#fff' : 'var(--color-text-soft)',
+                border: '1px solid var(--color-border)',
+                borderRadius:12,
+                fontSize:13,
+                fontWeight:600,
+                cursor:'pointer',
+                transition:'all .2s ease'
+              }}
+            >
+              すべて
+            </button>
+            <button
+              onClick={() => setCommunityMode('joined')}
+              style={{
+                flex:1,
+                padding:'10px 12px',
+                background: communityMode === 'joined' ? '#000' : '#fff',
+                color: communityMode === 'joined' ? '#fff' : 'var(--color-text-soft)',
+                border: '1px solid var(--color-border)',
+                borderRadius:12,
+                fontSize:13,
+                fontWeight:600,
+                cursor:'pointer',
+                transition:'all .2s ease'
+              }}
+            >
+              参加中
+            </button>
+            <button
+              onClick={() => setCommunityMode('popular')}
+              style={{
+                flex:1,
+                padding:'10px 12px',
+                background: communityMode === 'popular' ? '#000' : '#fff',
+                color: communityMode === 'popular' ? '#fff' : 'var(--color-text-soft)',
+                border: '1px solid var(--color-border)',
+                borderRadius:12,
+                fontSize:13,
+                fontWeight:600,
+                cursor:'pointer',
+                transition:'all .2s ease'
+              }}
+            >
+              人気
+            </button>
+          </div>
+          
+          {/* 参加中セクション - 参加中モードでのみ表示 */}
+          {communityMode === 'joined' && isAuthenticated && me && (
             <>
               <h3 style={{ margin:'0 0 16px', fontSize:15, fontWeight:700, color:'#000' }}>参加中</h3>
               <div style={{ marginBottom:32 }}>
@@ -371,9 +505,9 @@ const ChatListScreen: React.FC = () => {
             </>
           )}
 
-          {/* 人気のコミュニティセクション */}
-          <h3 style={{ margin:'0 0 16px', fontSize:15, fontWeight:700, color:'#000' }}>人気のコミュニティ</h3>
-          <div style={{ 
+          {/* 全て/人気モード用のグリッド表示 */}
+          {(communityMode === 'all' || communityMode === 'popular') && (
+            <div style={{ 
             display:'grid', 
             gridTemplateColumns:'repeat(2, 1fr)', 
             gap:12 
@@ -452,6 +586,7 @@ const ChatListScreen: React.FC = () => {
               </div>
             ))}
           </div>
+          )}
         </div>
       )}
 

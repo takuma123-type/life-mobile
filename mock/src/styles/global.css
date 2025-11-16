@@ -1,28 +1,68 @@
-/* ベーステーマ: ライトをデフォルト。ダークは .dark でオーバーライド */
+/* ベーステーマ: 水色ベースのモダンデザイン */
 :root {
-  /* Reverted neutral light palette */
-  --color-bg: #f7f9fa; /* page background */
-  --color-surface: #ffffff; /* cards / surfaces */
-  --color-surface-alt: #eef1f4; /* subtle alternate */
-  --color-border: #e3e6ea; /* light border */
-  --color-border-strong: #111111; /* strong separators */
-  --color-text: #111111; /* primary text */
-  --color-text-soft: #1f2937; /* secondary */
-  --color-muted: #6b7280; /* muted */
-  --color-accent: #2563eb; /* accent button/nav */
-  --color-accent-hover: #1d4ed8;
-  --color-danger: #ef4444;
-  --color-danger-hover: #dc2626;
-  --color-warning: #f59e0b;
-  --color-success: #10b981;
-  --radius-xs: 4px;
+  /* 🎨 水色ベースのカラーパレット */
+  --color-bg: #FAFBFC; /* ベース背景 - クリーンな白系 */
+  --color-surface: #ffffff; /* カード/サーフェス */
+  --color-surface-alt: #F0F9FF; /* 薄い水色の背景 */
+  --color-border: #E0F2FE; /* 薄い水色ボーダー */
+  --color-border-strong: #0EA5E9; /* 強調ボーダー */
+  
+  /* テキストカラー */
+  --color-text: #0F172A; /* 主要テキスト - 濃紺に近い黒 */
+  --color-text-soft: #64748B; /* 補助テキスト - ブルーグレー */
+  --color-muted: #94A3B8; /* ミュート */
+  
+  /* プライマリーカラー（水色系） */
+  --color-primary: #0EA5E9; /* 鮮やかなスカイブルー */
+  --color-primary-hover: #0284C7; /* ホバー時 */
+  --color-primary-light: #7DD3FC; /* 薄い水色/アクセント */
+  --color-secondary: #06B6D4; /* シアン寄りの水色 */
+  --color-secondary-hover: #0891B2;
+  
+  /* 旧アクセントカラー（互換性維持） */
+  --color-accent: #0EA5E9;
+  --color-accent-hover: #0284C7;
+  
+  /* ステータスカラー */
+  --color-danger: #EF4444;
+  --color-danger-hover: #DC2626;
+  --color-warning: #F59E0B;
+  --color-success: #10B981;
+  --color-online: #06B6D4; /* オンラインインジケーター */
+  
+  /* カテゴリー別カラー */
+  --color-category-travel: #0EA5E9;
+  --color-category-chat: #06B6D4;
+  --color-category-game: #0284C7;
+  --color-category-anime: #38BDF8;
+  --color-category-food: #22D3EE;
+  --color-category-sports: #0891B2;
+  --color-category-hobby: #67E8F9;
+  --color-category-study: #0E7490;
+  --color-category-music: #3B82F6;
+  --color-category-pets: #14B8A6;
+  --color-category-movie: #7C3AED;
+  --color-category-book: #8B5CF6;
+  --color-category-art: #EC4899;
+  --color-category-business: #0F766E;
+  
+  /* ボーダー半径 */
+  --radius-xs: 6px;
   --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 14px rgba(0,0,0,0.12);
-  --shadow-lg: 0 10px 32px rgba(0,0,0,0.18);
-  --transition: 160ms cubic-bezier(.4,.2,.2,1);
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  
+  /* シャドウ */
+  --shadow-sm: 0 1px 2px rgba(14, 165, 233, 0.05);
+  --shadow-md: 0 4px 14px rgba(14, 165, 233, 0.12);
+  --shadow-lg: 0 10px 32px rgba(14, 165, 233, 0.18);
+  --shadow-primary: 0 4px 14px rgba(14, 165, 233, 0.25);
+  --shadow-primary-lg: 0 6px 20px rgba(14, 165, 233, 0.35);
+  
+  /* トランジション */
+  --transition: 200ms cubic-bezier(.4,.2,.2,1);
+  --transition-fast: 150ms ease;
 }
 
 /* Icon buttons */
@@ -98,40 +138,113 @@ body { margin:0; font-family: system-ui,-apple-system,'Segoe UI',Roboto,'Helveti
 
 button { font-family: inherit; }
 
-/* モダンボタン */
+/* モダンボタン（水色ベース） */
 .btn {
   display:inline-flex; align-items:center; justify-content:center;
   gap:8px; font-size:14px; font-weight:600;
-  background:var(--color-accent); color:#fff; border:1px solid var(--color-accent);
-  padding:12px 22px; border-radius: var(--radius-md);
-  cursor:pointer; box-shadow: var(--shadow-sm);
+  background:var(--color-primary); color:#fff; border:none;
+  padding:12px 24px; border-radius: var(--radius-md);
+  cursor:pointer; box-shadow: var(--shadow-primary);
   transition: var(--transition);
   letter-spacing:.3px;
 }
-.btn:hover { background: var(--color-accent-hover); box-shadow: var(--shadow-md); }
-.btn:active { transform: translateY(1px); }
-.btn-outline {
-  background:#fff; color: var(--color-text); border:1px solid var(--color-border);
+.btn:hover { 
+  background: var(--color-primary-hover); 
+  box-shadow: var(--shadow-primary-lg);
+  transform: translateY(-2px);
 }
-.btn-outline:hover { background: var(--color-surface-alt); }
-.btn-ghost { background:transparent; border:1px solid transparent; color:var(--color-text-soft); }
-.btn-ghost:hover { background:var(--color-surface-alt); }
-.btn-danger { background:var(--color-danger); border:1px solid var(--color-danger); }
-.btn-danger:hover { background:var(--color-danger-hover); }
+.btn:active { transform: translateY(0); }
 
-/* カード */
+/* グラデーションボタン */
+.btn-gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  border:none;
+}
+.btn-gradient:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background:#fff; 
+  color: var(--color-primary); 
+  border:1.5px solid var(--color-primary);
+  box-shadow: none;
+}
+.btn-outline:hover { 
+  background: var(--color-surface-alt);
+  border-color: var(--color-primary-hover);
+}
+
+.btn-ghost { 
+  background:transparent; 
+  border:1px solid transparent; 
+  color:var(--color-text-soft); 
+  box-shadow: none;
+}
+.btn-ghost:hover { background:var(--color-surface-alt); }
+
+.btn-danger { 
+  background:var(--color-danger); 
+  border:none;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25);
+}
+.btn-danger:hover { 
+  background:var(--color-danger-hover);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
+}
+
+/* カード（水色アクセント） */
 .card {
-  background: var(--color-surface); border:1px solid var(--color-border);
-  border-radius: var(--radius-lg); padding:16px 18px; box-shadow: var(--shadow-sm);
+  background: var(--color-surface); 
+  border:1px solid var(--color-border);
+  border-radius: var(--radius-lg); 
+  padding:16px 18px; 
+  box-shadow: var(--shadow-sm);
   transition: var(--transition);
 }
-.card:hover { box-shadow: var(--shadow-md); }
+.card:hover { 
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
+}
 .card-outline-strong { border:2px solid var(--color-border-strong); }
 
-/* 入力 */
-.input { width:100%; padding:12px 14px; background: #fff; border:1px solid var(--color-border); border-radius: var(--radius-md); color:var(--color-text); font-size:14px; transition:var(--transition); }
-.input:focus { outline:2px solid var(--color-accent); border-color: var(--color-accent); }
-.input[disabled] { background:var(--color-surface-alt); color:var(--color-muted); }
+/* 入力フィールド（水色フォーカス） */
+.input { 
+  width:100%; 
+  padding:12px 16px; 
+  background: #fff; 
+  border:1.5px solid #E2E8F0; 
+  border-radius: var(--radius-sm); 
+  color:var(--color-text); 
+  font-size:14px; 
+  transition:var(--transition);
+}
+.input:focus { 
+  outline:none;
+  border-color: var(--color-primary); 
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+.input[disabled] { 
+  background:var(--color-surface-alt); 
+  color:var(--color-muted); 
+}
+
+/* アイコン付き入力 */
+.input-with-icon {
+  position: relative;
+}
+.input-with-icon input {
+  padding-left: 40px;
+}
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-soft);
+  pointer-events: none;
+}
 
 /* フェードイン */
 .fade-in { animation: fade .4s ease; }
