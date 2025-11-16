@@ -42,6 +42,10 @@ const ChatListScreen: React.FC = () => {
   // コミュニティ表示モード
   const [communityMode, setCommunityMode] = useState<'all' | 'joined' | 'popular'>('all');
   
+  // コミュニティ詳細モーダル
+  const [selectedCommunity, setSelectedCommunity] = useState<any>(null);
+  const [showCommunityDetail, setShowCommunityDetail] = useState(false);
+  
   // フレンド一覧（ログイン後のみ表示、デモ用に最初の5人）
   const friendsList = isAuthenticated && me ? users.slice(0, 5) : [];
   
@@ -828,8 +832,8 @@ const ChatListScreen: React.FC = () => {
                     dispatch(openSmsModal());
                     return;
                   }
-                  dispatch(setActiveCommunity(c.id)); 
-                  dispatch(navigate('communityDetail'));
+                  setSelectedCommunity(c);
+                  setShowCommunityDetail(true);
                 }}
                 onMouseOver={e=>{
                   e.currentTarget.style.boxShadow='0 4px 12px rgba(0,0,0,.08)';
@@ -1431,6 +1435,238 @@ const ChatListScreen: React.FC = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* コミュニティ詳細モーダル */}
+      {showCommunityDetail && selectedCommunity && (
+        <div style={{
+          position:'fixed',
+          top:0,
+          left:0,
+          right:0,
+          bottom:0,
+          background:'rgba(0,0,0,0.5)',
+          zIndex:9999,
+          display:'flex',
+          alignItems:'flex-end',
+          animation:'fadeIn 0.2s ease-out'
+        }}
+        onClick={()=>setShowCommunityDetail(false)}
+        >
+          <div style={{
+            width:'100%',
+            maxHeight:'85vh',
+            background:'#fff',
+            borderRadius:'20px 20px 0 0',
+            overflow:'auto',
+            animation:'slideUp 0.3s ease-out'
+          }}
+          onClick={e=>e.stopPropagation()}
+          >
+            {/* ヘッダー */}
+            <div style={{
+              height:180,
+              background:'linear-gradient(180deg, #0EA5E9 0%, #38BDF8 100%)',
+              position:'relative',
+              display:'flex',
+              flexDirection:'column',
+              alignItems:'center',
+              justifyContent:'center',
+              padding:20
+            }}>
+              <button style={{
+                position:'absolute',
+                top:16,
+                right:16,
+                width:32,
+                height:32,
+                borderRadius:'50%',
+                border:'none',
+                background:'rgba(255,255,255,0.2)',
+                color:'#fff',
+                fontSize:20,
+                cursor:'pointer',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center'
+              }}
+              onClick={()=>setShowCommunityDetail(false)}
+              >
+                ×
+              </button>
+              
+              <div style={{
+                width:120,
+                height:120,
+                borderRadius:20,
+                background:'#fff',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                fontSize:48,
+                boxShadow:'0 4px 12px rgba(0,0,0,0.1)'
+              }}>
+                {selectedCommunity.icon}
+              </div>
+            </div>
+
+            {/* コンテンツ */}
+            <div style={{padding:20}}>
+              <div style={{
+                display:'flex',
+                alignItems:'center',
+                gap:8,
+                marginBottom:12
+              }}>
+                <h2 style={{
+                  fontSize:24,
+                  fontWeight:'bold',
+                  margin:0,
+                  color:'#1f2937'
+                }}>
+                  {selectedCommunity.name}
+                </h2>
+                <span style={{
+                  padding:'4px 12px',
+                  borderRadius:12,
+                  fontSize:12,
+                  fontWeight:'600',
+                  background:'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
+                  color:'#0284c7'
+                }}>
+                  {selectedCommunity.category}
+                </span>
+              </div>
+
+              {/* 統計情報 */}
+              <div style={{
+                display:'flex',
+                gap:12,
+                marginBottom:20,
+                padding:16,
+                background:'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)',
+                borderRadius:12
+              }}>
+                <div style={{flex:1,textAlign:'center'}}>
+                  <div style={{
+                    fontSize:24,
+                    fontWeight:'bold',
+                    color:'#0EA5E9',
+                    marginBottom:4
+                  }}>
+                    {selectedCommunity.members}
+                  </div>
+                  <div style={{
+                    fontSize:12,
+                    color:'#64748b'
+                  }}>
+                    メンバー
+                  </div>
+                </div>
+                <div style={{
+                  width:1,
+                  background:'#cbd5e1'
+                }}></div>
+                <div style={{flex:1,textAlign:'center'}}>
+                  <div style={{
+                    fontSize:24,
+                    fontWeight:'bold',
+                    color:'#0EA5E9',
+                    marginBottom:4
+                  }}>
+                    {selectedCommunity.posts}
+                  </div>
+                  <div style={{
+                    fontSize:12,
+                    color:'#64748b'
+                  }}>
+                    投稿
+                  </div>
+                </div>
+              </div>
+
+              {/* 説明 */}
+              <div style={{
+                marginBottom:20
+              }}>
+                <h3 style={{
+                  fontSize:16,
+                  fontWeight:'600',
+                  color:'#1f2937',
+                  marginBottom:8
+                }}>
+                  コミュニティについて
+                </h3>
+                <p style={{
+                  fontSize:14,
+                  lineHeight:1.6,
+                  color:'#64748b',
+                  margin:0
+                }}>
+                  {selectedCommunity.description || 'このコミュニティでは、メンバー同士が交流し、情報を共有しています。'}
+                </p>
+              </div>
+
+              {/* アクションボタン */}
+              <div style={{
+                display:'flex',
+                gap:12
+              }}>
+                <button style={{
+                  flex:1,
+                  padding:'14px 24px',
+                  borderRadius:12,
+                  border:'1px solid #e5e7eb',
+                  background:'#fff',
+                  color:'#64748b',
+                  fontSize:16,
+                  fontWeight:'600',
+                  cursor:'pointer',
+                  transition:'all 0.2s'
+                }}
+                onClick={()=>setShowCommunityDetail(false)}
+                onMouseOver={e=>{
+                  e.currentTarget.style.background='#f9fafb';
+                }}
+                onMouseOut={e=>{
+                  e.currentTarget.style.background='#fff';
+                }}
+                >
+                  閉じる
+                </button>
+                <button style={{
+                  flex:2,
+                  padding:'14px 24px',
+                  borderRadius:12,
+                  border:'none',
+                  background:'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)',
+                  color:'#fff',
+                  fontSize:16,
+                  fontWeight:'600',
+                  cursor:'pointer',
+                  boxShadow:'0 2px 8px rgba(14,165,233,0.3)',
+                  transition:'all 0.2s'
+                }}
+                onClick={()=>{
+                  dispatch(setActiveCommunity(selectedCommunity.id));
+                  dispatch(navigate('groupChat'));
+                  setShowCommunityDetail(false);
+                }}
+                onMouseOver={e=>{
+                  e.currentTarget.style.transform='translateY(-2px)';
+                  e.currentTarget.style.boxShadow='0 4px 12px rgba(14,165,233,0.4)';
+                }}
+                onMouseOut={e=>{
+                  e.currentTarget.style.transform='translateY(0)';
+                  e.currentTarget.style.boxShadow='0 2px 8px rgba(14,165,233,0.3)';
+                }}
+                >
+                  チャットに参加
+                </button>
+              </div>
             </div>
           </div>
         </div>

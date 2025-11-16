@@ -6,7 +6,6 @@ import LoginScreen from './screens/LoginScreen';
 import ChatListScreen from './screens/ChatListScreen';
 import ChatDetailScreen from './screens/ChatDetailScreen';
 import MyPageScreen from './screens/MyPageScreen';
-import CommunityDetailScreen from './screens/CommunityDetailScreen';
 import GroupChatScreen from './screens/GroupChatScreen';
 import ProfileRegistrationScreen from './screens/ProfileRegistrationScreen';
 import FollowRequestsScreen from './screens/FollowRequestsScreen';
@@ -52,7 +51,6 @@ const App: React.FC = () => {
     case 'chat': screen = <ChatListScreen />; break;
     case 'chatDetail': screen = <ChatDetailScreen />; break;
     case 'groupChat': screen = <GroupChatScreen />; break;
-    case 'communityDetail': screen = <CommunityDetailScreen />; break;
     case 'mypage': screen = <MyPageScreen />; break;
     case 'followRequests': screen = <FollowRequestsScreen />; break;
     case 'stampShop': screen = <StampShopScreen />; break;

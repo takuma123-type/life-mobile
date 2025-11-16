@@ -67,7 +67,7 @@ const GroupChatScreen: React.FC = () => {
         gap: 12
       }}>
         <button 
-          onClick={() => dispatch(navigate('communityDetail'))} 
+          onClick={() => dispatch(navigate('chat'))} 
           aria-label='戻る' 
           style={{ 
             background: 'none', 
