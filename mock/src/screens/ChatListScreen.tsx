@@ -41,6 +41,12 @@ const ChatListScreen: React.FC = () => {
   
   // コミュニティ表示モード
   const [communityMode, setCommunityMode] = useState<'all' | 'joined' | 'popular'>('all');
+  
+  // フレンド一覧（ログイン後のみ表示、デモ用に最初の5人）
+  const friendsList = isAuthenticated && me ? users.slice(0, 5) : [];
+  
+  // 参加中のコミュニティ一覧（ログイン後のみ表示、デモ用に最初の2つ）
+  const joinedCommunities = isAuthenticated && me ? communities.slice(0, 2) : [];
 
   const handleSearch = () => {
     const results = users.filter((u:any) => {
@@ -138,6 +144,7 @@ const ChatListScreen: React.FC = () => {
       onScroll={handleScroll}
     >
       {/* Tabs */}
+            {/* Tabs */}
       <div style={{ display:'flex', gap:12, padding:'16px 20px', background:'#fff', borderBottom:'1px solid var(--color-border)' }}>
         <button 
           onClick={()=>setTab('following')}
@@ -176,55 +183,152 @@ const ChatListScreen: React.FC = () => {
       </div>
 
       {tab==='following' && (
-        <div style={{ padding:'20px', background:'var(--color-bg)' }}>
-          {/* ユーザーモード切り替えボタン */}
-          <div style={{ 
-            display:'flex', 
-            gap:8,
-            marginBottom:16
-          }}>
-            <button
-              onClick={() => setUserMode('all')}
-              style={{
-                flex:1,
-                padding:'10px 16px',
-                background: userMode === 'all' ? '#000' : '#fff',
-                color: userMode === 'all' ? '#fff' : 'var(--color-text-soft)',
-                border: '1px solid var(--color-border)',
-                borderRadius:12,
-                fontSize:14,
-                fontWeight:600,
-                cursor:'pointer',
-                transition:'all .2s ease'
-              }}
-            >
-              すべて
-            </button>
-            <button
-              onClick={() => setUserMode('friends')}
-              style={{
-                flex:1,
-                padding:'10px 16px',
-                background: userMode === 'friends' ? '#000' : '#fff',
-                color: userMode === 'friends' ? '#fff' : 'var(--color-text-soft)',
-                border: '1px solid var(--color-border)',
-                borderRadius:12,
-                fontSize:14,
-                fontWeight:600,
-                cursor:'pointer',
-                transition:'all .2s ease'
-              }}
-            >
-              フレンド
-            </button>
-          </div>
-
-          <div style={{ 
-            display:'grid', 
-            gridTemplateColumns:'repeat(2, 1fr)', 
-            gap:12 
-          }}>
-            {displayUsers.map((u:any)=>(
+        <div style={{ background:'var(--color-bg)' }}>
+          {/* フレンドモード: ログイン後のみ表示 */}
+          {isAuthenticated && me && userMode === 'friends' && (
+            <div style={{ background:'#fff' }}>
+              <div style={{ 
+                padding:'12px 20px', 
+                borderBottom:'1px solid var(--color-border)',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'space-between'
+              }}>
+                <h3 style={{ margin:0, fontSize:15, fontWeight:700, color:'var(--color-text-primary)' }}>フレンド</h3>
+                <span style={{ fontSize:13, color:'var(--color-text-soft)' }}>{friendsList.length}人</span>
+              </div>
+              
+              {/* LINE風チャットリスト */}
+              {friendsList.map((u:any, index:number) => (
+                <div
+                  key={u.id}
+                  onClick={() => {
+                    dispatch(setActiveChat(u.id));
+                    dispatch(navigate('chatDetail'));
+                  }}
+                  style={{
+                    display:'flex',
+                    alignItems:'center',
+                    gap:12,
+                    padding:'16px 20px',
+                    borderBottom: index < friendsList.length - 1 ? '1px solid var(--color-border)' : 'none',
+                    cursor:'pointer',
+                    transition:'background .2s ease',
+                    background:'#fff'
+                  }}
+                  onMouseOver={e => e.currentTarget.style.background = 'var(--color-surface-alt)'}
+                  onMouseOut={e => e.currentTarget.style.background = '#fff'}
+                >
+                  {/* アバター */}
+                  <div style={{ position:'relative', flexShrink:0 }}>
+                    <div style={{
+                      width:56,
+                      height:56,
+                      borderRadius:'50%',
+                      overflow:'hidden',
+                      background:'#f5f5f5',
+                      display:'flex',
+                      alignItems:'center',
+                      justifyContent:'center'
+                    }}>
+                      <img 
+                        src={u.avatar || 'https://image.p-c2-x.abema-tv.com/image/series/19-15/thumb.png?height=720&quality=75&version=1741061716&width=1280'} 
+                        alt={u.name} 
+                        style={{ width:'100%', height:'100%', objectFit:'cover' }} 
+                      />
+                    </div>
+                    {u.online && (
+                      <span style={{
+                        position:'absolute',
+                        bottom:0,
+                        right:0,
+                        width:16,
+                        height:16,
+                        background:'#10b981',
+                        border:'3px solid #fff',
+                        borderRadius:'50%'
+                      }} />
+                    )}
+                  </div>
+                  
+                  {/* メッセージ情報 */}
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:4 }}>
+                      <span style={{ fontWeight:600, fontSize:15, color:'var(--color-text-primary)' }}>{u.name}</span>
+                      <span style={{ fontSize:12, color:'var(--color-text-soft)' }}>10:30</span>
+                    </div>
+                    <p style={{
+                      margin:0,
+                      fontSize:14,
+                      color:'var(--color-text-soft)',
+                      overflow:'hidden',
+                      textOverflow:'ellipsis',
+                      whiteSpace:'nowrap'
+                    }}>
+                      {u.message || 'よろしくお願いします'}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          
+          {/* 全てのユーザーモード: 従来のグリッド表示 */}
+          {userMode === 'all' && (
+            <div style={{ padding:'20px' }}>
+              <div style={{ 
+                display:'flex', 
+                gap:8,
+                marginBottom:16
+              }}>
+                <button
+                  onClick={() => setUserMode('all')}
+                  style={{
+                    flex:1,
+                    padding:'10px 16px',
+                    background: userMode === 'all' ? '#000' : '#fff',
+                    color: userMode === 'all' ? '#fff' : 'var(--color-text-soft)',
+                    border: '1px solid var(--color-border)',
+                    borderRadius:12,
+                    fontSize:14,
+                    fontWeight:600,
+                    cursor:'pointer',
+                    transition:'all .2s ease'
+                  }}
+                >
+                  すべて
+                </button>
+                <button
+                  onClick={() => {
+                    if (!isAuthenticated || !me) {
+                      dispatch(openSmsModal());
+                      return;
+                    }
+                    setUserMode('friends');
+                  }}
+                  style={{
+                    flex:1,
+                    padding:'10px 16px',
+                    background: userMode === 'friends' ? '#000' : '#fff',
+                    color: userMode === 'friends' ? '#fff' : 'var(--color-text-soft)',
+                    border: '1px solid var(--color-border)',
+                    borderRadius:12,
+                    fontSize:14,
+                    fontWeight:600,
+                    cursor:'pointer',
+                    transition:'all .2s ease'
+                  }}
+                >
+                  フレンド
+                </button>
+              </div>
+              
+              <div style={{ 
+                display:'grid', 
+                gridTemplateColumns:'repeat(2, 1fr)', 
+                gap:12 
+              }}>
+                {displayUsers.map((u:any)=>(
               <div 
                 key={u.id} 
                 style={{ 
@@ -312,206 +416,242 @@ const ChatListScreen: React.FC = () => {
                   </p>
                 </div>
               </div>
-            ))}
-          </div>
+                ))}
+              </div>
 
-          {/* ローディングインジケーター */}
-          {isLoading && (
-            <div style={{ 
-              padding:'20px', 
-              textAlign:'center'
-            }}>
-              <div style={{ 
-                display:'inline-block',
-                width:40,
-                height:40,
-                border:'3px solid #f3f3f3',
-                borderTop:'3px solid #000',
-                borderRadius:'50%',
-                animation:'spin 1s linear infinite'
-              }} />
-              <style>{`
-                @keyframes spin {
-                  0% { transform: rotate(0deg); }
-                  100% { transform: rotate(360deg); }
-                }
-              `}</style>
-            </div>
-          )}
+              {/* ローディングインジケーター */}
+              {isLoading && (
+                <div style={{ 
+                  padding:'20px', 
+                  textAlign:'center'
+                }}>
+                  <div style={{ 
+                    display:'inline-block',
+                    width:40,
+                    height:40,
+                    border:'3px solid #f3f3f3',
+                    borderTop:'3px solid #000',
+                    borderRadius:'50%',
+                    animation:'spin 1s linear infinite'
+                  }} />
+                  <style>{`
+                    @keyframes spin {
+                      0% { transform: rotate(0deg); }
+                      100% { transform: rotate(360deg); }
+                    }
+                  `}</style>
+                </div>
+              )}
 
-          {/* すべて読み込み完了メッセージ */}
-          {!isLoading && displayCount >= users.length && (!isAuthenticated || !me || following.length === 0) && (
-            <div style={{ 
-              padding:'20px', 
-              textAlign:'center',
-              color:'#999',
-              fontSize:14
-            }}>
-              すべてのユーザーを表示しました
+              {/* すべて読み込み完了メッセージ */}
+              {!isLoading && displayCount >= users.length && (!isAuthenticated || !me || following.length === 0) && (
+                <div style={{ 
+                  padding:'20px', 
+                  textAlign:'center',
+                  color:'#999',
+                  fontSize:14
+                }}>
+                  すべてのユーザーを表示しました
+                </div>
+              )}
             </div>
           )}
         </div>
       )}
 
       {tab==='open' && (
-        <div style={{ padding:'20px', background:'var(--color-bg)' }}>
+        <div style={{ background:'var(--color-bg)' }}>
+          {/* 参加中モード: ログイン後のみ表示 */}
+          {communityMode === 'joined' && !isAuthenticated && (
+            <div style={{ padding:'40px 20px', textAlign:'center' }}>
+              <p style={{ color:'var(--color-text-soft)', marginBottom:20 }}>
+                参加中のコミュニティを表示するには<br/>ログインしてください
+              </p>
+              <button
+                onClick={() => dispatch(openSmsModal())}
+                className="btn-gradient"
+                style={{
+                  padding:'12px 32px',
+                  fontSize:15
+                }}
+              >
+                ログイン
+              </button>
+            </div>
+          )}
+          
           {/* コミュニティモード切り替えボタン */}
-          <div style={{ 
-            display:'flex', 
-            gap:8,
-            marginBottom:16
-          }}>
-            <button
-              onClick={() => setCommunityMode('all')}
-              style={{
-                flex:1,
-                padding:'10px 12px',
-                background: communityMode === 'all' ? '#000' : '#fff',
-                color: communityMode === 'all' ? '#fff' : 'var(--color-text-soft)',
-                border: '1px solid var(--color-border)',
-                borderRadius:12,
-                fontSize:13,
-                fontWeight:600,
-                cursor:'pointer',
-                transition:'all .2s ease'
-              }}
-            >
-              すべて
-            </button>
-            <button
-              onClick={() => setCommunityMode('joined')}
-              style={{
-                flex:1,
-                padding:'10px 12px',
-                background: communityMode === 'joined' ? '#000' : '#fff',
-                color: communityMode === 'joined' ? '#fff' : 'var(--color-text-soft)',
-                border: '1px solid var(--color-border)',
-                borderRadius:12,
-                fontSize:13,
-                fontWeight:600,
-                cursor:'pointer',
-                transition:'all .2s ease'
-              }}
-            >
-              参加中
-            </button>
-            <button
-              onClick={() => setCommunityMode('popular')}
-              style={{
-                flex:1,
-                padding:'10px 12px',
-                background: communityMode === 'popular' ? '#000' : '#fff',
-                color: communityMode === 'popular' ? '#fff' : 'var(--color-text-soft)',
-                border: '1px solid var(--color-border)',
-                borderRadius:12,
-                fontSize:13,
-                fontWeight:600,
-                cursor:'pointer',
-                transition:'all .2s ease'
-              }}
-            >
-              人気
-            </button>
+          <div style={{ padding:'20px 20px 16px' }}>
+            <div style={{ 
+              display:'flex', 
+              gap:8
+            }}>
+              <button
+                onClick={() => setCommunityMode('all')}
+                style={{
+                  flex:1,
+                  padding:'10px 12px',
+                  background: communityMode === 'all' ? '#000' : '#fff',
+                  color: communityMode === 'all' ? '#fff' : 'var(--color-text-soft)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius:12,
+                  fontSize:13,
+                  fontWeight:600,
+                  cursor:'pointer',
+                  transition:'all .2s ease'
+                }}
+              >
+                すべて
+              </button>
+              <button
+                onClick={() => setCommunityMode('popular')}
+                style={{
+                  flex:1,
+                  padding:'10px 12px',
+                  background: communityMode === 'popular' ? '#000' : '#fff',
+                  color: communityMode === 'popular' ? '#fff' : 'var(--color-text-soft)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius:12,
+                  fontSize:13,
+                  fontWeight:600,
+                  cursor:'pointer',
+                  transition:'all .2s ease'
+                }}
+              >
+                人気
+              </button>
+              <button
+                onClick={() => {
+                  if (!isAuthenticated || !me) {
+                    dispatch(openSmsModal());
+                    return;
+                  }
+                  setCommunityMode('joined');
+                }}
+                style={{
+                  flex:1,
+                  padding:'10px 12px',
+                  background: communityMode === 'joined' ? '#000' : '#fff',
+                  color: communityMode === 'joined' ? '#fff' : 'var(--color-text-soft)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius:12,
+                  fontSize:13,
+                  fontWeight:600,
+                  cursor:'pointer',
+                  transition:'all .2s ease'
+                }}
+              >
+                参加中
+              </button>
+            </div>
           </div>
           
-          {/* 参加中セクション - 参加中モードでのみ表示 */}
+          {/* 参加中セクション - ログイン後のみ表示、LINE風リスト */}
           {communityMode === 'joined' && isAuthenticated && me && (
-            <>
-              <h3 style={{ margin:'0 0 16px', fontSize:15, fontWeight:700, color:'#000' }}>参加中</h3>
-              <div style={{ marginBottom:32 }}>
-                {filteredCommunities.slice(0, 2).map((c:any)=>(
-                  <div 
-                    key={c.id} 
-                    style={{ 
-                      display:'flex', 
-                      gap:16, 
-                      alignItems:'center', 
-                      cursor:'pointer',
-                      padding:'18px',
-                      background:'#fff',
-                      border:'1px solid #e5e5e5',
-                      borderRadius:16,
-                      marginBottom:12,
-                      transition:'all .2s ease',
-                      boxShadow:'0 1px 3px rgba(0,0,0,.04)'
-                    }} 
-                    onClick={()=> {
-                      if (!isAuthenticated || !me) {
-                        dispatch(openSmsModal());
-                        return;
-                      }
-                      dispatch(setActiveCommunity(c.id)); 
-                      dispatch(navigate('communityDetail'));
-                    }}
-                    onMouseOver={e=>{
-                      e.currentTarget.style.boxShadow='0 4px 12px rgba(0,0,0,.08)';
-                      e.currentTarget.style.transform='translateY(-2px)';
-                    }}
-                    onMouseOut={e=>{
-                      e.currentTarget.style.boxShadow='0 1px 3px rgba(0,0,0,.04)';
-                      e.currentTarget.style.transform='translateY(0)';
-                    }}
-                  >
-                    <div style={{ 
-                      width:70, 
-                      height:70, 
-                      borderRadius:16, 
+            <div style={{ background:'#fff', borderRadius:0 }}>
+              <div style={{ 
+                padding:'12px 20px', 
+                borderBottom:'1px solid var(--color-border)',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'space-between',
+                background:'#fff'
+              }}>
+                <h3 style={{ margin:0, fontSize:15, fontWeight:700, color:'var(--color-text-primary)' }}>参加中のコミュニティ</h3>
+                <span style={{ fontSize:13, color:'var(--color-text-soft)' }}>{joinedCommunities.length}件</span>
+              </div>
+              
+              {/* LINE風チャットリスト */}
+              {joinedCommunities.map((c:any, index:number) => (
+                <div
+                  key={c.id}
+                  onClick={() => {
+                    dispatch(setActiveCommunity(c.id));
+                    dispatch(navigate('groupChat'));
+                  }}
+                  style={{
+                    display:'flex',
+                    alignItems:'center',
+                    gap:12,
+                    padding:'16px 20px',
+                    borderBottom: index < joinedCommunities.length - 1 ? '1px solid var(--color-border)' : 'none',
+                    cursor:'pointer',
+                    transition:'background .2s ease',
+                    background:'#fff'
+                  }}
+                  onMouseOver={e => e.currentTarget.style.background = 'var(--color-surface-alt)'}
+                  onMouseOut={e => e.currentTarget.style.background = '#fff'}
+                >
+                  {/* コミュニティアイコン */}
+                  <div style={{ flexShrink:0 }}>
+                    <div style={{
+                      width:56,
+                      height:56,
+                      borderRadius:12,
                       background:'#f5f5f5',
                       border:'1px solid #e5e5e5',
-                      display:'flex', 
-                      alignItems:'center', 
-                      justifyContent:'center', 
-                      fontSize:12,
+                      display:'flex',
+                      alignItems:'center',
+                      justifyContent:'center',
+                      fontSize:11,
                       fontWeight:600,
-                      color:'#999',
-                      flexShrink:0
+                      color:'#999'
                     }}>
                       IMG
                     </div>
-                    <div style={{ flex:1, minWidth:0 }}>
-                      <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6 }}>
-                        <span style={{ fontWeight:700, fontSize:15, color:'#000' }}>{c.name}</span>
+                  </div>
+                  
+                  {/* コミュニティ情報 */}
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:4 }}>
+                      <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                        <span style={{ fontWeight:600, fontSize:15, color:'var(--color-text-primary)' }}>{c.name}</span>
                         {c.category && (
                           <span style={{ 
-                            fontSize:11, 
+                            fontSize:10, 
                             background:'#000',
                             color:'#fff',
-                            padding:'3px 9px', 
-                            borderRadius:12,
+                            padding:'2px 6px', 
+                            borderRadius:10,
                             fontWeight:600
                           }}>
                             {c.category}
                           </span>
                         )}
                       </div>
-                      <p style={{ 
-                        margin:'0 0 4px', 
-                        fontSize:13, 
-                        color:'#666'
-                      }}>
-                        {c.members}人 · {c.posts}投稿
-                      </p>
-                      <p style={{ 
-                        margin:0, 
-                        fontSize:12, 
-                        color:'#999'
-                      }}>
-                        2時間前
-                      </p>
+                      <span style={{ fontSize:12, color:'var(--color-text-soft)' }}>2時間前</span>
+                    </div>
+                    <p style={{
+                      margin:0,
+                      fontSize:14,
+                      color:'var(--color-text-soft)',
+                      overflow:'hidden',
+                      textOverflow:'ellipsis',
+                      whiteSpace:'nowrap'
+                    }}>
+                      最新のメッセージがここに表示されます
+                    </p>
+                    <div style={{ 
+                      marginTop:4,
+                      fontSize:12,
+                      color:'var(--color-muted)'
+                    }}>
+                      {c.members}人
                     </div>
                   </div>
-                ))}
-              </div>
-            </>
+                </div>
+              ))}
+            </div>
           )}
 
           {/* 全て/人気モード用のグリッド表示 */}
           {(communityMode === 'all' || communityMode === 'popular') && (
-            <div style={{ 
-            display:'grid', 
-            gridTemplateColumns:'repeat(2, 1fr)', 
-            gap:12 
-          }}>
+            <div style={{ padding:'0 20px 20px' }}>
+              <div style={{ 
+                display:'grid', 
+                gridTemplateColumns:'repeat(2, 1fr)', 
+                gap:12 
+              }}>
             {filteredCommunities.map((c:any)=>(
               <div 
                 key={c.id} 
@@ -585,7 +725,8 @@ const ChatListScreen: React.FC = () => {
                 </div>
               </div>
             ))}
-          </div>
+              </div>
+            </div>
           )}
         </div>
       )}
@@ -798,7 +939,7 @@ const ChatListScreen: React.FC = () => {
             padding:20,
             zIndex:100
           }} 
-          onClick={()=>{setShowResults(false); setSearchOpen(false); resetSearch();}}
+          onClick={()=>{setShowResults(false); resetSearch();}}
         >
           <div 
             style={{ 
@@ -816,7 +957,7 @@ const ChatListScreen: React.FC = () => {
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
               <h2 style={{ margin:0, fontSize:18, fontWeight:700 }}>検索結果</h2>
               <button 
-                onClick={()=>{setShowResults(false); setSearchOpen(false); resetSearch();}}
+                onClick={()=>{setShowResults(false); resetSearch();}}
                 style={{
                   background:'rgba(0,0,0,.05)',
                   border:'none',
@@ -1056,7 +1197,7 @@ const ChatListScreen: React.FC = () => {
             padding:20,
             zIndex:100
           }} 
-          onClick={()=>{setCommunityShowResults(false); setCommunitySearchOpen(false); resetCommunitySearch();}}
+          onClick={()=>{setCommunityShowResults(false); resetCommunitySearch();}}
         >
           <div 
             style={{ 
@@ -1073,7 +1214,7 @@ const ChatListScreen: React.FC = () => {
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20 }}>
               <h2 style={{ margin:0, fontSize:20, fontWeight:700 }}>検索結果</h2>
               <button 
-                onClick={()=>{setCommunityShowResults(false); setCommunitySearchOpen(false); resetCommunitySearch();}}
+                onClick={()=>{setCommunityShowResults(false); resetCommunitySearch();}}
                 style={{ 
                   width:36,
                   height:36,
@@ -1113,8 +1254,9 @@ const ChatListScreen: React.FC = () => {
                     background:'#fff'
                   }}
                   onClick={()=> {
-                    dispatch(setActiveCommunity(c.id)); 
-                    dispatch(navigate('communityDetail'));
+                    if (!isAuthenticated || !me) {
+                      dispatch(openSmsModal());
+                    }
                     setCommunityShowResults(false);
                     setCommunitySearchOpen(false);
                     resetCommunitySearch();
