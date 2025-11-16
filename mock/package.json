@@ -1,0 +1,26 @@
+{
+  "name": "life-mobile-mock",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@reduxjs/toolkit": "^1.9.7",
+    "react-redux": "^8.1.3",
+    "clsx": "^2.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}

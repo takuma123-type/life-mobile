@@ -1,0 +1,17 @@
+export { default as IconChat } from './IconChat';
+export { default as IconUser } from './IconUser';
+export { default as IconStore } from './IconStore';
+export { default as IconSearch } from './IconSearch';
+export { default as IconBack } from './IconBack';
+export { default as IconGlobe } from './IconGlobe';
+export { default as IconStamp } from './IconStamp';
+export { default as IconAvatar } from './IconAvatar';
+export { default as IconShield } from './IconShield';
+export { default as IconUsers } from './IconUsers';
+export { default as IconHeart } from './IconHeart';
+export { default as IconLanguage } from './IconLanguage';
+export { default as IconLogout } from './IconLogout';
+export { default as IconX } from './IconX';
+export { default as IconSend } from './IconSend';
+export { default as IconPlus } from './IconPlus';
+export type { IconProps } from './IconBase';
