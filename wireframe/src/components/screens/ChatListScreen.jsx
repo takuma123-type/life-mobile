@@ -139,8 +139,21 @@ function ChatListScreen({
                                 style={{ padding: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '12px' }}
                             >
                                 <div style={{ position: 'relative', flexShrink: 0 }}>
-                                    <div className="wire-avatar" style={{ width: '60px', height: '60px', borderRadius: '50%', fontSize: '22px' }}>
-                                        {user.avatar}
+                                    <div style={{ 
+                                        width: '60px', 
+                                        height: '60px', 
+                                        borderRadius: '50%', 
+                                        background: '#f0f0f0',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#666',
+                                        position: 'relative',
+                                        overflow: 'hidden'
+                                    }}>
+                                        {user.name.slice(0, 2)}
                                         {user.online && <div className="online-indicator"></div>}
                                     </div>
                                 </div>
@@ -179,8 +192,12 @@ function ChatListScreen({
                                     className="wire-box"
                                     style={{ padding: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '12px' }}
                                 >
-                                    <div className="wire-avatar" style={{ width: '60px', height: '60px', borderRadius: '16px', fontSize: '14px', flexShrink: 0 }}>
-                                        IMG
+                                    <div style={{ width: '60px', height: '60px', borderRadius: '16px', overflow: 'hidden', flexShrink: 0, background: '#f0f0f0' }}>
+                                        {community.image ? (
+                                            <img src={community.image} alt={community.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        ) : (
+                                            <div className="wire-avatar" style={{ width: '100%', height: '100%', fontSize: '14px' }}>IMG</div>
+                                        )}
                                     </div>
                                     <div style={{ flex: 1, minWidth: 0 }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
@@ -208,8 +225,12 @@ function ChatListScreen({
                                     className="wire-box"
                                     style={{ padding: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '12px' }}
                                 >
-                                    <div className="wire-avatar" style={{ width: '60px', height: '60px', borderRadius: '16px', fontSize: '14px', flexShrink: 0 }}>
-                                        IMG
+                                    <div style={{ width: '60px', height: '60px', borderRadius: '16px', overflow: 'hidden', flexShrink: 0, background: '#f0f0f0' }}>
+                                        {community.image ? (
+                                            <img src={community.image} alt={community.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        ) : (
+                                            <div className="wire-avatar" style={{ width: '100%', height: '100%', fontSize: '14px' }}>IMG</div>
+                                        )}
                                     </div>
                                     <div style={{ flex: 1, minWidth: 0 }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
@@ -446,8 +467,21 @@ function ChatListScreen({
                                             style={{ padding: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '12px' }}
                                         >
                                             <div style={{ position: 'relative', flexShrink: 0 }}>
-                                                <div className="wire-avatar" style={{ width: '50px', height: '50px', borderRadius: '50%', fontSize: '18px' }}>
-                                                    {user.avatar}
+                                                <div style={{ 
+                                                    width: '50px', 
+                                                    height: '50px', 
+                                                    borderRadius: '50%', 
+                                                    background: '#f0f0f0',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    fontSize: '13px',
+                                                    fontWeight: '600',
+                                                    color: '#666',
+                                                    position: 'relative',
+                                                    overflow: 'hidden'
+                                                }}>
+                                                    {user.name.slice(0, 2)}
                                                     {user.online && <div className="online-indicator"></div>}
                                                 </div>
                                             </div>
@@ -472,8 +506,12 @@ function ChatListScreen({
                                             className="wire-box"
                                             style={{ padding: '16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '12px' }}
                                         >
-                                            <div className="wire-avatar" style={{ width: '50px', height: '50px', borderRadius: '16px', fontSize: '14px', flexShrink: 0 }}>
-                                                IMG
+                                            <div style={{ width: '50px', height: '50px', borderRadius: '16px', overflow: 'hidden', flexShrink: 0, background: '#f0f0f0' }}>
+                                                {community.image ? (
+                                                    <img src={community.image} alt={community.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                ) : (
+                                                    <div className="wire-avatar" style={{ width: '100%', height: '100%', fontSize: '14px' }}>IMG</div>
+                                                )}
                                             </div>
                                             <div style={{ flex: 1, minWidth: 0 }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
@@ -613,8 +651,22 @@ function ChatListScreen({
                         {/* アイコンとユーザー名 */}
                         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                             <div style={{ position: 'relative', display: 'inline-block', marginBottom: '16px' }}>
-                                <div className="wire-avatar" style={{ width: '100px', height: '100px', borderRadius: '50%', fontSize: '36px', margin: '0 auto' }}>
-                                    {selectedProfileUser.avatar}
+                                <div style={{ 
+                                    width: '100px', 
+                                    height: '100px', 
+                                    borderRadius: '50%', 
+                                    background: '#f0f0f0',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '24px',
+                                    fontWeight: '600',
+                                    color: '#666',
+                                    margin: '0 auto',
+                                    position: 'relative',
+                                    overflow: 'hidden'
+                                }}>
+                                    {selectedProfileUser.name.slice(0, 2)}
                                     {selectedProfileUser.online && <div className="online-indicator" style={{ width: '22px', height: '22px' }}></div>}
                                 </div>
                             </div>

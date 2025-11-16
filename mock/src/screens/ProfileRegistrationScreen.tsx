@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { setMe, addUser } from '../store/userSlice';
 import { setRegistered, navigate, setAuthenticated } from '../store/uiSlice';
@@ -9,6 +9,9 @@ const ProfileRegistrationScreen: React.FC = () => {
   const smsVerified = useAppSelector((s:any) => s.ui.smsVerified);
   const smsPhone = useAppSelector((s:any) => s.ui.smsPhone);
   
+  // ステップ管理
+  const [currentStep, setCurrentStep] = useState(1);
+  
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [region, setRegion] = useState('');
@@ -17,11 +20,22 @@ const ProfileRegistrationScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [avatar, setAvatar] = useState('');
+  const [avatarPreview, setAvatarPreview] = useState('');
   const [gallery, setGallery] = useState<string[]>([]);
 
-  const handleAvatarUpload = () => {
-    // 実際には画像アップロード処理
-    alert('画像アップロード機能は後で実装予定です');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const result = ev.target?.result as string;
+        setAvatarPreview(result);
+        setAvatar(result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleGalleryUpload = (index: number) => {
@@ -29,7 +43,8 @@ const ProfileRegistrationScreen: React.FC = () => {
     alert('画像アップロード機能は後で実装予定です');
   };
 
-  const complete = () => {
+  // ステップ1の検証と次へ
+  const handleStep1Next = () => {
     if (!name.trim()) {
       alert('名前を入力してください');
       return;
@@ -42,6 +57,16 @@ const ProfileRegistrationScreen: React.FC = () => {
       alert('都道府県を選択してください');
       return;
     }
+    setCurrentStep(2);
+  };
+
+  // ステップ2の次へ
+  const handleStep2Next = () => {
+    setCurrentStep(3);
+  };
+
+  // ステップ3（最終）の完了処理
+  const complete = () => {
     if (!password || password.length < 6) {
       alert('パスワードは6文字以上で入力してください');
       return;
@@ -100,6 +125,56 @@ const ProfileRegistrationScreen: React.FC = () => {
           LIFEへようこそ！<br />
           プロフィールを登録して、フレンドやコミュニティとつながりましょう。
         </p>
+        
+        {/* ステップインジケーター */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 12,
+          marginTop: 24
+        }}>
+          {[1, 2, 3].map(step => (
+            <div key={step} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{
+                width: 32,
+                height: 32,
+                borderRadius: '50%',
+                background: currentStep >= step ? '#000' : '#e5e5e5',
+                color: currentStep >= step ? '#fff' : '#999',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 14,
+                fontWeight: 600,
+                transition: 'all .3s ease'
+              }}>
+                {step}
+              </div>
+              {step < 3 && (
+                <div style={{
+                  width: 40,
+                  height: 2,
+                  background: currentStep > step ? '#000' : '#e5e5e5',
+                  transition: 'all .3s ease'
+                }} />
+              )}
+            </div>
+          ))}
+        </div>
+        
+        {/* ステップタイトル */}
+        <p style={{
+          margin: '12px 0 0',
+          fontSize: 13,
+          color: '#666',
+          textAlign: 'center',
+          fontWeight: 600
+        }}>
+          {currentStep === 1 && '基本情報の入力'}
+          {currentStep === 2 && 'プロフィール画像の設定'}
+          {currentStep === 3 && 'パスワードの設定'}
+        </p>
       </div>
 
       <div style={{ 
@@ -107,69 +182,9 @@ const ProfileRegistrationScreen: React.FC = () => {
         margin: '0 auto', 
         padding: '24px 20px'
       }}>
-        {/* プロフィールアイコン */}
-        <div style={{ 
-          background: '#fff',
-          borderRadius: 16,
-          padding: '32px 24px',
-          marginBottom: 20,
-          textAlign: 'center',
-          border: '1px solid #e5e5e5'
-        }}>
-          <h3 style={{ 
-            margin: '0 0 20px', 
-            fontSize: 16, 
-            fontWeight: 700
-          }}>
-            プロフィールアイコン
-          </h3>
-          <div style={{ 
-            position: 'relative',
-            width: 120,
-            height: 120,
-            margin: '0 auto',
-            borderRadius: '50%',
-            background: 'var(--color-surface-alt)',
-            border: '2px dashed var(--color-border)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 18,
-            fontWeight: 600,
-            color: 'var(--color-primary)',
-            cursor: 'pointer',
-            transition: 'all .2s ease'
-          }}
-          onClick={handleAvatarUpload}
-          onMouseOver={e => {
-            e.currentTarget.style.background = '#E0F2FE';
-            e.currentTarget.style.borderColor = 'var(--color-primary)';
-          }}
-          onMouseOut={e => {
-            e.currentTarget.style.background = 'var(--color-surface-alt)';
-            e.currentTarget.style.borderColor = 'var(--color-border)';
-          }}>
-            IMG
-            <div style={{
-              position: 'absolute',
-              bottom: 0,
-              right: 0,
-              width: 36,
-              height: 36,
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)',
-              color: '#fff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 20,
-              border: '3px solid #fff',
-              boxShadow: 'var(--shadow-primary)'
-            }}>
-              +
-            </div>
-          </div>
-        </div>
+        {/* ステップ1: 基本情報 + 詳細情報 */}
+        {currentStep === 1 && (
+          <>
 
         {/* 基本情報カード */}
         <div style={{ 
@@ -437,10 +452,219 @@ const ProfileRegistrationScreen: React.FC = () => {
                 fontFamily: 'inherit',
                 background: '#fff'
               }}
+              onFocus={e => {
+                e.target.style.borderColor = 'var(--color-primary)';
+                e.target.style.boxShadow = '0 0 0 3px rgba(14, 165, 233, 0.1)';
+              }}
+              onBlur={e => {
+                e.target.style.borderColor = '#E2E8F0';
+                e.target.style.boxShadow = 'none';
+              }}
             />
           </div>
         </div>
 
+        {/* 次へボタン */}
+        <button
+          onClick={handleStep1Next}
+          style={{
+            width: '100%',
+            padding: '16px',
+            background: '#000',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 12,
+            fontSize: 16,
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all .2s ease'
+          }}
+          onMouseOver={e => {
+            e.currentTarget.style.opacity = '0.8';
+          }}
+          onMouseOut={e => {
+            e.currentTarget.style.opacity = '1';
+          }}
+        >
+          次へ
+        </button>
+      </>
+    )}
+
+    {/* ステップ2: プロフィール画像・ギャラリー */}
+    {currentStep === 2 && (
+      <>
+        {/* プロフィール画像 */}
+        <div style={{ 
+          background: '#fff',
+          borderRadius: 16,
+          padding: '24px',
+          marginBottom: 20,
+          border: '1px solid #e5e5e5'
+        }}>
+          <h3 style={{ 
+            margin: '0 0 16px', 
+            fontSize: 16, 
+            fontWeight: 700
+          }}>
+            プロフィール画像
+          </h3>
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: '50%',
+              background: avatarPreview ? 'transparent' : 'var(--color-surface-alt)',
+              margin: '0 auto',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'all .2s ease',
+              border: '3px dashed var(--color-border)',
+              overflow: 'hidden'
+            }}
+            onMouseOver={e => {
+              e.currentTarget.style.borderColor = 'var(--color-primary)';
+              e.currentTarget.style.background = avatarPreview ? 'transparent' : '#E0F2FE';
+            }}
+            onMouseOut={e => {
+              e.currentTarget.style.borderColor = 'var(--color-border)';
+              e.currentTarget.style.background = avatarPreview ? 'transparent' : 'var(--color-surface-alt)';
+            }}
+          >
+            {avatarPreview ? (
+              <img
+                src={avatarPreview}
+                alt="avatar"
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            ) : (
+              <span style={{ 
+                fontSize: 40, 
+                color: 'var(--color-primary)' 
+              }}>
+                +
+              </span>
+            )}
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarUpload}
+            style={{ display: 'none' }}
+          />
+        </div>
+
+        {/* ギャラリー */}
+        <div style={{ 
+          background: '#fff',
+          borderRadius: 16,
+          padding: '24px',
+          marginBottom: 24,
+          border: '1px solid #e5e5e5'
+        }}>
+          <h3 style={{ 
+            margin: '0 0 16px', 
+            fontSize: 16, 
+            fontWeight: 700
+          }}>
+            ギャラリー
+          </h3>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(3, 1fr)', 
+            gap: 12 
+          }}>
+            {[0, 1, 2, 3, 4, 5].map(index => (
+              <div
+                key={index}
+                onClick={() => handleGalleryUpload(index)}
+                style={{
+                  aspectRatio: '1',
+                  border: '2px dashed var(--color-border)',
+                  borderRadius: 12,
+                  background: 'var(--color-surface-alt)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: 24,
+                  color: 'var(--color-primary)',
+                  cursor: 'pointer',
+                  transition: 'all .2s ease'
+                }}
+                onMouseOver={e => {
+                  e.currentTarget.style.background = '#E0F2FE';
+                  e.currentTarget.style.borderColor = 'var(--color-primary)';
+                }}
+                onMouseOut={e => {
+                  e.currentTarget.style.background = 'var(--color-surface-alt)';
+                  e.currentTarget.style.borderColor = 'var(--color-border)';
+                }}
+              >
+                +
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ボタン */}
+        <div style={{ display: 'flex', gap: 12 }}>
+          <button
+            onClick={() => setCurrentStep(1)}
+            style={{
+              flex: 1,
+              padding: '16px',
+              background: '#fff',
+              color: '#000',
+              border: '1px solid #e5e5e5',
+              borderRadius: 12,
+              fontSize: 16,
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all .2s ease'
+            }}
+            onMouseOver={e => {
+              e.currentTarget.style.background = '#f5f5f5';
+            }}
+            onMouseOut={e => {
+              e.currentTarget.style.background = '#fff';
+            }}
+          >
+            戻る
+          </button>
+          <button
+            onClick={handleStep2Next}
+            style={{
+              flex: 1,
+              padding: '16px',
+              background: '#000',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 12,
+              fontSize: 16,
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all .2s ease'
+            }}
+            onMouseOver={e => {
+              e.currentTarget.style.opacity = '0.8';
+            }}
+            onMouseOut={e => {
+              e.currentTarget.style.opacity = '1';
+            }}
+          >
+            次へ
+          </button>
+        </div>
+      </>
+    )}
+
+    {/* ステップ3: パスワード設定 */}
+    {currentStep === 3 && (
+      <>
         {/* パスワード設定 */}
         <div style={{ 
           background: '#fff',
@@ -564,87 +788,62 @@ const ProfileRegistrationScreen: React.FC = () => {
           </p>
         </div>
 
-        {/* ギャラリー */}
-        <div style={{ 
-          background: '#fff',
-          borderRadius: 16,
-          padding: '24px',
-          marginBottom: 24,
-          border: '1px solid #e5e5e5'
-        }}>
-          <h3 style={{ 
-            margin: '0 0 16px', 
-            fontSize: 16, 
-            fontWeight: 700
-          }}>
-            ギャラリー
-          </h3>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(3, 1fr)', 
-            gap: 12 
-          }}>
-            {[0, 1, 2, 3, 4, 5].map(index => (
-              <div
-                key={index}
-                onClick={() => handleGalleryUpload(index)}
-                style={{
-                  aspectRatio: '1',
-                  border: '2px dashed var(--color-border)',
-                  borderRadius: 12,
-                  background: 'var(--color-surface-alt)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 24,
-                  color: 'var(--color-primary)',
-                  cursor: 'pointer',
-                  transition: 'all .2s ease'
-                }}
-                onMouseOver={e => {
-                  e.currentTarget.style.background = '#E0F2FE';
-                  e.currentTarget.style.borderColor = 'var(--color-primary)';
-                }}
-                onMouseOut={e => {
-                  e.currentTarget.style.background = 'var(--color-surface-alt)';
-                  e.currentTarget.style.borderColor = 'var(--color-border)';
-                }}
-              >
-                +
-              </div>
-            ))}
-          </div>
+        {/* ボタン */}
+        <div style={{ display: 'flex', gap: 12 }}>
+          <button
+            onClick={() => setCurrentStep(2)}
+            style={{
+              flex: 1,
+              padding: '16px',
+              background: '#fff',
+              color: '#000',
+              border: '1px solid #e5e5e5',
+              borderRadius: 12,
+              fontSize: 16,
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all .2s ease'
+            }}
+            onMouseOver={e => {
+              e.currentTarget.style.background = '#f5f5f5';
+            }}
+            onMouseOut={e => {
+              e.currentTarget.style.background = '#fff';
+            }}
+          >
+            戻る
+          </button>
+          <button
+            onClick={complete}
+            style={{
+              flex: 1,
+              padding: '16px',
+              background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 12,
+              fontSize: 16,
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all .2s ease',
+              boxShadow: 'var(--shadow-primary)'
+            }}
+            onMouseOver={e => {
+              e.currentTarget.style.opacity = '0.9';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-primary-lg)';
+            }}
+            onMouseOut={e => {
+              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-primary)';
+            }}
+          >
+            登録完了
+          </button>
         </div>
-
-        {/* 登録完了ボタン - 水色グラデーション */}
-        <button
-          onClick={complete}
-          style={{
-            width: '100%',
-            padding: '16px',
-            background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: 12,
-            fontSize: 16,
-            fontWeight: 600,
-            cursor: 'pointer',
-            transition: 'all .2s ease',
-            boxShadow: 'var(--shadow-primary)'
-          }}
-          onMouseOver={e => {
-            e.currentTarget.style.opacity = '0.9';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = 'var(--shadow-primary-lg)';
-          }}
-          onMouseOut={e => {
-            e.currentTarget.style.opacity = '1';
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = 'var(--shadow-primary)';
-          }}
-        >
-          登録完了
-        </button>
+      </>
+    )}
       </div>
     </div>
   );

@@ -143,50 +143,159 @@ const ChatListScreen: React.FC = () => {
       style={{ paddingBottom:80, background:'var(--color-bg)', minHeight:'100vh', height:'100vh', overflow:'auto' }}
       onScroll={handleScroll}
     >
-      {/* Tabs */}
-            {/* Tabs */}
-      <div style={{ display:'flex', gap:12, padding:'16px 20px', background:'#fff', borderBottom:'1px solid var(--color-border)' }}>
-        <button 
-          onClick={()=>setTab('following')}
-          style={{ 
-            flex:1,
-            background: tab==='following' ? '#000' : '#fff',
-            color: tab==='following' ? '#fff' : '#000',
-            border: tab==='following' ? 'none' : '1px solid var(--color-border)',
-            padding:'12px 20px',
-            borderRadius:20,
-            fontSize:15,
-            fontWeight:600,
-            cursor:'pointer',
-            transition:'all .2s ease'
-          }}
-        >
-          ユーザー
-        </button>
-        <button 
-          onClick={()=>setTab('open')}
-          style={{ 
-            flex:1,
-            background: tab==='open' ? '#000' : '#fff',
-            color: tab==='open' ? '#fff' : '#000',
-            border: tab==='open' ? 'none' : '1px solid var(--color-border)',
-            padding:'12px 20px',
-            borderRadius:20,
-            fontSize:15,
-            fontWeight:600,
-            cursor:'pointer',
-            transition:'all .2s ease'
-          }}
-        >
-          コミュニティ
-        </button>
+      {/* ヘッダー: タブと検索 */}
+      <div style={{ 
+        position:'sticky', 
+        top:0, 
+        zIndex:10,
+        background:'#fff', 
+        borderBottom:'1px solid var(--color-border)'
+      }}>
+        <div style={{ 
+          display:'flex', 
+          alignItems:'center',
+          justifyContent:'space-between',
+          padding:'12px 20px',
+          gap:16
+        }}>
+          {/* タブ */}
+          <div style={{ 
+            display:'flex', 
+            gap:20, 
+            flex:1 
+          }}>
+            <button 
+              onClick={()=>setTab('following')}
+              style={{ 
+                background:'none',
+                border:'none',
+                padding:'8px 0',
+                fontSize: tab === 'following' ? 18 : 15,
+                fontWeight: tab === 'following' ? 700 : 400,
+                color: tab === 'following' ? '#000' : '#999',
+                cursor:'pointer',
+                position:'relative',
+                transition:'all .2s ease'
+              }}
+            >
+              ユーザー
+              {tab === 'following' && (
+                <div style={{
+                  position:'absolute',
+                  bottom:0,
+                  left:0,
+                  right:0,
+                  height:2,
+                  background:'#000',
+                  borderRadius:'2px 2px 0 0'
+                }} />
+              )}
+            </button>
+            <button 
+              onClick={()=>setTab('open')}
+              style={{ 
+                background:'none',
+                border:'none',
+                padding:'8px 0',
+                fontSize: tab === 'open' ? 18 : 15,
+                fontWeight: tab === 'open' ? 700 : 400,
+                color: tab === 'open' ? '#000' : '#999',
+                cursor:'pointer',
+                position:'relative',
+                transition:'all .2s ease'
+              }}
+            >
+              コミュニティ
+              {tab === 'open' && (
+                <div style={{
+                  position:'absolute',
+                  bottom:0,
+                  left:0,
+                  right:0,
+                  height:2,
+                  background:'#000',
+                  borderRadius:'2px 2px 0 0'
+                }} />
+              )}
+            </button>
+          </div>
+          
+          {/* 検索ボタン */}
+          <button
+            onClick={() => {
+              if (tab === 'following') {
+                setSearchOpen(!searchOpen);
+              } else {
+                setCommunitySearchOpen(!communitySearchOpen);
+              }
+            }}
+            style={{
+              background:'none',
+              border:'none',
+              padding:8,
+              cursor:'pointer',
+              display:'flex',
+              alignItems:'center',
+              justifyContent:'center',
+              flexShrink:0
+            }}
+          >
+            <IconSearch size={24} color="#000" />
+          </button>
+        </div>
       </div>
 
       {tab==='following' && (
         <div style={{ background:'var(--color-bg)' }}>
+          {/* サブタブ: すべて / フレンド */}
+          <div style={{ padding:'16px 20px', background:'#fff' }}>
+            <div style={{ display:'flex', gap:12 }}>
+              <button
+                onClick={() => setUserMode('all')}
+                style={{
+                  flex:1,
+                  padding:'12px 20px',
+                  background: userMode === 'all' ? '#000' : '#fff',
+                  color: userMode === 'all' ? '#fff' : '#000',
+                  border: userMode === 'all' ? 'none' : '1px solid var(--color-border)',
+                  borderRadius:20,
+                  fontSize:15,
+                  fontWeight:600,
+                  cursor:'pointer',
+                  transition:'all .2s ease'
+                }}
+              >
+                すべて
+              </button>
+              <button
+                onClick={() => {
+                  if (!isAuthenticated || !me) {
+                    dispatch(openSmsModal());
+                    return;
+                  }
+                  setUserMode('friends');
+                }}
+                style={{
+                  flex:1,
+                  padding:'12px 20px',
+                  background: userMode === 'friends' ? '#000' : '#fff',
+                  color: userMode === 'friends' ? '#fff' : '#000',
+                  border: userMode === 'friends' ? 'none' : '1px solid var(--color-border)',
+                  borderRadius:20,
+                  fontSize:15,
+                  fontWeight:600,
+                  cursor:'pointer',
+                  transition:'all .2s ease'
+                }}
+              >
+                フレンド
+              </button>
+            </div>
+          </div>
+
           {/* フレンドモード: ログイン後のみ表示 */}
           {isAuthenticated && me && userMode === 'friends' && (
-            <div style={{ background:'#fff' }}>
+            <div style={{ background:'#fff', marginTop:1 }}>
               <div style={{ 
                 padding:'12px 20px', 
                 borderBottom:'1px solid var(--color-border)',
@@ -275,54 +384,7 @@ const ChatListScreen: React.FC = () => {
           
           {/* 全てのユーザーモード: 従来のグリッド表示 */}
           {userMode === 'all' && (
-            <div style={{ padding:'20px' }}>
-              <div style={{ 
-                display:'flex', 
-                gap:8,
-                marginBottom:16
-              }}>
-                <button
-                  onClick={() => setUserMode('all')}
-                  style={{
-                    flex:1,
-                    padding:'10px 16px',
-                    background: userMode === 'all' ? '#000' : '#fff',
-                    color: userMode === 'all' ? '#fff' : 'var(--color-text-soft)',
-                    border: '1px solid var(--color-border)',
-                    borderRadius:12,
-                    fontSize:14,
-                    fontWeight:600,
-                    cursor:'pointer',
-                    transition:'all .2s ease'
-                  }}
-                >
-                  すべて
-                </button>
-                <button
-                  onClick={() => {
-                    if (!isAuthenticated || !me) {
-                      dispatch(openSmsModal());
-                      return;
-                    }
-                    setUserMode('friends');
-                  }}
-                  style={{
-                    flex:1,
-                    padding:'10px 16px',
-                    background: userMode === 'friends' ? '#000' : '#fff',
-                    color: userMode === 'friends' ? '#fff' : 'var(--color-text-soft)',
-                    border: '1px solid var(--color-border)',
-                    borderRadius:12,
-                    fontSize:14,
-                    fontWeight:600,
-                    cursor:'pointer',
-                    transition:'all .2s ease'
-                  }}
-                >
-                  フレンド
-                </button>
-              </div>
-              
+            <div style={{ padding:'16px', background:'#fff' }}>
               <div style={{ 
                 display:'grid', 
                 gridTemplateColumns:'repeat(2, 1fr)', 
@@ -731,38 +793,6 @@ const ChatListScreen: React.FC = () => {
         </div>
       )}
 
-      <button 
-        onClick={()=>{
-          if (tab === 'following') {
-            setSearchOpen(!searchOpen);
-          } else {
-            setCommunitySearchOpen(!communitySearchOpen);
-          }
-        }} 
-        aria-label='検索' 
-        style={{ 
-          position:'fixed', 
-          right:20, 
-          bottom:100, 
-          width:56, 
-          height:56, 
-          borderRadius:'50%', 
-          background:'#000', 
-          color:'#fff', 
-          border:'none', 
-          cursor:'pointer', 
-          boxShadow:'0 4px 16px rgba(0,0,0,.2)', 
-          display:'flex', 
-          alignItems:'center', 
-          justifyContent:'center',
-          transition:'all .2s ease',
-          zIndex:50
-        }}
-        onMouseOver={e=>(e.currentTarget.style.transform='scale(1.05)')}
-        onMouseOut={e=>(e.currentTarget.style.transform='scale(1)')}
-      >
-        <IconSearch size={24} />
-      </button>
       {searchOpen && !showResults && (
         <div 
           style={{ 

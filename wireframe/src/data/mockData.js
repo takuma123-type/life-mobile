@@ -14,10 +14,10 @@ const mockUsers = [
 
 // Mock Community Data
 const mockCommunities = [
-    { id: 1, name: 'ゲーム好き', category: 'ゲーム', members: '1.2k', posts: '5.4k', desc: 'ゲーム好きが集まるコミュニティ!最新ゲームからレトロゲームまで、何でも語り合いましょう。' },
-    { id: 2, name: 'アニメ好き', category: 'アニメ', members: '2.1k', posts: '8.2k', desc: 'アニメについて語り合おう!今期のアニメから過去の名作まで、アニメ好きが集まる場所です。' },
-    { id: 3, name: '音楽好き', category: '音楽', members: '890', posts: '3.1k', desc: '音楽を愛する人たちのコミュニティ。ジャンルを問わず、好きな音楽について語り合いましょう。' },
-    { id: 4, name: '雑談部屋', category: '雑談', members: '3.5k', posts: '12k', desc: 'なんでも話せる雑談部屋。気軽に参加して、楽しく交流しましょう!' },
+    { id: 1, name: 'ゲーム好き', category: 'ゲーム', members: '1.2k', posts: '5.4k', desc: 'ゲーム好きが集まるコミュニティ!最新ゲームからレトロゲームまで、何でも語り合いましょう。', image: 'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
+    { id: 2, name: 'アニメ好き', category: 'アニメ', members: '2.1k', posts: '8.2k', desc: 'アニメについて語り合おう!今期のアニメから過去の名作まで、アニメ好きが集まる場所です。', image: 'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
+    { id: 3, name: '音楽好き', category: '音楽', members: '890', posts: '3.1k', desc: '音楽を愛する人たちのコミュニティ。ジャンルを問わず、好きな音楽について語り合いましょう。', image: 'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
+    { id: 4, name: '雑談部屋', category: '雑談', members: '3.5k', posts: '12k', desc: 'なんでも話せる雑談部屋。気軽に参加して、楽しく交流しましょう!', image: 'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
 ];
 
 // Mock Chat Messages

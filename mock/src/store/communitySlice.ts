@@ -7,6 +7,7 @@ export interface Community {
   members?: number;
   posts?: number;
   desc?: string;
+  image?: string;
 }
 
 interface CommunityState {
