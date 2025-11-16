@@ -211,7 +211,7 @@ const LoginScreen: React.FC = () => {
               textDecoration:'underline'
             }}
           >
-            新規登録（SMS認証）
+            新規登録
           </button>
         </div>
       </div>

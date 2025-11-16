@@ -59,7 +59,7 @@ function SmsVerificationModal({ onClose, onVerificationComplete }) {
                     本人確認（SMS認証）
                 </h2>
                 <p style={{ fontSize: '13px', color: '#666', marginBottom: '24px', textAlign: 'center' }}>
-                    詐欺対策のため、電話番号による本人確認を行います
+                    電話番号による本人確認を行います
                 </p>
 
                 {step === 'phone' ? (

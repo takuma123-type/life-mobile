@@ -70,7 +70,6 @@ const App: React.FC = () => {
       <SmsVerificationModal />
       <LanguageModal />
       <LoginModal />
-      <footer style={{ padding:'12px 20px', borderTop:'1px solid var(--color-border)', fontSize:'12px', color:'var(--color-muted)' }}>© LIFE Mock</footer>
     </div>
   );
 };

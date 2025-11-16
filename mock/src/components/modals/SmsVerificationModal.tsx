@@ -48,8 +48,8 @@ const SmsVerificationModal: React.FC = () => {
     <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,.5)', backdropFilter:'blur(6px)', display:'flex', alignItems:'center', justifyContent:'center', padding:20, zIndex:300, animation:'fadeIn .3s ease' }} onClick={()=>dispatch(closeSmsModal())}>
       <div style={{ background:'#fff', width:'100%', maxWidth:440, borderRadius:24, padding:'40px 32px', position:'relative', boxShadow:'0 20px 60px rgba(0,0,0,.15)', animation:'modalScale .35s cubic-bezier(.34,1.56,.64,1)' }} onClick={e=>e.stopPropagation()}>
         <button aria-label='閉じる' onClick={()=>dispatch(closeSmsModal())} style={{ position:'absolute', top:16, right:16, background:'rgba(0,0,0,.05)', width:36, height:36, borderRadius:'50%', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', transition:'background .2s ease' }} onMouseOver={e=>(e.currentTarget as HTMLButtonElement).style.background='rgba(0,0,0,.1)'} onMouseOut={e=>(e.currentTarget as HTMLButtonElement).style.background='rgba(0,0,0,.05)'}><IconX size={20} /></button>
-        <h2 style={{ margin:'0 0 8px', textAlign:'center', fontSize:26, fontWeight:700 }}>新規登録（SMS認証）</h2>
-        <p style={{ margin:'0 0 32px', fontSize:14, textAlign:'center', color:'#666' }}>詐欺対策のため、電話番号による本人確認を行います</p>
+        <h2 style={{ margin:'0 0 8px', textAlign:'center', fontSize:26, fontWeight:700 }}>新規登録</h2>
+        <p style={{ margin:'0 0 32px', fontSize:14, textAlign:'center', color:'#666' }}>電話番号による本人確認を行います</p>
 
         {step === 'phone' && (
           <div style={{ marginBottom:24 }}>
