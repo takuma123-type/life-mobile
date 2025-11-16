@@ -66,7 +66,7 @@ const SplashScreen: React.FC = () => {
       <div style={{ textAlign:'center' }}>
         <div className="logo-container">
           <img 
-            src="../../icon/generated_image_transparent (1).png"
+            src="/icon/generated_image_transparent (1).png"
             alt="Talk! Logo" 
             style={{ 
               width: 250, 
