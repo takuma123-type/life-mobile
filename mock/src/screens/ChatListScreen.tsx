@@ -140,7 +140,7 @@ const ChatListScreen: React.FC = () => {
 
   return (
     <div 
-      style={{ paddingBottom:80, background:'var(--color-bg)', minHeight:'100vh', height:'100vh', overflow:'auto' }}
+      style={{ paddingBottom:80, background:'var(--color-bg)', minHeight:'100vh', height:'100vh' }}
       onScroll={handleScroll}
     >
       {/* ヘッダー: タブと検索 */}
@@ -246,26 +246,39 @@ const ChatListScreen: React.FC = () => {
       </div>
 
       {tab==='following' && (
-        <div style={{ background:'var(--color-bg)' }}>
+        <div>
           {/* サブタブ: すべて / フレンド */}
-          <div style={{ padding:'16px 20px', background:'#fff' }}>
-            <div style={{ display:'flex', gap:12 }}>
+          <div style={{ 
+            padding:'12px 16px 16px 16px', 
+            background:'#fff'
+          }}>
+            <div style={{ display:'flex', gap:24 }}>
               <button
                 onClick={() => setUserMode('all')}
                 style={{
-                  flex:1,
-                  padding:'12px 20px',
-                  background: userMode === 'all' ? '#000' : '#fff',
-                  color: userMode === 'all' ? '#fff' : '#000',
-                  border: userMode === 'all' ? 'none' : '1px solid var(--color-border)',
-                  borderRadius:20,
-                  fontSize:15,
-                  fontWeight:600,
+                  background:'none',
+                  border:'none',
+                  padding:'8px 0',
+                  fontSize:16,
+                  fontWeight: userMode === 'all' ? 700 : 400,
+                  color: userMode === 'all' ? '#000' : '#999',
                   cursor:'pointer',
-                  transition:'all .2s ease'
+                  position:'relative',
+                  transition:'all .2s ease',
+                  whiteSpace:'nowrap'
                 }}
               >
                 すべて
+                {userMode === 'all' && (
+                  <div style={{
+                    position:'absolute',
+                    bottom:-12,
+                    left:0,
+                    right:0,
+                    height:3,
+                    background:'#000'
+                  }} />
+                )}
               </button>
               <button
                 onClick={() => {
@@ -276,19 +289,29 @@ const ChatListScreen: React.FC = () => {
                   setUserMode('friends');
                 }}
                 style={{
-                  flex:1,
-                  padding:'12px 20px',
-                  background: userMode === 'friends' ? '#000' : '#fff',
-                  color: userMode === 'friends' ? '#fff' : '#000',
-                  border: userMode === 'friends' ? 'none' : '1px solid var(--color-border)',
-                  borderRadius:20,
-                  fontSize:15,
-                  fontWeight:600,
+                  background:'none',
+                  border:'none',
+                  padding:'8px 0',
+                  fontSize:16,
+                  fontWeight: userMode === 'friends' ? 700 : 400,
+                  color: userMode === 'friends' ? '#000' : '#999',
                   cursor:'pointer',
-                  transition:'all .2s ease'
+                  position:'relative',
+                  transition:'all .2s ease',
+                  whiteSpace:'nowrap'
                 }}
               >
                 フレンド
+                {userMode === 'friends' && (
+                  <div style={{
+                    position:'absolute',
+                    bottom:-12,
+                    left:0,
+                    right:0,
+                    height:3,
+                    background:'#000'
+                  }} />
+                )}
               </button>
             </div>
           </div>
@@ -384,7 +407,7 @@ const ChatListScreen: React.FC = () => {
           
           {/* 全てのユーザーモード: 従来のグリッド表示 */}
           {userMode === 'all' && (
-            <div style={{ padding:'16px', background:'#fff' }}>
+            <div style={{ padding:'12px 16px 16px 16px', background:'#fff' }}>
               <div style={{ 
                 display:'grid', 
                 gridTemplateColumns:'repeat(2, 1fr)', 
@@ -522,7 +545,7 @@ const ChatListScreen: React.FC = () => {
       )}
 
       {tab==='open' && (
-        <div style={{ background:'var(--color-bg)' }}>
+        <div>
           {/* 参加中モード: ログイン後のみ表示 */}
           {communityMode === 'joined' && !isAuthenticated && (
             <div style={{ padding:'40px 20px', textAlign:'center' }}>
@@ -543,44 +566,67 @@ const ChatListScreen: React.FC = () => {
           )}
           
           {/* コミュニティモード切り替えボタン */}
-          <div style={{ padding:'20px 20px 16px' }}>
+          <div style={{ 
+            padding:'12px 16px 28px 16px', 
+            background:'#fff'
+          }}>
             <div style={{ 
               display:'flex', 
-              gap:8
+              gap:24
             }}>
               <button
                 onClick={() => setCommunityMode('all')}
                 style={{
-                  flex:1,
-                  padding:'10px 12px',
-                  background: communityMode === 'all' ? '#000' : '#fff',
-                  color: communityMode === 'all' ? '#fff' : 'var(--color-text-soft)',
-                  border: '1px solid var(--color-border)',
-                  borderRadius:12,
-                  fontSize:13,
-                  fontWeight:600,
+                  background:'none',
+                  border:'none',
+                  padding:'8px 0',
+                  fontSize:16,
+                  fontWeight: communityMode === 'all' ? 700 : 400,
+                  color: communityMode === 'all' ? '#000' : '#999',
                   cursor:'pointer',
-                  transition:'all .2s ease'
+                  position:'relative',
+                  transition:'all .2s ease',
+                  whiteSpace:'nowrap'
                 }}
               >
                 すべて
+                {communityMode === 'all' && (
+                  <div style={{
+                    position:'absolute',
+                    bottom:-12,
+                    left:0,
+                    right:0,
+                    height:3,
+                    background:'#000'
+                  }} />
+                )}
               </button>
               <button
                 onClick={() => setCommunityMode('popular')}
                 style={{
-                  flex:1,
-                  padding:'10px 12px',
-                  background: communityMode === 'popular' ? '#000' : '#fff',
-                  color: communityMode === 'popular' ? '#fff' : 'var(--color-text-soft)',
-                  border: '1px solid var(--color-border)',
-                  borderRadius:12,
-                  fontSize:13,
-                  fontWeight:600,
+                  background:'none',
+                  border:'none',
+                  padding:'8px 0',
+                  fontSize:16,
+                  fontWeight: communityMode === 'popular' ? 700 : 400,
+                  color: communityMode === 'popular' ? '#000' : '#999',
                   cursor:'pointer',
-                  transition:'all .2s ease'
+                  position:'relative',
+                  transition:'all .2s ease',
+                  whiteSpace:'nowrap'
                 }}
               >
                 人気
+                {communityMode === 'popular' && (
+                  <div style={{
+                    position:'absolute',
+                    bottom:-12,
+                    left:0,
+                    right:0,
+                    height:3,
+                    background:'#000'
+                  }} />
+                )}
               </button>
               <button
                 onClick={() => {
@@ -591,19 +637,29 @@ const ChatListScreen: React.FC = () => {
                   setCommunityMode('joined');
                 }}
                 style={{
-                  flex:1,
-                  padding:'10px 12px',
-                  background: communityMode === 'joined' ? '#000' : '#fff',
-                  color: communityMode === 'joined' ? '#fff' : 'var(--color-text-soft)',
-                  border: '1px solid var(--color-border)',
-                  borderRadius:12,
-                  fontSize:13,
-                  fontWeight:600,
+                  background:'none',
+                  border:'none',
+                  padding:'8px 0',
+                  fontSize:16,
+                  fontWeight: communityMode === 'joined' ? 700 : 400,
+                  color: communityMode === 'joined' ? '#000' : '#999',
                   cursor:'pointer',
-                  transition:'all .2s ease'
+                  position:'relative',
+                  transition:'all .2s ease',
+                  whiteSpace:'nowrap'
                 }}
               >
                 参加中
+                {communityMode === 'joined' && (
+                  <div style={{
+                    position:'absolute',
+                    bottom:-12,
+                    left:0,
+                    right:0,
+                    height:3,
+                    background:'#000'
+                  }} />
+                )}
               </button>
             </div>
           </div>
@@ -708,7 +764,7 @@ const ChatListScreen: React.FC = () => {
 
           {/* 全て/人気モード用のグリッド表示 */}
           {(communityMode === 'all' || communityMode === 'popular') && (
-            <div style={{ padding:'0 20px 20px' }}>
+            <div style={{ padding:'0 16px 16px 16px', background:'#fff' }}>
               <div style={{ 
                 display:'grid', 
                 gridTemplateColumns:'repeat(2, 1fr)', 
