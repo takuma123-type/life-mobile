@@ -97,32 +97,93 @@ const ProfileRegistrationScreen: React.FC = () => {
 
   return (
     <div style={{ 
-      background: 'var(--color-bg)', 
+      background: 'linear-gradient(180deg, #f8fafc 0%, #ffffff 100%)', 
       minHeight: '100vh', 
       paddingBottom: 100 
     }}>
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes shimmer {
+          0% {
+            background-position: -1000px 0;
+          }
+          100% {
+            background-position: 1000px 0;
+          }
+        }
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.6;
+          }
+        }
+        .fade-in-up {
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
+        .scale-in {
+          animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .slide-in {
+          animation: slideIn 0.4s ease-out forwards;
+        }
+      `}</style>
       {/* ヘッダー */}
       <div style={{ 
-        background: '#fff',
-        padding: '24px 20px',
-        borderBottom: '1px solid #e5e5e5'
-      }}>
+        background: 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)',
+        padding: '32px 20px',
+        borderBottom: 'none',
+        boxShadow: '0 4px 20px rgba(14, 165, 233, 0.15)'
+      }} className="fade-in-up">
         <h1 style={{ 
-          margin: '0 0 8px', 
-          fontSize: 24, 
-          fontWeight: 700,
-          textAlign: 'center'
+          margin: '0 0 12px', 
+          fontSize: 28, 
+          fontWeight: 800,
+          textAlign: 'center',
+          color: '#fff',
+          letterSpacing: '1px'
         }}>
           LIFE
         </h1>
         <p style={{ 
           margin: 0, 
-          fontSize: 14, 
-          color: '#666',
+          fontSize: 15, 
+          color: 'rgba(255, 255, 255, 0.95)',
           textAlign: 'center',
-          lineHeight: 1.6
+          lineHeight: 1.7,
+          fontWeight: 500
         }}>
-          LIFEへようこそ！<br />
+          LIFEへようこそ!<br />
           プロフィールを登録して、フレンドやコミュニティとつながりましょう。
         </p>
         
@@ -137,26 +198,29 @@ const ProfileRegistrationScreen: React.FC = () => {
           {[1, 2, 3].map(step => (
             <div key={step} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{
-                width: 32,
-                height: 32,
+                width: 40,
+                height: 40,
                 borderRadius: '50%',
-                background: currentStep >= step ? '#000' : '#e5e5e5',
-                color: currentStep >= step ? '#fff' : '#999',
+                background: currentStep >= step ? '#fff' : 'rgba(255, 255, 255, 0.3)',
+                color: currentStep >= step ? '#0EA5E9' : 'rgba(255, 255, 255, 0.7)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 14,
-                fontWeight: 600,
-                transition: 'all .3s ease'
+                fontSize: 16,
+                fontWeight: 700,
+                transition: 'all .4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                transform: currentStep === step ? 'scale(1.1)' : 'scale(1)',
+                boxShadow: currentStep >= step ? '0 4px 12px rgba(255, 255, 255, 0.3)' : 'none'
               }}>
                 {step}
               </div>
               {step < 3 && (
                 <div style={{
                   width: 40,
-                  height: 2,
-                  background: currentStep > step ? '#000' : '#e5e5e5',
-                  transition: 'all .3s ease'
+                  height: 3,
+                  background: currentStep > step ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.3)',
+                  transition: 'all .4s ease',
+                  borderRadius: 2
                 }} />
               )}
             </div>
@@ -165,11 +229,12 @@ const ProfileRegistrationScreen: React.FC = () => {
         
         {/* ステップタイトル */}
         <p style={{
-          margin: '12px 0 0',
-          fontSize: 13,
-          color: '#666',
+          margin: '16px 0 0',
+          fontSize: 14,
+          color: 'rgba(255, 255, 255, 0.95)',
           textAlign: 'center',
-          fontWeight: 600
+          fontWeight: 600,
+          letterSpacing: '0.5px'
         }}>
           {currentStep === 1 && '基本情報の入力'}
           {currentStep === 2 && 'プロフィール画像の設定'}
@@ -187,13 +252,19 @@ const ProfileRegistrationScreen: React.FC = () => {
           <>
 
         {/* 基本情報カード */}
-        <div style={{ 
-          background: '#fff',
-          borderRadius: 16,
-          padding: '24px',
-          marginBottom: 20,
-          border: '1px solid #e5e5e5'
-        }}>
+        <div 
+          className="scale-in"
+          style={{ 
+            background: '#fff',
+            borderRadius: 20,
+            padding: '28px',
+            marginBottom: 20,
+            border: 'none',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+            animationDelay: '0.1s',
+            opacity: 0
+          }}
+        >
           {/* 名前 */}
           <div style={{ marginBottom: 16 }}>
             <label style={{ 
@@ -467,23 +538,30 @@ const ProfileRegistrationScreen: React.FC = () => {
         {/* 次へボタン */}
         <button
           onClick={handleStep1Next}
+          className="scale-in"
           style={{
             width: '100%',
-            padding: '16px',
-            background: '#000',
+            padding: '18px',
+            background: 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)',
             color: '#fff',
             border: 'none',
-            borderRadius: 12,
-            fontSize: 16,
-            fontWeight: 600,
+            borderRadius: 16,
+            fontSize: 17,
+            fontWeight: 700,
             cursor: 'pointer',
-            transition: 'all .2s ease'
+            transition: 'all .3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            boxShadow: '0 8px 24px rgba(14, 165, 233, 0.3)',
+            letterSpacing: '0.5px',
+            animationDelay: '0.2s',
+            opacity: 0
           }}
           onMouseOver={e => {
-            e.currentTarget.style.opacity = '0.8';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 12px 32px rgba(14, 165, 233, 0.4)';
           }}
           onMouseOut={e => {
-            e.currentTarget.style.opacity = '1';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(14, 165, 233, 0.3)';
           }}
         >
           次へ
@@ -495,43 +573,52 @@ const ProfileRegistrationScreen: React.FC = () => {
     {currentStep === 2 && (
       <>
         {/* プロフィール画像 */}
-        <div style={{ 
-          background: '#fff',
-          borderRadius: 16,
-          padding: '24px',
-          marginBottom: 20,
-          border: '1px solid #e5e5e5'
-        }}>
+        <div 
+          className="scale-in"
+          style={{ 
+            background: '#fff',
+            borderRadius: 20,
+            padding: '28px',
+            marginBottom: 20,
+            border: 'none',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+            animationDelay: '0.1s',
+            opacity: 0
+          }}
+        >
           <h3 style={{ 
-            margin: '0 0 16px', 
-            fontSize: 16, 
-            fontWeight: 700
+            margin: '0 0 20px', 
+            fontSize: 17, 
+            fontWeight: 700,
+            color: '#0EA5E9',
+            textAlign: 'center'
           }}>
             プロフィール画像
           </h3>
           <div
             onClick={() => fileInputRef.current?.click()}
             style={{
-              width: 120,
-              height: 120,
+              width: 140,
+              height: 140,
               borderRadius: '50%',
-              background: avatarPreview ? 'transparent' : 'var(--color-surface-alt)',
+              background: avatarPreview ? 'transparent' : 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
               margin: '0 auto',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              transition: 'all .2s ease',
-              border: '3px dashed var(--color-border)',
-              overflow: 'hidden'
+              transition: 'all .4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              border: avatarPreview ? 'none' : '4px dashed rgba(14, 165, 233, 0.3)',
+              overflow: 'hidden',
+              boxShadow: avatarPreview ? '0 8px 24px rgba(0, 0, 0, 0.12)' : '0 4px 12px rgba(14, 165, 233, 0.15)'
             }}
             onMouseOver={e => {
-              e.currentTarget.style.borderColor = 'var(--color-primary)';
-              e.currentTarget.style.background = avatarPreview ? 'transparent' : '#E0F2FE';
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = avatarPreview ? '0 12px 32px rgba(0, 0, 0, 0.15)' : '0 8px 24px rgba(14, 165, 233, 0.25)';
             }}
             onMouseOut={e => {
-              e.currentTarget.style.borderColor = 'var(--color-border)';
-              e.currentTarget.style.background = avatarPreview ? 'transparent' : 'var(--color-surface-alt)';
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = avatarPreview ? '0 8px 24px rgba(0, 0, 0, 0.12)' : '0 4px 12px rgba(14, 165, 233, 0.15)';
             }}
           >
             {avatarPreview ? (
@@ -542,8 +629,9 @@ const ProfileRegistrationScreen: React.FC = () => {
               />
             ) : (
               <span style={{ 
-                fontSize: 40, 
-                color: 'var(--color-primary)' 
+                fontSize: 48, 
+                color: '#0EA5E9',
+                fontWeight: 300
               }}>
                 +
               </span>
@@ -559,17 +647,25 @@ const ProfileRegistrationScreen: React.FC = () => {
         </div>
 
         {/* ギャラリー */}
-        <div style={{ 
-          background: '#fff',
-          borderRadius: 16,
-          padding: '24px',
-          marginBottom: 24,
-          border: '1px solid #e5e5e5'
-        }}>
+        <div 
+          className="scale-in"
+          style={{ 
+            background: '#fff',
+            borderRadius: 20,
+            padding: '28px',
+            marginBottom: 24,
+            border: 'none',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+            animationDelay: '0.2s',
+            opacity: 0
+          }}
+        >
           <h3 style={{ 
-            margin: '0 0 16px', 
-            fontSize: 16, 
-            fontWeight: 700
+            margin: '0 0 20px', 
+            fontSize: 17, 
+            fontWeight: 700,
+            color: '#0EA5E9',
+            textAlign: 'center'
           }}>
             ギャラリー
           </h3>
@@ -582,26 +678,34 @@ const ProfileRegistrationScreen: React.FC = () => {
               <div
                 key={index}
                 onClick={() => handleGalleryUpload(index)}
+                className="slide-in"
                 style={{
                   aspectRatio: '1',
-                  border: '2px dashed var(--color-border)',
-                  borderRadius: 12,
-                  background: 'var(--color-surface-alt)',
+                  border: '3px dashed rgba(14, 165, 233, 0.25)',
+                  borderRadius: 16,
+                  background: 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 24,
-                  color: 'var(--color-primary)',
+                  fontSize: 32,
+                  color: '#0EA5E9',
                   cursor: 'pointer',
-                  transition: 'all .2s ease'
+                  transition: 'all .3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  animationDelay: `${0.1 + index * 0.05}s`,
+                  opacity: 0,
+                  fontWeight: 300
                 }}
                 onMouseOver={e => {
-                  e.currentTarget.style.background = '#E0F2FE';
-                  e.currentTarget.style.borderColor = 'var(--color-primary)';
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)';
+                  e.currentTarget.style.borderColor = '#0EA5E9';
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(14, 165, 233, 0.2)';
                 }}
                 onMouseOut={e => {
-                  e.currentTarget.style.background = 'var(--color-surface-alt)';
-                  e.currentTarget.style.borderColor = 'var(--color-border)';
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)';
+                  e.currentTarget.style.borderColor = 'rgba(14, 165, 233, 0.25)';
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               >
                 +
@@ -611,26 +715,33 @@ const ProfileRegistrationScreen: React.FC = () => {
         </div>
 
         {/* ボタン */}
-        <div style={{ display: 'flex', gap: 12 }}>
+        <div className="scale-in" style={{ display: 'flex', gap: 12, animationDelay: '0.3s', opacity: 0 }}>
           <button
             onClick={() => setCurrentStep(1)}
             style={{
               flex: 1,
-              padding: '16px',
+              padding: '18px',
               background: '#fff',
-              color: '#000',
-              border: '1px solid #e5e5e5',
-              borderRadius: 12,
-              fontSize: 16,
-              fontWeight: 600,
+              color: '#0EA5E9',
+              border: '2px solid #0EA5E9',
+              borderRadius: 16,
+              fontSize: 17,
+              fontWeight: 700,
               cursor: 'pointer',
-              transition: 'all .2s ease'
+              transition: 'all .3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              letterSpacing: '0.5px'
             }}
             onMouseOver={e => {
-              e.currentTarget.style.background = '#f5f5f5';
+              e.currentTarget.style.background = '#0EA5E9';
+              e.currentTarget.style.color = '#fff';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(14, 165, 233, 0.3)';
             }}
             onMouseOut={e => {
               e.currentTarget.style.background = '#fff';
+              e.currentTarget.style.color = '#0EA5E9';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           >
             戻る
@@ -639,21 +750,25 @@ const ProfileRegistrationScreen: React.FC = () => {
             onClick={handleStep2Next}
             style={{
               flex: 1,
-              padding: '16px',
-              background: '#000',
+              padding: '18px',
+              background: 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)',
               color: '#fff',
               border: 'none',
-              borderRadius: 12,
-              fontSize: 16,
-              fontWeight: 600,
+              borderRadius: 16,
+              fontSize: 17,
+              fontWeight: 700,
               cursor: 'pointer',
-              transition: 'all .2s ease'
+              transition: 'all .3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              boxShadow: '0 8px 24px rgba(14, 165, 233, 0.3)',
+              letterSpacing: '0.5px'
             }}
             onMouseOver={e => {
-              e.currentTarget.style.opacity = '0.8';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 12px 32px rgba(14, 165, 233, 0.4)';
             }}
             onMouseOut={e => {
-              e.currentTarget.style.opacity = '1';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(14, 165, 233, 0.3)';
             }}
           >
             次へ
@@ -666,17 +781,25 @@ const ProfileRegistrationScreen: React.FC = () => {
     {currentStep === 3 && (
       <>
         {/* パスワード設定 */}
-        <div style={{ 
-          background: '#fff',
-          borderRadius: 16,
-          padding: '24px',
-          marginBottom: 20,
-          border: '1px solid #e5e5e5'
-        }}>
+        <div 
+          className="scale-in"
+          style={{ 
+            background: '#fff',
+            borderRadius: 20,
+            padding: '28px',
+            marginBottom: 20,
+            border: 'none',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+            animationDelay: '0.1s',
+            opacity: 0
+          }}
+        >
           <h3 style={{ 
-            margin: '0 0 16px', 
-            fontSize: 16, 
-            fontWeight: 700
+            margin: '0 0 20px', 
+            fontSize: 17, 
+            fontWeight: 700,
+            color: '#0EA5E9',
+            textAlign: 'center'
           }}>
             パスワード設定
           </h3>
@@ -789,26 +912,33 @@ const ProfileRegistrationScreen: React.FC = () => {
         </div>
 
         {/* ボタン */}
-        <div style={{ display: 'flex', gap: 12 }}>
+        <div className="scale-in" style={{ display: 'flex', gap: 12, animationDelay: '0.2s', opacity: 0 }}>
           <button
             onClick={() => setCurrentStep(2)}
             style={{
               flex: 1,
-              padding: '16px',
+              padding: '18px',
               background: '#fff',
-              color: '#000',
-              border: '1px solid #e5e5e5',
-              borderRadius: 12,
-              fontSize: 16,
-              fontWeight: 600,
+              color: '#0EA5E9',
+              border: '2px solid #0EA5E9',
+              borderRadius: 16,
+              fontSize: 17,
+              fontWeight: 700,
               cursor: 'pointer',
-              transition: 'all .2s ease'
+              transition: 'all .3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              letterSpacing: '0.5px'
             }}
             onMouseOver={e => {
-              e.currentTarget.style.background = '#f5f5f5';
+              e.currentTarget.style.background = '#0EA5E9';
+              e.currentTarget.style.color = '#fff';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(14, 165, 233, 0.3)';
             }}
             onMouseOut={e => {
               e.currentTarget.style.background = '#fff';
+              e.currentTarget.style.color = '#0EA5E9';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           >
             戻る
@@ -817,29 +947,28 @@ const ProfileRegistrationScreen: React.FC = () => {
             onClick={complete}
             style={{
               flex: 1,
-              padding: '16px',
-              background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)',
+              padding: '18px',
+              background: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)',
               color: '#fff',
               border: 'none',
-              borderRadius: 12,
-              fontSize: 16,
-              fontWeight: 600,
+              borderRadius: 16,
+              fontSize: 17,
+              fontWeight: 700,
               cursor: 'pointer',
-              transition: 'all .2s ease',
-              boxShadow: 'var(--shadow-primary)'
+              transition: 'all .3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+              boxShadow: '0 8px 24px rgba(16, 185, 129, 0.35)',
+              letterSpacing: '0.5px'
             }}
             onMouseOver={e => {
-              e.currentTarget.style.opacity = '0.9';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = 'var(--shadow-primary-lg)';
+              e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+              e.currentTarget.style.boxShadow = '0 12px 32px rgba(16, 185, 129, 0.45)';
             }}
             onMouseOut={e => {
-              e.currentTarget.style.opacity = '1';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = 'var(--shadow-primary)';
+              e.currentTarget.style.transform = 'translateY(0) scale(1)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(16, 185, 129, 0.35)';
             }}
           >
-            登録完了
+            🎉 登録完了
           </button>
         </div>
       </>
