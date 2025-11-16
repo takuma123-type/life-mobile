@@ -457,7 +457,11 @@ const ChatListScreen: React.FC = () => {
                     justifyContent:'center',
                     overflow:'hidden'
                   }}>
-                    {u.avatar ? <img src={u.avatar} alt={u.name} style={{ width:'100%', height:'100%', objectFit:'cover' }} /> : <IconAvatar size={32} color='#999' />}
+                    <img 
+                      src={u.avatar || 'https://via.placeholder.com/60/e5e5e5/999999?text=IMG'} 
+                      alt={u.name} 
+                      style={{ width:'100%', height:'100%', objectFit:'cover' }} 
+                    />
                   </div>
                   {u.online && (
                     <span style={{ 

@@ -1,30 +1,92 @@
-import React, { useEffect } from 'react';
-// ロゴ画像 (ユーザー提供の PNG を /mock/icon/splash.png に配置してください)
-// Vite の相対 import: screens から ../../icon/splash.png
-// まだ存在しない場合はビルド時に警告が出るため画像を追加してください。
-// @ts-ignore
-import logoUrl from '../../icon/splash.png';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { hideSplash } from '../store/uiSlice';
-import type { RootState } from '../store/store';
 
 const SplashScreen: React.FC = () => {
   const dispatch = useAppDispatch();
   const show = useAppSelector((s: any) => s.ui.showSplash);
+  const [fadeOut, setFadeOut] = useState(false);
+  
   useEffect(() => {
     if (show) {
-      const t = setTimeout(() => dispatch(hideSplash()), 1600);
+      const t = setTimeout(() => {
+        setFadeOut(true);
+        setTimeout(() => dispatch(hideSplash()), 500);
+      }, 2000);
       return () => clearTimeout(t);
     }
   }, [show, dispatch]);
+  
   if (!show) return null;
+  
   return (
-    <div style={{ position:'fixed', inset:0, background:'linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 60%)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:9999 }} className="fade-in" aria-label="splash">
+    <div 
+      style={{ 
+        position:'fixed', 
+        inset:0, 
+        background:'#ffffff', 
+        display:'flex', 
+        alignItems:'center', 
+        justifyContent:'center', 
+        zIndex:9999,
+        transition:'opacity 0.5s ease',
+        opacity: fadeOut ? 0 : 1
+      }} 
+      aria-label="splash"
+    >
+      <style>{`
+        @keyframes logoFloat {
+          0%, 100% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-20px) scale(1.05); }
+        }
+        @keyframes fadeInScale {
+          0% { opacity: 0; transform: scale(0.8); }
+          100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 0.6; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.1); }
+        }
+        .logo-container {
+          animation: fadeInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), logoFloat 3s ease-in-out infinite 0.8s;
+        }
+        .loading-dot {
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          background: white;
+          border-radius: 50%;
+          margin: 0 4px;
+          animation: pulse 1.4s ease-in-out infinite;
+        }
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+      `}</style>
+      
       <div style={{ textAlign:'center' }}>
-        {logoUrl ? <img src={logoUrl} alt="App Logo" style={{ width:180, height:'auto', borderRadius:32, boxShadow:'0 6px 18px -4px rgba(0,0,0,.15)' }} /> : (
-          <div style={{ fontSize:'56px', fontWeight:700, letterSpacing:'2px' }}>LIFE</div>
-        )}
-        <div style={{ marginTop:28, fontSize:14, fontWeight:500, letterSpacing:'.5px', color:'var(--color-accent)' }}>Loading...</div>
+        <div className="logo-container">
+          <img 
+            src="../../icon/generated_image_transparent (1).png"
+            alt="Talk! Logo" 
+            style={{ 
+              width: 250, 
+              height: 'auto',
+              filter: 'drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3))'
+            }} 
+          />
+        </div>
+        
+        <div style={{ 
+          marginTop: 40, 
+          fontSize: 16, 
+          fontWeight: 600, 
+          color: 'white',
+          letterSpacing: '1px'
+        }}>
+          <div className="loading-dot"></div>
+          <div className="loading-dot"></div>
+          <div className="loading-dot"></div>
+        </div>
       </div>
     </div>
   );
