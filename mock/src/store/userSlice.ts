@@ -39,6 +39,7 @@ interface UserState {
   followRequests: FollowRequest[];
   points: number;
   ownedStamps: string[]; // stampPackIds
+  activeUserId: string | null; // 表示中のユーザープロフィールID
 }
 
 const initialState: UserState = {
@@ -47,7 +48,8 @@ const initialState: UserState = {
   following: {},
   followRequests: [],
   points: 50,
-  ownedStamps: []
+  ownedStamps: [],
+  activeUserId: null
 };
 
 const userSlice = createSlice({
@@ -78,9 +80,12 @@ const userSlice = createSlice({
         state.points -= action.payload.price;
         state.ownedStamps.push(action.payload.stampId);
       }
+    },
+    setActiveUserId(state, action: PayloadAction<string | null>) {
+      state.activeUserId = action.payload;
     }
   }
 });
 
-export const { setMe, setUsers, addUser, toggleFollow, setFollowRequests, acceptFollowRequest, rejectFollowRequest, addPoints, purchaseStamp } = userSlice.actions;
+export const { setMe, setUsers, addUser, toggleFollow, setFollowRequests, acceptFollowRequest, rejectFollowRequest, addPoints, purchaseStamp, setActiveUserId } = userSlice.actions;
 export default userSlice.reducer;

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { setActiveChat } from '../store/chatSlice';
-import { navigate, openSmsModal } from '../store/uiSlice';
-import { toggleFollow } from '../store/userSlice';
+import { navigate, openSmsModal, openGuestProfileModal } from '../store/uiSlice';
+import { toggleFollow, setActiveUserId } from '../store/userSlice';
 import { setActiveCommunity } from '../store/communitySlice';
 import BottomNav from '../components/common/BottomNav';
 import { IconSearch, IconAvatar } from '../components/icons';
@@ -446,12 +446,8 @@ const ChatListScreen: React.FC = () => {
                   boxShadow:'0 1px 3px rgba(0,0,0,.04)'
                 }} 
                 onClick={()=> {
-                  if (!isAuthenticated || !me) {
-                    dispatch(openSmsModal());
-                    return;
-                  }
-                  dispatch(setActiveChat(u.id)); 
-                  dispatch(navigate('chatDetail'));
+                  dispatch(setActiveUserId(u.id));
+                  dispatch(openGuestProfileModal());
                 }}
                 onMouseOver={e=>{
                   e.currentTarget.style.boxShadow='0 4px 12px rgba(0,0,0,.08)';
