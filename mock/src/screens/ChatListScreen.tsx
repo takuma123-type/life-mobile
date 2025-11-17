@@ -272,7 +272,7 @@ const ChatListScreen: React.FC = () => {
           {/* サブタブ: すべて / フレンド */}
           <div style={{ 
             padding:'12px 16px 16px 16px', 
-            background:'#fff'
+            background: '#fff'
           }}>
             <div style={{ display:'flex', gap:24 }}>
               <button
@@ -340,7 +340,7 @@ const ChatListScreen: React.FC = () => {
 
           {/* フレンドモード: ログイン後のみ表示 */}
           {isAuthenticated && me && userMode === 'friends' && (
-            <div style={{ padding:'16px', background:'#f8f9fa' }}>
+            <div style={{ padding:'16px', background:'#fff' }}>
               <div style={{ 
                 padding:'0 4px 12px', 
                 display:'flex',
@@ -442,7 +442,7 @@ const ChatListScreen: React.FC = () => {
           
           {/* 全てのユーザーモード: ライブ風グリッド表示 */}
           {userMode === 'all' && (
-            <div style={{ padding:'8px 8px 16px 8px', background:'#f8f9fa' }}>
+            <div style={{ padding:'8px 8px 16px 8px', background:'#fff' }}>
               <div style={{ 
                 display:'grid', 
                 gridTemplateColumns:'repeat(2, 1fr)', 
@@ -803,7 +803,7 @@ const ChatListScreen: React.FC = () => {
 
           {/* 全て/人気モード用のライブ風グリッド表示 */}
           {(communityMode === 'all' || communityMode === 'popular') && (
-            <div style={{ padding:'8px 8px 16px 8px', background:'#f8f9fa' }}>
+            <div style={{ padding:'8px 8px 16px 8px', background:'#fff' }}>
               <div style={{ 
                 display:'grid', 
                 gridTemplateColumns:'repeat(2, 1fr)', 
@@ -847,21 +847,18 @@ const ChatListScreen: React.FC = () => {
                     ${['#FFC5C5', '#C5E2FF', '#FFE5C5', '#E0C5FF', '#C5FFE0'][index % 5]} 100%)`,
                   overflow:'hidden'
                 }}>
-                  <div style={{
-                    position:'absolute',
-                    top:0,
-                    left:0,
-                    width:'100%',
-                    height:'100%',
-                    display:'flex',
-                    alignItems:'center',
-                    justifyContent:'center',
-                    fontSize:14,
-                    fontWeight:700,
-                    color:'rgba(0,0,0,0.15)'
-                  }}>
-                    IMG
-                  </div>
+                  <img 
+                    src={c.image} 
+                    alt={c.name}
+                    style={{
+                      position:'absolute',
+                      top:0,
+                      left:0,
+                      width:'100%',
+                      height:'100%',
+                      objectFit:'cover'
+                    }}
+                  />
                   
                   {/* タイトルテキスト（下部） */}
                   <div style={{

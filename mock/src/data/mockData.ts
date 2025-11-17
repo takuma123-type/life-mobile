@@ -25,21 +25,21 @@ export const mockUsers: UserProfile[] = [
 ];
 
 export const mockCommunities: Community[] = [
-  { id:'c1', name:'カフェ好き集まれ', category:'旅行', members:231, posts:120, desc:'全国のおすすめカフェを共有しよう。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c2', name:'夜型エンジニア', category:'雑談', members:88, posts:54, desc:'深夜に作業している人同士でまったりチャット。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c3', name:'ゲーム作り勉強会', category:'ゲーム', members:140, posts:320, desc:'インディーゲーム制作ノウハウを交換。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c4', name:'アニメ好き集会', category:'アニメ', members:520, posts:1850, desc:'最新アニメから名作まで語り合おう。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c5', name:'料理レシピ共有', category:'料理', members:380, posts:640, desc:'おすすめレシピや料理のコツを共有。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c6', name:'筋トレ部', category:'スポーツ', members:290, posts:450, desc:'トレーニングメニューや食事管理について。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c7', name:'写真撮影サークル', category:'趣味', members:410, posts:980, desc:'素敵な写真や撮影スポットを共有。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c8', name:'英語勉強会', category:'学習', members:270, posts:380, desc:'英語学習者同士で情報交換。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c9', name:'音楽好き集まれ', category:'音楽', members:350, posts:720, desc:'好きなアーティストやライブ情報を共有。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c10', name:'ペット好き', category:'雑談', members:480, posts:1120, desc:'犬猫をはじめペット自慢や相談。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c11', name:'映画鑑賞会', category:'趣味', members:310, posts:560, desc:'おすすめ映画や感想を語り合う。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c12', name:'読書クラブ', category:'趣味', members:220, posts:410, desc:'おすすめの本や読書感想を共有。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c13', name:'旅行好き集合', category:'旅行', members:540, posts:890, desc:'国内外の旅行情報やおすすめスポット。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c14', name:'イラスト制作', category:'アート', members:390, posts:670, desc:'イラスト制作のコツや作品共有。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' },
-  { id:'c15', name:'副業・起業相談', category:'ビジネス', members:260, posts:380, desc:'副業や起業の情報交換。', image:'https://i.postimg.cc/66Ckt8YH/anime-sky-community.jpg' }
+  { id:'c1', name:'カフェ好き集まれ', category:'旅行', members:231, posts:120, desc:'全国のおすすめカフェを共有しよう。', image:'/com/image.png' },
+  { id:'c2', name:'夜型エンジニア', category:'雑談', members:88, posts:54, desc:'深夜に作業している人同士でまったりチャット。', image:'/com/image copy.png' },
+  { id:'c3', name:'ゲーム作り勉強会', category:'ゲーム', members:140, posts:320, desc:'インディーゲーム制作ノウハウを交換。', image:'/com/image copy 2.png' },
+  { id:'c4', name:'アニメ好き集会', category:'アニメ', members:520, posts:1850, desc:'最新アニメから名作まで語り合おう。', image:'/com/image copy 3.png' },
+  { id:'c5', name:'料理レシピ共有', category:'料理', members:380, posts:640, desc:'おすすめレシピや料理のコツを共有。', image:'/com/image copy 4.png' },
+  { id:'c6', name:'筋トレ部', category:'スポーツ', members:290, posts:450, desc:'トレーニングメニューや食事管理について。', image:'/com/image copy 5.png' },
+  { id:'c7', name:'写真撮影サークル', category:'趣味', members:410, posts:980, desc:'素敵な写真や撮影スポットを共有。', image:'/com/image.png' },
+  { id:'c8', name:'英語勉強会', category:'学習', members:270, posts:380, desc:'英語学習者同士で情報交換。', image:'/com/image copy.png' },
+  { id:'c9', name:'音楽好き集まれ', category:'音楽', members:350, posts:720, desc:'好きなアーティストやライブ情報を共有。', image:'/com/image copy 2.png' },
+  { id:'c10', name:'ペット好き', category:'雑談', members:480, posts:1120, desc:'犬猫をはじめペット自慢や相談。', image:'/com/image copy 3.png' },
+  { id:'c11', name:'映画鑑賞会', category:'趣味', members:310, posts:560, desc:'おすすめ映画や感想を語り合う。', image:'/com/image copy 4.png' },
+  { id:'c12', name:'読書クラブ', category:'趣味', members:220, posts:410, desc:'おすすめの本や読書感想を共有。', image:'/com/image copy 5.png' },
+  { id:'c13', name:'旅行好き集合', category:'旅行', members:540, posts:890, desc:'国内外の旅行情報やおすすめスポット。', image:'/com/image.png' },
+  { id:'c14', name:'イラスト制作', category:'アート', members:390, posts:670, desc:'イラスト制作のコツや作品共有。', image:'/com/image copy.png' },
+  { id:'c15', name:'副業・起業相談', category:'ビジネス', members:260, posts:380, desc:'副業や起業の情報交換。', image:'/com/image copy 2.png' }
 ];
 
 export const seedChat: ChatMessage[] = [
