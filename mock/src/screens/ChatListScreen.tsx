@@ -147,7 +147,7 @@ const ChatListScreen: React.FC = () => {
       style={{ paddingBottom:80, background:'var(--color-bg)', minHeight:'100vh', height:'100vh' }}
       onScroll={handleScroll}
     >
-      {/* ヘッダー: タブと検索 */}
+      {/* ヘッダー */}
       <div style={{ 
         position:'sticky', 
         top:0, 
@@ -155,76 +155,31 @@ const ChatListScreen: React.FC = () => {
         background:'#fff', 
         borderBottom:'1px solid var(--color-border)'
       }}>
+        {/* アプリ名と検索 */}
         <div style={{ 
           display:'flex', 
           alignItems:'center',
           justifyContent:'space-between',
-          padding:'12px 20px',
-          gap:16
+          padding:'12px 20px 4px 20px',
+          position:'relative'
         }}>
-          {/* タブ */}
-          <div style={{ 
-            display:'flex', 
-            gap:20, 
-            flex:1 
+          {/* 左側スペース */}
+          <div style={{ width:40 }} />
+          
+          {/* 中央: アプリ名 */}
+          <div style={{
+            fontSize:22,
+            fontWeight:700,
+            letterSpacing:'0.1em',
+            color:'#000',
+            position:'absolute',
+            left:'50%',
+            transform:'translateX(-50%)'
           }}>
-            <button 
-              onClick={()=>setTab('following')}
-              style={{ 
-                background:'none',
-                border:'none',
-                padding:'8px 0',
-                fontSize: tab === 'following' ? 18 : 15,
-                fontWeight: tab === 'following' ? 700 : 400,
-                color: tab === 'following' ? '#000' : '#999',
-                cursor:'pointer',
-                position:'relative',
-                transition:'all .2s ease'
-              }}
-            >
-              ユーザー
-              {tab === 'following' && (
-                <div style={{
-                  position:'absolute',
-                  bottom:0,
-                  left:0,
-                  right:0,
-                  height:2,
-                  background:'#000',
-                  borderRadius:'2px 2px 0 0'
-                }} />
-              )}
-            </button>
-            <button 
-              onClick={()=>setTab('open')}
-              style={{ 
-                background:'none',
-                border:'none',
-                padding:'8px 0',
-                fontSize: tab === 'open' ? 18 : 15,
-                fontWeight: tab === 'open' ? 700 : 400,
-                color: tab === 'open' ? '#000' : '#999',
-                cursor:'pointer',
-                position:'relative',
-                transition:'all .2s ease'
-              }}
-            >
-              コミュニティ
-              {tab === 'open' && (
-                <div style={{
-                  position:'absolute',
-                  bottom:0,
-                  left:0,
-                  right:0,
-                  height:2,
-                  background:'#000',
-                  borderRadius:'2px 2px 0 0'
-                }} />
-              )}
-            </button>
+            LIFE
           </div>
           
-          {/* 検索ボタン */}
+          {/* 右側: 検索ボタン */}
           <button
             onClick={() => {
               if (tab === 'following') {
@@ -240,11 +195,74 @@ const ChatListScreen: React.FC = () => {
               cursor:'pointer',
               display:'flex',
               alignItems:'center',
-              justifyContent:'center',
-              flexShrink:0
+              justifyContent:'center'
             }}
           >
             <IconSearch size={24} color="#000" />
+          </button>
+        </div>
+        
+        {/* タブ */}
+        <div style={{ 
+          display:'flex', 
+          alignItems:'center',
+          justifyContent:'center',
+          padding:'0 20px',
+          gap:32
+        }}>
+          <button 
+            onClick={()=>setTab('following')}
+            style={{ 
+              background:'none',
+              border:'none',
+              padding:'12px 0',
+              fontSize: tab === 'following' ? 16 : 15,
+              fontWeight: tab === 'following' ? 600 : 400,
+              color: tab === 'following' ? '#000' : '#999',
+              cursor:'pointer',
+              position:'relative',
+              transition:'all .2s ease'
+            }}
+          >
+            ユーザー
+            {tab === 'following' && (
+              <div style={{
+                position:'absolute',
+                bottom:0,
+                left:0,
+                right:0,
+                height:3,
+                background:'#0EA5E9',
+                borderRadius:'3px 3px 0 0'
+              }} />
+            )}
+          </button>
+          <button 
+            onClick={()=>setTab('open')}
+            style={{ 
+              background:'none',
+              border:'none',
+              padding:'12px 0',
+              fontSize: tab === 'open' ? 16 : 15,
+              fontWeight: tab === 'open' ? 600 : 400,
+              color: tab === 'open' ? '#000' : '#999',
+              cursor:'pointer',
+              position:'relative',
+              transition:'all .2s ease'
+            }}
+          >
+            コミュニティ
+            {tab === 'open' && (
+              <div style={{
+                position:'absolute',
+                bottom:0,
+                left:0,
+                right:0,
+                height:3,
+                background:'#0EA5E9',
+                borderRadius:'3px 3px 0 0'
+              }} />
+            )}
           </button>
         </div>
       </div>
