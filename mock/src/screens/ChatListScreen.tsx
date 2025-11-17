@@ -637,33 +637,6 @@ const ChatListScreen: React.FC = () => {
                 )}
               </button>
               <button
-                onClick={() => setCommunityMode('popular')}
-                style={{
-                  background:'none',
-                  border:'none',
-                  padding:'8px 0',
-                  fontSize:16,
-                  fontWeight: communityMode === 'popular' ? 700 : 400,
-                  color: communityMode === 'popular' ? '#000' : '#999',
-                  cursor:'pointer',
-                  position:'relative',
-                  transition:'all .2s ease',
-                  whiteSpace:'nowrap'
-                }}
-              >
-                人気
-                {communityMode === 'popular' && (
-                  <div style={{
-                    position:'absolute',
-                    bottom:-12,
-                    left:0,
-                    right:0,
-                    height:3,
-                    background:'#000'
-                  }} />
-                )}
-              </button>
-              <button
                 onClick={() => {
                   if (!isAuthenticated || !me) {
                     dispatch(openSmsModal());
