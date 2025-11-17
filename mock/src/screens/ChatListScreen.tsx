@@ -440,100 +440,109 @@ const ChatListScreen: React.FC = () => {
             </div>
           )}
           
-          {/* 全てのユーザーモード: 従来のグリッド表示 */}
+          {/* 全てのユーザーモード: ライブ風グリッド表示 */}
           {userMode === 'all' && (
-            <div style={{ padding:'12px 16px 16px 16px', background:'#fff' }}>
+            <div style={{ padding:'8px 8px 16px 8px', background:'#f8f9fa' }}>
               <div style={{ 
                 display:'grid', 
                 gridTemplateColumns:'repeat(2, 1fr)', 
-                gap:12 
+                gap:8 
               }}>
-                {displayUsers.map((u:any)=>(
+                {displayUsers.map((u:any, index:number)=>(
               <div 
                 key={u.id} 
                 style={{ 
-                  display:'flex', 
-                  flexDirection:'column',
-                  alignItems:'center',
                   cursor:'pointer',
-                  padding:'16px 12px',
+                  borderRadius:12,
+                  overflow:'hidden',
                   background:'#fff',
-                  border:'1px solid #e5e5e5',
-                  borderRadius:16,
-                  transition:'all .2s ease',
-                  boxShadow:'0 1px 3px rgba(0,0,0,.04)'
+                  boxShadow:'0 2px 8px rgba(0,0,0,0.08)',
+                  transition:'all .2s ease'
                 }} 
                 onClick={()=> {
                   dispatch(setActiveUserId(u.id));
                   dispatch(openGuestProfileModal());
                 }}
                 onMouseOver={e=>{
-                  e.currentTarget.style.boxShadow='0 4px 12px rgba(0,0,0,.08)';
+                  e.currentTarget.style.boxShadow='0 4px 16px rgba(0,0,0,0.12)';
                   e.currentTarget.style.transform='translateY(-2px)';
                 }}
                 onMouseOut={e=>{
-                  e.currentTarget.style.boxShadow='0 1px 3px rgba(0,0,0,.04)';
+                  e.currentTarget.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)';
                   e.currentTarget.style.transform='translateY(0)';
                 }}
               >
-                <div style={{ position:'relative', marginBottom:10 }}>
-                  <div style={{ 
-                    width:60, 
-                    height:60, 
-                    borderRadius:'50%', 
-                    background:'#f5f5f5', 
-                    border:'2px solid #e5e5e5',
-                    display:'flex', 
-                    alignItems:'center', 
-                    justifyContent:'center',
-                    overflow:'hidden'
+                {/* サムネイル画像エリア */}
+                <div style={{ 
+                  position:'relative',
+                  width:'100%',
+                  paddingTop:'100%',
+                  background:'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 50%, #FEE2E2 100%)',
+                  overflow:'hidden'
+                }}>
+                  <img 
+                    src={u.avatar || 'https://image.p-c2-x.abema-tv.com/image/series/19-15/thumb.png?height=720&quality=75&version=1741061716&width=1280'} 
+                    alt={u.name} 
+                    style={{ 
+                      position:'absolute',
+                      top:0,
+                      left:0,
+                      width:'100%', 
+                      height:'100%', 
+                      objectFit:'cover' 
+                    }} 
+                  />
+                  
+                  {/* タイトルテキスト（下部） */}
+                  <div style={{
+                    position:'absolute',
+                    bottom:0,
+                    left:0,
+                    right:0,
+                    background:'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
+                    padding:'24px 8px 8px 8px',
+                    color:'#fff'
                   }}>
-                    <img 
-                      src={u.avatar || 'https://via.placeholder.com/60/e5e5e5/999999?text=IMG'} 
-                      alt={u.name} 
-                      style={{ width:'100%', height:'100%', objectFit:'cover' }} 
-                    />
+                    <div style={{
+                      fontSize:13,
+                      fontWeight:700,
+                      lineHeight:1.3,
+                      overflow:'hidden',
+                      textOverflow:'ellipsis',
+                      display:'-webkit-box',
+                      WebkitLineClamp:2,
+                      WebkitBoxOrient:'vertical',
+                      textShadow:'0 1px 3px rgba(0,0,0,0.5)'
+                    }}>
+                      {u.message || 'よろしくお願いします'}
+                    </div>
                   </div>
-                  {u.online && (
-                    <span style={{ 
-                      position:'absolute', 
-                      bottom:0, 
-                      right:0, 
-                      width:14, 
-                      height:14, 
-                      background:'#10b981', 
-                      border:'2px solid #fff', 
-                      borderRadius:'50%' 
-                    }} />
-                  )}
                 </div>
-                <div style={{ textAlign:'center', width:'100%' }}>
-                  <div style={{ marginBottom:4 }}>
-                    <span style={{ fontWeight:700, fontSize:13, display:'block', marginBottom:2 }}>{u.name}</span>
+                
+                {/* ユーザー情報（カード下部） */}
+                <div style={{ 
+                  padding:'8px 10px'
+                }}>
+                  <div style={{
+                    fontSize:12,
+                    fontWeight:600,
+                    color:'#000',
+                    overflow:'hidden',
+                    textOverflow:'ellipsis',
+                    whiteSpace:'nowrap'
+                  }}>
+                    {u.name}
                     {u.age && (
                       <span style={{ 
-                        fontSize:10, 
-                        background:'#000', 
-                        color:'#fff',
-                        padding:'2px 6px', 
-                        borderRadius:10,
-                        fontWeight:600
+                        marginLeft:6,
+                        fontSize:11,
+                        color:'#666',
+                        fontWeight:500
                       }}>
                         {u.age}
                       </span>
                     )}
                   </div>
-                  <p style={{ 
-                    margin:0, 
-                    fontSize:11, 
-                    color:'#666',
-                    overflow:'hidden',
-                    textOverflow:'ellipsis',
-                    whiteSpace:'nowrap',
-                    width:'100%'
-                  }}>
-                    {u.message||'よろしくお願いします'}
-                  </p>
                 </div>
               </div>
                 ))}
@@ -792,27 +801,24 @@ const ChatListScreen: React.FC = () => {
             </div>
           )}
 
-          {/* 全て/人気モード用のグリッド表示 */}
+          {/* 全て/人気モード用のライブ風グリッド表示 */}
           {(communityMode === 'all' || communityMode === 'popular') && (
-            <div style={{ padding:'0 16px 16px 16px', background:'#fff' }}>
+            <div style={{ padding:'8px 8px 16px 8px', background:'#f8f9fa' }}>
               <div style={{ 
                 display:'grid', 
                 gridTemplateColumns:'repeat(2, 1fr)', 
-                gap:12 
+                gap:8 
               }}>
-            {filteredCommunities.map((c:any)=>(
+            {filteredCommunities.map((c:any, index:number)=>(
               <div 
                 key={c.id} 
                 style={{ 
-                  display:'flex', 
-                  flexDirection:'column',
                   cursor:'pointer',
-                  padding:'16px',
+                  borderRadius:12,
+                  overflow:'hidden',
                   background:'#fff',
-                  border:'1px solid #e5e5e5',
-                  borderRadius:16,
-                  transition:'all .2s ease',
-                  boxShadow:'0 1px 3px rgba(0,0,0,.04)'
+                  boxShadow:'0 2px 8px rgba(0,0,0,0.08)',
+                  transition:'all .2s ease'
                 }} 
                 onClick={()=> {
                   if (!isAuthenticated || !me) {
@@ -823,53 +829,102 @@ const ChatListScreen: React.FC = () => {
                   setShowCommunityDetail(true);
                 }}
                 onMouseOver={e=>{
-                  e.currentTarget.style.boxShadow='0 4px 12px rgba(0,0,0,.08)';
+                  e.currentTarget.style.boxShadow='0 4px 16px rgba(0,0,0,0.12)';
                   e.currentTarget.style.transform='translateY(-2px)';
                 }}
                 onMouseOut={e=>{
-                  e.currentTarget.style.boxShadow='0 1px 3px rgba(0,0,0,.04)';
+                  e.currentTarget.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)';
                   e.currentTarget.style.transform='translateY(0)';
                 }}
               >
+                {/* サムネイル画像エリア */}
                 <div style={{ 
+                  position:'relative',
                   width:'100%',
-                  aspectRatio:'1',
-                  borderRadius:12, 
-                  background:'#f5f5f5',
-                  border:'1px solid #e5e5e5',
-                  display:'flex', 
-                  alignItems:'center', 
-                  justifyContent:'center', 
-                  fontSize:12,
-                  fontWeight:600,
-                  color:'#999',
-                  marginBottom:12
+                  paddingTop:'100%',
+                  background:`linear-gradient(${135 + index * 30}deg, 
+                    ${['#FFE5E5', '#E5F2FF', '#FFF5E5', '#F0E5FF', '#E5FFF0'][index % 5]} 0%, 
+                    ${['#FFC5C5', '#C5E2FF', '#FFE5C5', '#E0C5FF', '#C5FFE0'][index % 5]} 100%)`,
+                  overflow:'hidden'
                 }}>
-                  IMG
-                </div>
-                <div>
-                  <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:6, flexWrap:'wrap' }}>
-                    <span style={{ fontWeight:700, fontSize:14, color:'#000' }}>{c.name}</span>
+                  <div style={{
+                    position:'absolute',
+                    top:0,
+                    left:0,
+                    width:'100%',
+                    height:'100%',
+                    display:'flex',
+                    alignItems:'center',
+                    justifyContent:'center',
+                    fontSize:14,
+                    fontWeight:700,
+                    color:'rgba(0,0,0,0.15)'
+                  }}>
+                    IMG
+                  </div>
+                  
+                  {/* タイトルテキスト（下部） */}
+                  <div style={{
+                    position:'absolute',
+                    bottom:0,
+                    left:0,
+                    right:0,
+                    background:'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
+                    padding:'24px 8px 8px 8px',
+                    color:'#fff'
+                  }}>
+                    <div style={{
+                      fontSize:13,
+                      fontWeight:700,
+                      lineHeight:1.3,
+                      overflow:'hidden',
+                      textOverflow:'ellipsis',
+                      display:'-webkit-box',
+                      WebkitLineClamp:2,
+                      WebkitBoxOrient:'vertical',
+                      textShadow:'0 1px 3px rgba(0,0,0,0.5)'
+                    }}>
+                      {c.name}
+                    </div>
                     {c.category && (
-                      <span style={{ 
+                      <div style={{ 
+                        display:'inline-block',
                         fontSize:10, 
-                        background:'#000',
+                        background:'rgba(0,0,0,0.6)',
                         color:'#fff',
                         padding:'2px 8px', 
                         borderRadius:10,
-                        fontWeight:600
+                        fontWeight:600,
+                        marginTop:4,
+                        backdropFilter:'blur(4px)'
                       }}>
                         {c.category}
-                      </span>
+                      </div>
                     )}
                   </div>
-                  <p style={{ 
-                    margin:0, 
-                    fontSize:12, 
-                    color:'#666'
+                </div>
+                
+                {/* コミュニティ情報（カード下部） */}
+                <div style={{ 
+                  padding:'8px',
+                  display:'flex',
+                  alignItems:'center',
+                  justifyContent:'space-between'
+                }}>
+                  <div style={{
+                    fontSize:12,
+                    color:'#666',
+                    fontWeight:600
                   }}>
-                    {c.members}人 · {c.posts}投稿
-                  </p>
+                    {c.members}人
+                  </div>
+                  <div style={{
+                    fontSize:11,
+                    color:'#999',
+                    fontWeight:500
+                  }}>
+                    {c.posts}投稿
+                  </div>
                 </div>
               </div>
             ))}
