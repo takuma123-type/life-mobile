@@ -1071,7 +1071,7 @@ const ChatListScreen: React.FC = () => {
                 キーワード
               </label>
               <input 
-                placeholder='ユーザー名、趣味で検索...' 
+                placeholder='ユーザー名で検索...' 
                 value={keyword} 
                 onChange={e=>setKeyword(e.target.value)} 
                 style={{ 
@@ -1149,7 +1149,7 @@ const ChatListScreen: React.FC = () => {
                 color:'#6b7280'
               }}>
                 <IconMapPin size={18} color='#6b7280' />
-                都道府県
+                居住地
               </label>
               <button
                 onClick={() => setShowPrefectureModal(true)}
@@ -1339,7 +1339,7 @@ const ChatListScreen: React.FC = () => {
               fontWeight:400,
               cursor:'pointer'
             }}>
-              海外
+              海外(実装予定)
             </button>
           </div>
 
