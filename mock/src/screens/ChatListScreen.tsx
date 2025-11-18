@@ -224,7 +224,7 @@ const ChatListScreen: React.FC = () => {
               transition:'all .2s ease'
             }}
           >
-            ユーザー
+            さがす
             {tab === 'following' && (
               <div style={{
                 position:'absolute',
@@ -1267,7 +1267,7 @@ const ChatListScreen: React.FC = () => {
             <h2 style={{ margin:'0 0 24px', fontSize:20, fontWeight:700 }}>コミュニティを検索</h2>
             
             <div style={{ marginBottom:20 }}>
-              <label style={{ display:'block', marginBottom:8, fontSize:14, fontWeight:600 }}>キーワード</label>
+              <label style={{ display:'block', marginBottom:8, fontSize:14, fontWeight:600, color:'#000' }}>キーワード</label>
               <input 
                 type="text" 
                 placeholder="グループ名で検索..." 
@@ -1275,28 +1275,37 @@ const ChatListScreen: React.FC = () => {
                 onChange={e=>setCommunityKeyword(e.target.value)}
                 style={{ 
                   width:'100%', 
-                  padding:'14px 16px', 
-                  border:'2px solid #000', 
-                  borderRadius:12, 
-                  fontSize:15,
-                  outline:'none'
+                  padding:'16px', 
+                  border:'1px solid #ddd', 
+                  borderRadius:8, 
+                  fontSize:16,
+                  outline:'none',
+                  background:'#fff',
+                  boxSizing:'border-box'
                 }}
               />
             </div>
 
-            <div style={{ marginBottom:28 }}>
-              <label style={{ display:'block', marginBottom:8, fontSize:14, fontWeight:600 }}>カテゴリ</label>
+            <div style={{ marginBottom:32 }}>
+              <label style={{ display:'block', marginBottom:8, fontSize:14, fontWeight:600, color:'#000' }}>カテゴリ</label>
               <select 
                 value={communityCategory} 
                 onChange={e=>setCommunityCategory(e.target.value)}
                 style={{ 
                   width:'100%', 
-                  padding:'14px 16px', 
-                  border:'2px solid #000', 
-                  borderRadius:12, 
-                  fontSize:15,
+                  padding:'16px', 
+                  border:'1px solid #ddd', 
+                  borderRadius:8, 
+                  fontSize:16,
                   outline:'none',
-                  background:'#fff'
+                  background:'#fff',
+                  boxSizing:'border-box',
+                  appearance:'none',
+                  backgroundImage:'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpolyline points=\'6 9 12 15 18 9\'%3e%3c/polyline%3e%3c/svg%3e")',
+                  backgroundRepeat:'no-repeat',
+                  backgroundPosition:'right 12px center',
+                  backgroundSize:'20px',
+                  paddingRight:'40px'
                 }}
               >
                 <option value="">すべて</option>
@@ -1313,17 +1322,18 @@ const ChatListScreen: React.FC = () => {
                 onClick={()=>{setCommunitySearchOpen(false); resetCommunitySearch();}}
                 style={{ 
                   flex:1,
-                  padding:'14px',
+                  padding:'16px',
                   background:'#fff',
-                  border:'2px solid #000',
-                  borderRadius:12,
-                  fontSize:15,
+                  border:'1px solid #ddd',
+                  borderRadius:8,
+                  fontSize:16,
                   fontWeight:600,
                   cursor:'pointer',
-                  transition:'opacity .2s ease'
+                  transition:'background .2s ease',
+                  color:'#000'
                 }}
-                onMouseOver={e=>(e.currentTarget.style.opacity='0.7')}
-                onMouseOut={e=>(e.currentTarget.style.opacity='1')}
+                onMouseOver={e=>(e.currentTarget.style.background='#f5f5f5')}
+                onMouseOut={e=>(e.currentTarget.style.background='#fff')}
               >
                 キャンセル
               </button>
@@ -1331,18 +1341,18 @@ const ChatListScreen: React.FC = () => {
                 onClick={handleCommunitySearch}
                 style={{ 
                   flex:1,
-                  padding:'14px',
+                  padding:'16px',
                   background:'#000',
                   color:'#fff',
                   border:'none',
-                  borderRadius:12,
-                  fontSize:15,
+                  borderRadius:8,
+                  fontSize:16,
                   fontWeight:600,
                   cursor:'pointer',
-                  transition:'opacity .2s ease'
+                  transition:'background .2s ease'
                 }}
-                onMouseOver={e=>(e.currentTarget.style.opacity='0.85')}
-                onMouseOut={e=>(e.currentTarget.style.opacity='1')}
+                onMouseOver={e=>(e.currentTarget.style.background='#333')}
+                onMouseOut={e=>(e.currentTarget.style.background='#000')}
               >
                 検索する
               </button>
