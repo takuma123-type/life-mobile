@@ -99,15 +99,16 @@ const SplashScreen: React.FC = () => {
       
       <div style={{ textAlign:'center', position: 'relative', zIndex: 2 }}>
         <div className="logo-container">
-          <img 
-            src="/icon/generated_image_transparent_test.png"
-            alt="Talk! Logo" 
-            style={{ 
-              width: 250, 
-              height: 'auto',
-              filter: 'drop-shadow(0 4px 20px rgba(0, 0, 0, 0.15)) drop-shadow(0 8px 40px rgba(14, 165, 233, 0.3))'
-            }} 
-          />
+          <div style={{
+            fontSize: 80,
+            fontWeight: 900,
+            letterSpacing: '0.05em',
+            color: '#0EA5E9',
+            textShadow: '0 4px 20px rgba(0, 0, 0, 0.15), 0 8px 40px rgba(14, 165, 233, 0.3)',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+          }}>
+            LIFE
+          </div>
         </div>
       </div>
     </div>

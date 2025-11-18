@@ -813,8 +813,8 @@ const ChatListScreen: React.FC = () => {
             <div style={{ padding:'8px 8px 16px 8px', background:'#fff' }}>
               <div style={{ 
                 display:'grid', 
-                gridTemplateColumns:'repeat(2, 1fr)', 
-                gap:8 
+                gridTemplateColumns:'repeat(3, 1fr)', 
+                gap:6 
               }}>
             {filteredCommunities.map((c:any, index:number)=>(
               <div 
@@ -874,13 +874,13 @@ const ChatListScreen: React.FC = () => {
                     left:0,
                     right:0,
                     background:'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
-                    padding:'24px 8px 8px 8px',
+                    padding:'20px 6px 6px 6px',
                     color:'#fff'
                   }}>
                     <div style={{
-                      fontSize:13,
+                      fontSize:11,
                       fontWeight:700,
-                      lineHeight:1.3,
+                      lineHeight:1.2,
                       overflow:'hidden',
                       textOverflow:'ellipsis',
                       display:'-webkit-box',
@@ -893,13 +893,13 @@ const ChatListScreen: React.FC = () => {
                     {c.category && (
                       <div style={{ 
                         display:'inline-block',
-                        fontSize:10, 
+                        fontSize:9, 
                         background:'rgba(0,0,0,0.6)',
                         color:'#fff',
-                        padding:'2px 8px', 
+                        padding:'2px 6px', 
                         borderRadius:10,
                         fontWeight:600,
-                        marginTop:4,
+                        marginTop:3,
                         backdropFilter:'blur(4px)'
                       }}>
                         {c.category}
@@ -910,20 +910,20 @@ const ChatListScreen: React.FC = () => {
                 
                 {/* コミュニティ情報（カード下部） */}
                 <div style={{ 
-                  padding:'8px',
+                  padding:'6px',
                   display:'flex',
                   alignItems:'center',
                   justifyContent:'space-between'
                 }}>
                   <div style={{
-                    fontSize:12,
+                    fontSize:10,
                     color:'#666',
                     fontWeight:600
                   }}>
                     {c.members}人
                   </div>
                   <div style={{
-                    fontSize:11,
+                    fontSize:9,
                     color:'#999',
                     fontWeight:500
                   }}>
