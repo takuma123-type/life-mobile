@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { closeSmsModal, openSmsModal, setSmsPhone, setSmsStep, setSmsSentCode, setSmsVerified, navigate, openLoginModal } from '../../store/uiSlice';
-import { IconX } from '../icons';
+import { IconX, IconLock, IconShield, IconUser } from '../icons';
 
 const maskPhone = (phone:string) => phone.replace(/(\d{3})(\d+)(\d{3})/, (m,p1,mid,p3)=> p1 + mid.replace(/\d/g,'*') + p3);
 
@@ -13,6 +13,7 @@ const SmsVerificationModal: React.FC = () => {
   const sentCode = useAppSelector((s:any)=> s.ui.smsSentCode);
   const [loading, setLoading] = useState(false);
   const [codeInput, setCodeInput] = useState('');
+  const [password, setPassword] = useState('');
 
   if(!open) return null;
 
@@ -45,101 +46,383 @@ const SmsVerificationModal: React.FC = () => {
   const resend = () => { sendCode(); };
 
   return (
-    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,.5)', backdropFilter:'blur(6px)', display:'flex', alignItems:'center', justifyContent:'center', padding:20, zIndex:300, animation:'fadeIn .3s ease' }} onClick={()=>dispatch(closeSmsModal())}>
-      <div style={{ background:'#fff', width:'100%', maxWidth:440, borderRadius:24, padding:'40px 32px', position:'relative', boxShadow:'0 20px 60px rgba(0,0,0,.15)', animation:'modalScale .35s cubic-bezier(.34,1.56,.64,1)' }} onClick={e=>e.stopPropagation()}>
-        <button aria-label='閉じる' onClick={()=>dispatch(closeSmsModal())} style={{ position:'absolute', top:16, right:16, background:'rgba(0,0,0,.05)', width:36, height:36, borderRadius:'50%', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', transition:'background .2s ease' }} onMouseOver={e=>(e.currentTarget as HTMLButtonElement).style.background='rgba(0,0,0,.1)'} onMouseOut={e=>(e.currentTarget as HTMLButtonElement).style.background='rgba(0,0,0,.05)'}><IconX size={20} /></button>
-        <h2 style={{ margin:'0 0 8px', textAlign:'center', fontSize:26, fontWeight:700 }}>新規登録</h2>
-        <p style={{ margin:'0 0 32px', fontSize:14, textAlign:'center', color:'#666' }}>電話番号による本人確認を行います</p>
-
-        {step === 'phone' && (
-          <div style={{ marginBottom:24 }}>
-            <label style={{ display:'block', fontWeight:600, fontSize:14, marginBottom:8 }}>電話番号</label>
-            <input
-              type='tel'
-              value={phone}
-              onChange={e=>dispatch(setSmsPhone(e.target.value))}
-              placeholder='090-1234-5678'
-              style={{ width:'100%', padding:'14px 16px', fontSize:15, border:'2px solid #000', borderRadius:12, outline:'none' }}
-            />
-            <p style={{ fontSize:12, color:'#666', margin:'8px 0 0' }}>※ハイフンなしでも入力可能です</p>
-            <div style={{ display:'flex', gap:12, marginTop:24 }}>
-              <button onClick={sendCode} disabled={loading} style={{ flex:1, background:'#000', color:'#fff', border:'none', padding:'16px', fontSize:15, fontWeight:600, borderRadius:12, cursor: loading?'not-allowed':'pointer', opacity: loading?.7:1, transition:'opacity .2s ease' }} onMouseOver={e=>!loading && (e.currentTarget.style.opacity='0.85')} onMouseOut={e=>!loading && (e.currentTarget.style.opacity='1')}>
-                {loading? '送信中...' : '送信'}
-              </button>
-              <button onClick={()=>dispatch(closeSmsModal())} style={{ flex:1, background:'#fff', color:'#000', border:'2px solid #000', padding:'16px', fontSize:15, fontWeight:600, borderRadius:12, cursor:'pointer', transition:'background .2s ease' }} onMouseOver={e=>(e.currentTarget.style.background='#f5f5f5')} onMouseOut={e=>(e.currentTarget.style.background='#fff')}>キャンセル</button>
-            </div>
-          </div>
-        )}
-
-        {step === 'code' && (
-          <div>
-            <div style={{ background:'#f5f5f5', border:'1px solid #e5e5e5', borderRadius:12, padding:'12px 16px', marginBottom:24, textAlign:'center' }}>
-              <p style={{ fontSize:13, margin:0, color:'#666' }}><strong style={{ fontSize:15, color:'#000' }}>{maskPhone(phone)}</strong> にSMSを送信しました</p>
-            </div>
-            <label style={{ display:'block', fontWeight:600, fontSize:14, marginBottom:8 }}>認証コード（6桁）</label>
-            <input
-              type='text'
-              value={codeInput}
-              onChange={e=> setCodeInput(e.target.value.replace(/\D/g,'').slice(0,6))}
-              placeholder='・・・・・・'
-              autoFocus
-              style={{ width:'100%', padding:'20px 16px', fontSize:32, textAlign:'center', letterSpacing:'12px', border:'2px solid #000', borderRadius:12, fontWeight:700, background:'#fff', outline:'none' }}
-            />
-            <div style={{ display:'flex', gap:12, marginTop:24, marginBottom:16 }}>
-              <button onClick={verify} style={{ flex:1, background:'#000', color:'#fff', border:'none', padding:'16px', fontSize:15, fontWeight:600, borderRadius:12, cursor:'pointer', transition:'opacity .2s ease' }} onMouseOver={e=>(e.currentTarget.style.opacity='0.85')} onMouseOut={e=>(e.currentTarget.style.opacity='1')}>確認</button>
-              <button onClick={()=>dispatch(setSmsStep('phone'))} style={{ flex:1, background:'#fff', color:'#000', border:'2px solid #000', padding:'16px', fontSize:15, fontWeight:600, borderRadius:12, cursor:'pointer', transition:'background .2s ease' }} onMouseOver={e=>(e.currentTarget.style.background='#f5f5f5')} onMouseOut={e=>(e.currentTarget.style.background='#fff')}>戻る</button>
-            </div>
-            <button onClick={resend} style={{ background:'none', border:'none', color:'#000', padding:'12px 16px', fontSize:13, cursor:'pointer', width:'100%', fontWeight:600, borderRadius:10, transition:'background .2s ease', textDecoration:'underline' }} onMouseOver={e=>(e.currentTarget.style.background='#f5f5f5')} onMouseOut={e=>(e.currentTarget.style.background='none')}>認証コードを再送信</button>
-          </div>
-        )}
-
-        {/* 区切り線 */}
+    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', display:'flex', alignItems:'flex-end', justifyContent:'center', padding:0, zIndex:300, animation:'fadeIn .3s ease' }}>
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slideUp {
+          from { transform: translateY(100%); }
+          to { transform: translateY(0); }
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-10px); }
+          75% { transform: translateX(10px); }
+        }
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+        }
+      `}</style>
+      <div style={{ background:'#fff', width:'100%', maxHeight:'90vh', borderRadius:'24px 24px 0 0', padding:'0', position:'relative', overflow:'auto', animation:'slideUp .4s cubic-bezier(0.16, 1, 0.3, 1)' }} onClick={e=>e.stopPropagation()}>
+        {/* ヘッダー */}
         <div style={{ 
-          position:'relative', 
-          margin:'24px 0 20px',
-          textAlign:'center'
+          position:'sticky',
+          top:0,
+          background:'linear-gradient(180deg, #ffffff 0%, #ffffff 100%)',
+          backdropFilter:'blur(10px)',
+          borderBottom:'1px solid #f0f0f0',
+          padding:'20px 24px 16px',
+          display:'flex',
+          alignItems:'center',
+          justifyContent:'space-between',
+          zIndex:10,
+          boxShadow:'0 2px 8px rgba(0,0,0,0.02)'
         }}>
-          <div style={{ 
-            position:'absolute', 
-            top:'50%', 
-            left:0, 
-            right:0, 
-            height:1, 
-            background:'#e5e5e5' 
-          }} />
-          <span style={{ 
-            position:'relative', 
-            display:'inline-block', 
-            padding:'0 16px', 
-            fontSize:13, 
-            color:'#666', 
-            background:'#fff' 
-          }}>
-            または
-          </span>
+          <button 
+            onClick={()=>dispatch(closeSmsModal())} 
+            style={{ 
+              background:'rgba(14, 165, 233, 0.1)', 
+              border:'none', 
+              color:'#0EA5E9', 
+              fontSize:15,
+              fontWeight:600,
+              cursor:'pointer',
+              padding:'8px 16px',
+              borderRadius:20,
+              transition:'all .2s ease',
+              display:'flex',
+              alignItems:'center',
+              gap:4
+            }}
+            onMouseOver={e=>{e.currentTarget.style.background='rgba(14, 165, 233, 0.2)'; e.currentTarget.style.transform='scale(1.05)';}}
+            onMouseOut={e=>{e.currentTarget.style.background='rgba(14, 165, 233, 0.1)'; e.currentTarget.style.transform='scale(1)';}}
+          >
+            <IconX size={16} />
+            閉じる
+          </button>
+          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+            <h2 style={{ margin:0, fontSize:18, fontWeight:700, color:'#1a1a1a' }}>新規登録</h2>
+          </div>
+          <div style={{ width:80 }}></div>
         </div>
 
-        {/* ログイン */}
-        <div style={{ textAlign:'center', fontSize:14, color:'#666' }}>
-          アカウントをお持ちの方
-          <button 
-            onClick={() => {
-              dispatch(closeSmsModal());
-              dispatch(openLoginModal());
-            }}
-            style={{ 
-              background:'none', 
-              border:'none', 
-              color:'#000', 
-              cursor:'pointer', 
-              fontWeight:700,
-              fontSize:15,
-              marginLeft:8,
-              textDecoration:'underline'
-            }}
-          >
-            ログイン
-          </button>
+        <div style={{ padding:'32px 24px', maxWidth:480, margin:'0 auto' }}>
+          {step === 'phone' && (
+            <div style={{ marginBottom:24 }}>
+
+              {/* 電話番号入力 */}
+              <div style={{ marginBottom:24 }}>
+                <label style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:15, marginBottom:12, color:'#1a1a1a' }}>
+                  <IconUser size={20} color='#0EA5E9' />
+                  電話番号
+                </label>
+                <div style={{ position:'relative' }}>
+                  <input
+                    type='tel'
+                    value={phone}
+                    onChange={e=>dispatch(setSmsPhone(e.target.value))}
+                    placeholder='090-1234-5678'
+                    style={{ 
+                      width:'100%', 
+                      padding:'18px 20px', 
+                      fontSize:16, 
+                      border:'2px solid #e5e7eb', 
+                      borderRadius:12, 
+                      outline:'none',
+                      boxSizing:'border-box',
+                      transition:'all .3s ease',
+                      fontWeight:500
+                    }}
+                    onFocus={e => {
+                      e.currentTarget.style.borderColor='#0EA5E9';
+                      e.currentTarget.style.boxShadow='0 0 0 4px rgba(14, 165, 233, 0.1)';
+                    }}
+                    onBlur={e => {
+                      e.currentTarget.style.borderColor='#e5e7eb';
+                      e.currentTarget.style.boxShadow='none';
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* パスワード入力 */}
+              <div style={{ marginBottom:32 }}>
+                <label style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:15, marginBottom:12, color:'#1a1a1a' }}>
+                  <IconLock size={20} color='#0EA5E9' />
+                  パスワード
+                </label>
+                <div style={{ position:'relative' }}>
+                  <input
+                    type='password'
+                    value={password}
+                    onChange={e=>setPassword(e.target.value)}
+                    placeholder='8文字以上のパスワード'
+                    style={{ 
+                      width:'100%', 
+                      padding:'18px 20px', 
+                      fontSize:16, 
+                      border:'2px solid #e5e7eb', 
+                      borderRadius:12, 
+                      outline:'none',
+                      boxSizing:'border-box',
+                      transition:'all .3s ease',
+                      fontWeight:500
+                    }}
+                    onFocus={e => {
+                      e.currentTarget.style.borderColor='#0EA5E9';
+                      e.currentTarget.style.boxShadow='0 0 0 4px rgba(14, 165, 233, 0.1)';
+                    }}
+                    onBlur={e => {
+                      e.currentTarget.style.borderColor='#e5e7eb';
+                      e.currentTarget.style.boxShadow='none';
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* 次へボタン */}
+              <button 
+                onClick={sendCode} 
+                disabled={loading} 
+                style={{ 
+                  width:'100%', 
+                  background: loading ? '#cbd5e1' : 'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)', 
+                  color:'#fff', 
+                  border:'none', 
+                  padding:'18px', 
+                  fontSize:17, 
+                  fontWeight:700, 
+                  borderRadius:12, 
+                  cursor: loading?'not-allowed':'pointer', 
+                  transition:'all .3s ease',
+                  marginBottom:20,
+                  boxShadow: loading ? 'none' : '0 4px 16px rgba(14, 165, 233, 0.3)',
+                  transform: loading ? 'scale(1)' : 'scale(1)',
+                  position:'relative',
+                  overflow:'hidden'
+                }} 
+                onMouseOver={e=>!loading && (e.currentTarget.style.transform='scale(1.02)')} 
+                onMouseOut={e=>!loading && (e.currentTarget.style.transform='scale(1)')}
+              >
+                {loading? (
+                  <span style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}>
+                    <span style={{ 
+                      width:16, 
+                      height:16, 
+                      border:'2px solid #fff',
+                      borderTopColor:'transparent',
+                      borderRadius:'50%',
+                      animation:'spin 0.8s linear infinite',
+                      display:'inline-block'
+                    }}></span>
+                    送信中...
+                  </span>
+                ) : '認証コードを送信'}
+              </button>
+              <style>{`
+                @keyframes spin {
+                  to { transform: rotate(360deg); }
+                }
+              `}</style>
+
+              {/* ログインへのリンク */}
+              <div style={{ 
+                textAlign:'center',
+                padding:'20px 0',
+                borderTop:'1px solid #f0f0f0',
+                marginTop:20
+              }}>
+                <p style={{ fontSize:14, color:'#6b7280', margin:'0 0 12px' }}>
+                  すでにアカウントをお持ちの方
+                </p>
+                <button 
+                  onClick={() => {
+                    dispatch(closeSmsModal());
+                    dispatch(openLoginModal());
+                  }}
+                  style={{ 
+                    background:'rgba(14, 165, 233, 0.1)', 
+                    border:'2px solid #0EA5E9', 
+                    color:'#0EA5E9', 
+                    padding:'14px 32px',
+                    fontSize:16,
+                    fontWeight:700,
+                    borderRadius:12,
+                    cursor:'pointer',
+                    transition:'all .3s ease',
+                    display:'inline-flex',
+                    alignItems:'center',
+                    gap:8
+                  }}
+                  onMouseOver={e=>{
+                    e.currentTarget.style.background='#0EA5E9';
+                    e.currentTarget.style.color='#fff';
+                    e.currentTarget.style.transform='scale(1.05)';
+                  }}
+                  onMouseOut={e=>{
+                    e.currentTarget.style.background='rgba(14, 165, 233, 0.1)';
+                    e.currentTarget.style.color='#0EA5E9';
+                    e.currentTarget.style.transform='scale(1)';
+                  }}
+                >
+                  ログインはこちら
+                </button>
+              </div>
+
+              {/* フッター */}
+              <div style={{ 
+                fontSize:12, 
+                color:'#9ca3af', 
+                textAlign:'center',
+                lineHeight:1.8,
+                marginTop:24,
+                padding:'20px 0'
+              }}>
+                登録することで、
+                <a href="#" style={{ color:'#0EA5E9', textDecoration:'none', fontWeight:600 }}>利用規約</a>
+                と
+                <a href="#" style={{ color:'#0EA5E9', textDecoration:'none', fontWeight:600 }}>プライバシーポリシー</a>
+                に同意したものとみなされます
+              </div>
+            </div>
+          )}
+
+          {step === 'code' && (
+            <div>
+              {/* 説明文 */}
+              <div style={{ 
+                background:'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)', 
+                borderRadius:16, 
+                padding:'16px 20px', 
+                marginBottom:32,
+                boxShadow:'0 4px 20px rgba(14, 165, 233, 0.2)',
+                display:'flex',
+                alignItems:'center',
+                gap:12
+              }}>
+                <IconShield size={24} color='#fff' />
+                <div>
+                  <p style={{ margin:0, fontSize:15, color:'#fff', fontWeight:600, lineHeight:1.5 }}>
+                    SMSを送信しました
+                  </p>
+                  <p style={{ margin:'4px 0 0', fontSize:14, color:'rgba(255,255,255,0.9)' }}>
+                    {maskPhone(phone)}
+                  </p>
+                </div>
+              </div>
+
+              <label style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:15, marginBottom:12, color:'#1a1a1a' }}>
+                <IconLock size={20} color='#0EA5E9' />
+                認証コード（6桁）
+              </label>
+              <input
+                type='text'
+                value={codeInput}
+                onChange={e=> setCodeInput(e.target.value.replace(/\D/g,'').slice(0,6))}
+                placeholder='• • • • • •'
+                autoFocus
+                style={{ 
+                  width:'100%', 
+                  padding:'20px', 
+                  fontSize:32, 
+                  textAlign:'center', 
+                  letterSpacing:'12px', 
+                  border:'2px solid #e5e7eb', 
+                  borderRadius:12, 
+                  fontWeight:700, 
+                  background:'#fff', 
+                  outline:'none', 
+                  boxSizing:'border-box',
+                  transition:'all .3s ease'
+                }}
+                onFocus={e => {
+                  e.currentTarget.style.borderColor='#0EA5E9';
+                  e.currentTarget.style.boxShadow='0 0 0 4px rgba(14, 165, 233, 0.1)';
+                }}
+                onBlur={e => {
+                  e.currentTarget.style.borderColor='#e5e7eb';
+                  e.currentTarget.style.boxShadow='none';
+                }}
+              />
+              {/* 確認ボタン */}
+              <button 
+                onClick={verify} 
+                style={{ 
+                  width:'100%', 
+                  background:'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)', 
+                  color:'#fff', 
+                  border:'none', 
+                  padding:'18px', 
+                  fontSize:17, 
+                  fontWeight:700, 
+                  borderRadius:12, 
+                  cursor:'pointer', 
+                  transition:'all .3s ease', 
+                  marginTop:24,
+                  boxShadow:'0 4px 16px rgba(14, 165, 233, 0.3)'
+                }} 
+                onMouseOver={e=>{e.currentTarget.style.transform='scale(1.02)';}} 
+                onMouseOut={e=>{e.currentTarget.style.transform='scale(1)';}}
+              >
+                確認して次へ
+              </button>
+
+              {/* 戻る・再送信 */}
+              <div style={{ 
+                display:'flex',
+                gap:12,
+                marginTop:16
+              }}>
+                <button 
+                  onClick={()=>dispatch(setSmsStep('phone'))} 
+                  style={{ 
+                    flex:1,
+                    background:'#fff', 
+                    color:'#6b7280', 
+                    border:'2px solid #e5e7eb', 
+                    padding:'14px', 
+                    fontSize:15, 
+                    fontWeight:600, 
+                    borderRadius:12, 
+                    cursor:'pointer', 
+                    transition:'all .3s ease'
+                  }} 
+                  onMouseOver={e=>{e.currentTarget.style.background='#f9fafb'; e.currentTarget.style.borderColor='#d1d5db';}} 
+                  onMouseOut={e=>{e.currentTarget.style.background='#fff'; e.currentTarget.style.borderColor='#e5e7eb';}}
+                >
+                  戻る
+                </button>
+                <button 
+                  onClick={resend} 
+                  style={{ 
+                    flex:1,
+                    background:'rgba(14, 165, 233, 0.1)', 
+                    border:'2px solid #0EA5E9', 
+                    color:'#0EA5E9', 
+                    padding:'14px',
+                    fontSize:15,
+                    fontWeight:600,
+                    borderRadius:12,
+                    cursor:'pointer',
+                    transition:'all .3s ease'
+                  }} 
+                  onMouseOver={e=>{
+                    e.currentTarget.style.background='#0EA5E9';
+                    e.currentTarget.style.color='#fff';
+                  }} 
+                  onMouseOut={e=>{
+                    e.currentTarget.style.background='rgba(14, 165, 233, 0.1)';
+                    e.currentTarget.style.color='#0EA5E9';
+                  }}
+                >
+                  再送信
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

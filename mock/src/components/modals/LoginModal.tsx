@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { closeLoginModal, setAuthenticated, setRegistered, navigate, openSmsModal } from '../../store/uiSlice';
 import { setMe } from '../../store/userSlice';
-import { IconX } from '../icons';
+import { IconX, IconUser, IconLock, IconShield } from '../icons';
 
 const LoginModal: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -43,223 +43,227 @@ const LoginModal: React.FC = () => {
   };
 
   return (
-    <div 
-      style={{ 
-        position:'fixed', 
-        inset:0, 
-        background:'rgba(0,0,0,.5)', 
-        backdropFilter:'blur(6px)',
-        display:'flex', 
-        alignItems:'center',
-        justifyContent:'center',
-        padding:20,
-        zIndex:300,
-        animation:'fadeIn .3s ease'
-      }} 
-      onClick={() => dispatch(closeLoginModal())}
-    >
-      <div 
-        style={{ 
-          background:'#fff',
-          width:'100%',
-          maxWidth:440,
-          borderRadius:24,
-          padding:'40px 32px',
-          position:'relative',
-          boxShadow:'0 20px 60px rgba(0,0,0,.15)',
-          animation:'modalScale .35s cubic-bezier(.34,1.56,.64,1)'
-        }} 
-        onClick={e => e.stopPropagation()}
-      >
-        {/* 閉じるボタン */}
-        <button 
-          aria-label='閉じる' 
-          onClick={() => dispatch(closeLoginModal())} 
-          style={{ 
-            position:'absolute', 
-            top:16, 
-            right:16, 
-            background:'rgba(0,0,0,.05)', 
-            width:36, 
-            height:36, 
-            borderRadius:'50%', 
-            border:'none', 
-            cursor:'pointer', 
-            display:'flex', 
-            alignItems:'center', 
-            justifyContent:'center', 
-            transition:'background .2s ease' 
-          }} 
-          onMouseOver={e => (e.currentTarget.style.background = 'rgba(0,0,0,.1)')} 
-          onMouseOut={e => (e.currentTarget.style.background = 'rgba(0,0,0,.05)')}
-        >
-          <IconX size={20} />
-        </button>
-
-        {/* タイトル */}
-        <h2 style={{ 
-          margin:'0 0 8px', 
-          fontSize:26, 
-          fontWeight:700,
-          textAlign:'center'
-        }}>
-          ログイン
-        </h2>
-        <p style={{ 
-          margin:'0 0 32px', 
-          fontSize:14, 
-          color:'#666',
-          textAlign:'center'
-        }}>
-          LIFEへようこそ
-        </p>
-
-        {/* 電話番号 */}
-        <div style={{ marginBottom:20 }}>
-          <label style={{ 
-            display:'block', 
-            marginBottom:8, 
-            fontSize:14, 
-            fontWeight:600 
-          }}>
-            電話番号
-          </label>
-          <input
-            type="tel"
-            placeholder="090-1234-5678"
-            value={phone}
-            onChange={e => setPhone(e.target.value)}
-            style={{
-              width:'100%',
-              padding:'14px 16px',
-              border:'2px solid #000',
-              borderRadius:12,
-              fontSize:15,
-              outline:'none'
-            }}
-          />
-        </div>
-
-        {/* パスワード */}
-        <div style={{ marginBottom:24 }}>
-          <label style={{ 
-            display:'block', 
-            marginBottom:8, 
-            fontSize:14, 
-            fontWeight:600 
-          }}>
-            パスワード
-          </label>
-          <input
-            type="password"
-            placeholder="パスワード"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleLogin()}
-            style={{
-              width:'100%',
-              padding:'14px 16px',
-              border:'2px solid #000',
-              borderRadius:12,
-              fontSize:15,
-              outline:'none'
-            }}
-          />
-        </div>
-
-        {/* ログインボタン */}
-        <button
-          onClick={handleLogin}
-          disabled={loading}
-          style={{
-            width:'100%',
-            padding:'16px',
-            background:'#000',
-            color:'#fff',
-            border:'none',
-            borderRadius:12,
-            fontSize:15,
-            fontWeight:600,
-            cursor: loading ? 'not-allowed' : 'pointer',
-            marginBottom:16,
-            opacity: loading ? 0.7 : 1,
-            transition:'opacity .2s ease'
-          }}
-          onMouseOver={e => !loading && (e.currentTarget.style.opacity = '0.85')}
-          onMouseOut={e => !loading && (e.currentTarget.style.opacity = '1')}
-        >
-          {loading ? 'ログイン中...' : 'ログイン'}
-        </button>
-
-        {/* パスワード忘れた */}
+    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', display:'flex', alignItems:'flex-end', justifyContent:'center', padding:0, zIndex:300, animation:'fadeIn .3s ease' }}>
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slideUp {
+          from { transform: translateY(100%); }
+          to { transform: translateY(0); }
+        }
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+      <div style={{ background:'#fff', width:'100%', maxHeight:'90vh', borderRadius:'24px 24px 0 0', padding:'0', position:'relative', overflow:'auto', animation:'slideUp .4s cubic-bezier(0.16, 1, 0.3, 1)' }} onClick={e=>e.stopPropagation()}>
+        {/* ヘッダー */}
         <div style={{ 
-          textAlign:'center', 
-          fontSize:13, 
-          color:'#666',
-          marginBottom:20
+          position:'sticky',
+          top:0,
+          background:'linear-gradient(180deg, #ffffff 0%, #ffffff 100%)',
+          backdropFilter:'blur(10px)',
+          borderBottom:'1px solid #f0f0f0',
+          padding:'20px 24px 16px',
+          display:'flex',
+          alignItems:'center',
+          justifyContent:'space-between',
+          zIndex:10,
+          boxShadow:'0 2px 8px rgba(0,0,0,0.02)'
         }}>
           <button 
+            onClick={()=>dispatch(closeLoginModal())} 
             style={{ 
-              background:'none', 
+              background:'rgba(14, 165, 233, 0.1)', 
               border:'none', 
-              color:'#000', 
-              cursor:'pointer', 
+              color:'#0EA5E9', 
+              fontSize:15,
               fontWeight:600,
-              textDecoration:'underline',
-              fontSize:13
+              cursor:'pointer',
+              padding:'8px 16px',
+              borderRadius:20,
+              transition:'all .2s ease',
+              display:'flex',
+              alignItems:'center',
+              gap:4
             }}
+            onMouseOver={e=>{e.currentTarget.style.background='rgba(14, 165, 233, 0.2)'; e.currentTarget.style.transform='scale(1.05)';}}
+            onMouseOut={e=>{e.currentTarget.style.background='rgba(14, 165, 233, 0.1)'; e.currentTarget.style.transform='scale(1)';}}
           >
-            パスワードを忘れた場合
+            <IconX size={16} />
+            閉じる
           </button>
+          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+            <IconShield size={20} color='#0EA5E9' />
+            <h2 style={{ margin:0, fontSize:18, fontWeight:700, color:'#1a1a1a' }}>ログイン</h2>
+          </div>
+          <div style={{ width:80 }}></div>
         </div>
 
-        {/* 区切り線 */}
-        <div style={{ 
-          position:'relative', 
-          margin:'20px 0',
-          textAlign:'center'
-        }}>
-          <div style={{ 
-            position:'absolute', 
-            top:'50%', 
-            left:0, 
-            right:0, 
-            height:1, 
-            background:'#e5e5e5' 
-          }} />
-          <span style={{ 
-            position:'relative', 
-            display:'inline-block', 
-            padding:'0 16px', 
-            fontSize:13, 
-            color:'#666', 
-            background:'#fff' 
-          }}>
-            または
-          </span>
-        </div>
+        <div style={{ padding:'32px 24px', maxWidth:480, margin:'0 auto' }}>
+          {/* 電話番号入力 */}
+          <div style={{ marginBottom:24 }}>
+            <label style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:15, marginBottom:12, color:'#1a1a1a' }}>
+              <IconUser size={20} color='#0EA5E9' />
+              電話番号
+            </label>
+            <input
+              type='tel'
+              value={phone}
+              onChange={e=>setPhone(e.target.value)}
+              placeholder='090-1234-5678'
+              style={{ 
+                width:'100%', 
+                padding:'18px 20px', 
+                fontSize:16, 
+                border:'2px solid #e5e7eb', 
+                borderRadius:12, 
+                outline:'none',
+                boxSizing:'border-box',
+                transition:'all .3s ease',
+                fontWeight:500
+              }}
+              onFocus={e => {
+                e.currentTarget.style.borderColor='#0EA5E9';
+                e.currentTarget.style.boxShadow='0 0 0 4px rgba(14, 165, 233, 0.1)';
+              }}
+              onBlur={e => {
+                e.currentTarget.style.borderColor='#e5e7eb';
+                e.currentTarget.style.boxShadow='none';
+              }}
+            />
+          </div>
 
-        {/* 新規登録 */}
-        <div style={{ textAlign:'center', fontSize:14, color:'#666' }}>
-          アカウントをお持ちでない方<br />
+          {/* パスワード入力 */}
+          <div style={{ marginBottom:32 }}>
+            <label style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:15, marginBottom:12, color:'#1a1a1a' }}>
+              <IconLock size={20} color='#0EA5E9' />
+              パスワード
+            </label>
+            <input
+              type='password'
+              value={password}
+              onChange={e=>setPassword(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleLogin()}
+              placeholder='8文字以上のパスワード'
+              style={{ 
+                width:'100%', 
+                padding:'18px 20px', 
+                fontSize:16, 
+                border:'2px solid #e5e7eb', 
+                borderRadius:12, 
+                outline:'none',
+                boxSizing:'border-box',
+                transition:'all .3s ease',
+                fontWeight:500
+              }}
+              onFocus={e => {
+                e.currentTarget.style.borderColor='#0EA5E9';
+                e.currentTarget.style.boxShadow='0 0 0 4px rgba(14, 165, 233, 0.1)';
+              }}
+              onBlur={e => {
+                e.currentTarget.style.borderColor='#e5e7eb';
+                e.currentTarget.style.boxShadow='none';
+              }}
+            />
+          </div>
+
+          {/* ログインボタン */}
           <button 
-            onClick={() => {
-              dispatch(closeLoginModal());
-              dispatch(openSmsModal());
-            }}
+            onClick={handleLogin} 
+            disabled={loading} 
             style={{ 
-              background:'none', 
+              width:'100%', 
+              background: loading ? '#cbd5e1' : 'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)', 
+              color:'#fff', 
               border:'none', 
-              color:'#000', 
-              cursor:'pointer', 
-              fontWeight:700,
-              fontSize:15,
-              marginTop:8,
-              textDecoration:'underline'
-            }}
+              padding:'18px', 
+              fontSize:17, 
+              fontWeight:700, 
+              borderRadius:12, 
+              cursor: loading?'not-allowed':'pointer', 
+              transition:'all .3s ease',
+              marginBottom:20,
+              boxShadow: loading ? 'none' : '0 4px 16px rgba(14, 165, 233, 0.3)'
+            }} 
+            onMouseOver={e=>!loading && (e.currentTarget.style.transform='scale(1.02)')} 
+            onMouseOut={e=>!loading && (e.currentTarget.style.transform='scale(1)')}
           >
-            新規登録
+            {loading? (
+              <span style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}>
+                <span style={{ 
+                  width:16, 
+                  height:16, 
+                  border:'2px solid #fff',
+                  borderTopColor:'transparent',
+                  borderRadius:'50%',
+                  animation:'spin 0.8s linear infinite',
+                  display:'inline-block'
+                }}></span>
+                ログイン中...
+              </span>
+            ) : 'ログイン'}
           </button>
+
+          {/* 新規登録へのリンク */}
+          <div style={{ 
+            textAlign:'center',
+            padding:'20px 0',
+            borderTop:'1px solid #f0f0f0',
+            marginTop:20
+          }}>
+            <p style={{ fontSize:14, color:'#6b7280', margin:'0 0 12px' }}>
+              すでにアカウントをお持ちの方
+            </p>
+            <button 
+              onClick={() => {
+                dispatch(closeLoginModal());
+                dispatch(openSmsModal());
+              }}
+              style={{ 
+                background:'rgba(14, 165, 233, 0.1)', 
+                border:'2px solid #0EA5E9', 
+                color:'#0EA5E9', 
+                padding:'14px 32px',
+                fontSize:16,
+                fontWeight:700,
+                borderRadius:12,
+                cursor:'pointer',
+                transition:'all .3s ease',
+                display:'inline-flex',
+                alignItems:'center',
+                gap:8
+              }}
+              onMouseOver={e=>{
+                e.currentTarget.style.background='#0EA5E9';
+                e.currentTarget.style.color='#fff';
+                e.currentTarget.style.transform='scale(1.05)';
+              }}
+              onMouseOut={e=>{
+                e.currentTarget.style.background='rgba(14, 165, 233, 0.1)';
+                e.currentTarget.style.color='#0EA5E9';
+                e.currentTarget.style.transform='scale(1)';
+              }}
+            >
+              新規登録はこちら
+            </button>
+          </div>
+
+          {/* フッター */}
+          <div style={{ 
+            fontSize:12, 
+            color:'#9ca3af', 
+            textAlign:'center',
+            lineHeight:1.8,
+            marginTop:24,
+            padding:'20px 0'
+          }}>
+            <a href="#" style={{ color:'#0EA5E9', textDecoration:'none', fontWeight:600 }}>利用規約</a>
+            と
+            <a href="#" style={{ color:'#0EA5E9', textDecoration:'none', fontWeight:600 }}>プライバシーポリシー</a>
+            に同意したものとみなされます
+          </div>
         </div>
       </div>
     </div>
