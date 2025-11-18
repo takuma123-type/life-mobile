@@ -1245,117 +1245,230 @@ const ChatListScreen: React.FC = () => {
           style={{ 
             position:'fixed', 
             inset:0, 
-            background:'rgba(0,0,0,.5)', 
-            backdropFilter:'blur(6px)',
-            display:'flex', 
-            alignItems:'flex-end',
-            zIndex:100
+            background:'#fff',
+            zIndex:100,
+            display:'flex',
+            flexDirection:'column',
+            height:'100vh',
+            overflow:'hidden',
+            animation:'slideInFromBottom 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
           }} 
-          onClick={()=>{setCommunitySearchOpen(false); resetCommunitySearch();}}
         >
-          <div 
-            style={{ 
-              width:'100%',
-              background:'#fff',
-              borderRadius:'20px 20px 0 0',
-              padding:'24px 20px 32px',
-              maxHeight:'80vh',
-              overflowY:'auto'
-            }}
-            onClick={e=>e.stopPropagation()}
-          >
-            <h2 style={{ margin:'0 0 24px', fontSize:20, fontWeight:700 }}>コミュニティを検索</h2>
+          <style>{`
+            @keyframes slideInFromBottom {
+              from {
+                transform: translateY(100%);
+              }
+              to {
+                transform: translateY(0);
+              }
+            }
             
-            <div style={{ marginBottom:20 }}>
-              <label style={{ display:'block', marginBottom:8, fontSize:14, fontWeight:600, color:'#000' }}>キーワード</label>
+            @keyframes fadeIn {
+              from {
+                opacity: 0;
+              }
+              to {
+                opacity: 1;
+              }
+            }
+            
+            @keyframes scaleIn {
+              from {
+                opacity: 0;
+                transform: scale(0.95);
+              }
+              to {
+                opacity: 1;
+                transform: scale(1);
+              }
+            }
+          `}</style>
+          
+          {/* ヘッダー */}
+          <div style={{
+            padding:'16px 20px',
+            borderBottom:'1px solid #e5e7eb',
+            display:'flex',
+            alignItems:'center',
+            justifyContent:'space-between',
+            background:'#fff',
+            flexShrink:0,
+            animation:'fadeIn 0.3s ease 0.1s backwards'
+          }}>
+            <div style={{ width:40 }} />
+            <h2 style={{ 
+              margin:0, 
+              fontSize:18, 
+              fontWeight:700,
+              color:'#000'
+            }}>
+              コミュニティを検索
+            </h2>
+            <button
+              onClick={()=>{setCommunitySearchOpen(false); resetCommunitySearch();}}
+              style={{
+                background:'none',
+                border:'none',
+                fontSize:24,
+                fontWeight:400,
+                color:'#000',
+                cursor:'pointer',
+                padding:'8px',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                width:40,
+                height:40
+              }}
+            >
+              ×
+            </button>
+          </div>
+
+          {/* スクロール可能なコンテンツエリア */}
+          <div style={{
+            flex:1,
+            overflowY:'auto',
+            padding:'16px 20px'
+          }}>
+            {/* 検索バー */}
+            <div style={{ 
+              marginBottom:24,
+              position:'relative',
+              animation:'scaleIn 0.3s ease 0.15s backwards'
+            }}>
+              <div style={{
+                position:'absolute',
+                left:16,
+                top:'50%',
+                transform:'translateY(-50%)',
+                fontSize:20,
+                color:'#9ca3af',
+                pointerEvents:'none'
+              }}>
+                #
+              </div>
               <input 
                 type="text" 
-                placeholder="グループ名で検索..." 
+                placeholder="興味のあるマイタグを検索" 
                 value={communityKeyword} 
                 onChange={e=>setCommunityKeyword(e.target.value)}
                 style={{ 
                   width:'100%', 
-                  padding:'16px', 
-                  border:'1px solid #ddd', 
-                  borderRadius:8, 
+                  padding:'14px 16px 14px 40px', 
+                  border:'none', 
+                  borderRadius:12, 
                   fontSize:16,
                   outline:'none',
-                  background:'#fff',
+                  background:'#f3f4f6',
                   boxSizing:'border-box'
                 }}
               />
             </div>
 
-            <div style={{ marginBottom:32 }}>
-              <label style={{ display:'block', marginBottom:8, fontSize:14, fontWeight:600, color:'#000' }}>カテゴリ</label>
-              <select 
-                value={communityCategory} 
-                onChange={e=>setCommunityCategory(e.target.value)}
-                style={{ 
-                  width:'100%', 
-                  padding:'16px', 
-                  border:'1px solid #ddd', 
-                  borderRadius:8, 
-                  fontSize:16,
-                  outline:'none',
-                  background:'#fff',
-                  boxSizing:'border-box',
-                  appearance:'none',
-                  backgroundImage:'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpolyline points=\'6 9 12 15 18 9\'%3e%3c/polyline%3e%3c/svg%3e")',
-                  backgroundRepeat:'no-repeat',
-                  backgroundPosition:'right 12px center',
-                  backgroundSize:'20px',
-                  paddingRight:'40px'
-                }}
-              >
-                <option value="">すべて</option>
-                <option value="ゲーム">ゲーム</option>
-                <option value="アニメ">アニメ</option>
-                <option value="音楽">音楽</option>
-                <option value="スポーツ">スポーツ</option>
-                <option value="雑談">雑談</option>
-              </select>
-            </div>
-
-            <div style={{ display:'flex', gap:12 }}>
-              <button 
-                onClick={()=>{setCommunitySearchOpen(false); resetCommunitySearch();}}
-                style={{ 
-                  flex:1,
-                  padding:'16px',
-                  background:'#fff',
-                  border:'1px solid #ddd',
-                  borderRadius:8,
-                  fontSize:16,
-                  fontWeight:600,
-                  cursor:'pointer',
-                  transition:'background .2s ease',
-                  color:'#000'
-                }}
-                onMouseOver={e=>(e.currentTarget.style.background='#f5f5f5')}
-                onMouseOut={e=>(e.currentTarget.style.background='#fff')}
-              >
-                キャンセル
-              </button>
-              <button 
-                onClick={handleCommunitySearch}
-                style={{ 
-                  flex:1,
-                  padding:'16px',
-                  background:'#000',
-                  color:'#fff',
-                  border:'none',
-                  borderRadius:8,
-                  fontSize:16,
-                  fontWeight:600,
-                  cursor:'pointer',
-                  transition:'background .2s ease'
-                }}
-                onMouseOver={e=>(e.currentTarget.style.background='#333')}
-                onMouseOut={e=>(e.currentTarget.style.background='#000')}
-              >
-                検索する
-              </button>
+            {/* カテゴリ */}
+            <div style={{ marginBottom:16 }}>
+              <h3 style={{ 
+                fontSize:20, 
+                fontWeight:700, 
+                color:'#000',
+                margin:'0 0 20px 0',
+                animation:'fadeIn 0.3s ease 0.2s backwards'
+              }}>
+                カテゴリ
+              </h3>
+              
+              {/* カテゴリグリッド */}
+              <div style={{ 
+                display:'grid', 
+                gridTemplateColumns:'repeat(2, 1fr)', 
+                gap:12 
+              }}>
+                {[
+                  { name: '音楽', image: '/com/image.png' },
+                  { name: '映画', image: '/com/image copy.png' },
+                  { name: '芸能人・テレビ', image: '/com/image copy 2.png' },
+                  { name: 'ゲーム', image: '/com/image copy 3.png' },
+                  { name: '本・マンガ', image: '/com/image copy 4.png' },
+                  { name: 'アート', image: '/com/image copy 5.png' },
+                  { name: 'スポーツ', image: '/com/image.png' },
+                  { name: '車・バイク', image: '/com/image copy.png' },
+                  { name: '旅行', image: '/com/image copy 2.png' },
+                  { name: 'ホーム・DIY', image: '/com/image copy 3.png' },
+                ].map((category, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setCommunityCategory(category.name);
+                      handleCommunitySearch();
+                    }}
+                    style={{
+                      position:'relative',
+                      height:120,
+                      borderRadius:16,
+                      border:'none',
+                      cursor:'pointer',
+                      overflow:'hidden',
+                      display:'flex',
+                      alignItems:'flex-end',
+                      justifyContent:'center',
+                      padding:0,
+                      transition:'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease',
+                      boxShadow:'0 2px 8px rgba(0,0,0,0.08)',
+                      animation:`scaleIn 0.3s ease ${0.25 + index * 0.05}s backwards`
+                    }}
+                    onMouseOver={e=>{
+                      e.currentTarget.style.transform='scale(0.98)';
+                      e.currentTarget.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';
+                    }}
+                    onMouseOut={e=>{
+                      e.currentTarget.style.transform='scale(1)';
+                      e.currentTarget.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)';
+                    }}
+                  >
+                    {/* 背景画像 */}
+                    <img 
+                      src={category.image}
+                      alt={category.name}
+                      style={{
+                        position:'absolute',
+                        inset:0,
+                        width:'100%',
+                        height:'100%',
+                        objectFit:'cover',
+                        filter:'brightness(0.85)'
+                      }}
+                    />
+                    
+                    {/* グラデーションオーバーレイ */}
+                    <div style={{
+                      position:'absolute',
+                      inset:0,
+                      background:'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)'
+                    }} />
+                    
+                    {/* カテゴリ名 */}
+                    <div style={{
+                      position:'relative',
+                      zIndex:1,
+                      padding:'16px',
+                      width:'100%',
+                      textAlign:'center'
+                    }}>
+                      <div style={{
+                        fontSize:16,
+                        fontWeight:700,
+                        color:'#fff',
+                        lineHeight:1.3,
+                        textShadow:'0 2px 8px rgba(0,0,0,0.5)'
+                      }}>
+                        {category.name}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
