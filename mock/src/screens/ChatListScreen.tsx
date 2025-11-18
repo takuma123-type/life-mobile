@@ -463,6 +463,10 @@ const ChatListScreen: React.FC = () => {
                   transition:'all .2s ease'
                 }} 
                 onClick={()=> {
+                  if (!isAuthenticated || !me) {
+                    dispatch(openSmsModal());
+                    return;
+                  }
                   dispatch(setActiveUserId(u.id));
                   dispatch(openGuestProfileModal());
                 }}
