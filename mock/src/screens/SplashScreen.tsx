@@ -24,7 +24,7 @@ const SplashScreen: React.FC = () => {
       style={{ 
         position:'fixed', 
         inset:0, 
-        background:'linear-gradient(135deg, #38BDF8 0%, #0EA5E9 50%, #ffffff 100%)',
+        background:'#fff',
         display:'flex', 
         alignItems:'center', 
         justifyContent:'center', 
@@ -67,11 +67,10 @@ const SplashScreen: React.FC = () => {
           display: inline-block;
           width: 10px;
           height: 10px;
-          background: rgba(255, 255, 255, 0.9);
+          background: #999;
           border-radius: 50%;
           margin: 0 5px;
           animation: pulse 1.4s ease-in-out infinite;
-          box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
         .loading-dot:nth-child(2) { animation-delay: 0.2s; }
         .loading-dot:nth-child(3) { animation-delay: 0.4s; }
@@ -112,12 +111,6 @@ const SplashScreen: React.FC = () => {
           animation: geometricFloat2 22s ease-in-out infinite 3s;
         }
       `}</style>
-      
-      {/* 幾何学的な背景パターン */}
-      <div className="geometric-shape shape1" />
-      <div className="geometric-shape shape2" />
-      <div className="geometric-shape shape3" />
-      <div className="geometric-shape shape4" />
       
       <div style={{ textAlign:'center', position: 'relative', zIndex: 2 }}>
         <div className="logo-container">
