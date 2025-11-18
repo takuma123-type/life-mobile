@@ -26,78 +26,386 @@ const MyPageScreen: React.FC = () => {
   };
 
   return (
-    <div style={{ paddingBottom:80, background:'var(--color-bg)' }}>
-      <div className='profile-header-card'>
-        <div style={{ display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center' }}>
-          <div className='profile-avatar' style={{ marginRight:0, marginBottom:16 }}>
-            {me?.avatar ? <img src={me.avatar} alt={me.name} style={{ width:'100%', height:'100%', borderRadius:'50%', objectFit:'cover' }} /> : <IconAvatar size={54} color='#999' />}
-          </div>
-          <h3 style={{ margin:'0 0 20px' }}>{me?.name || 'ゲストユーザー'}</h3>
-          <button 
-            style={{
-              background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%)',
-              border: 'none',
-              color: '#fff',
-              width: '100%',
-              padding: '12px 16px',
-              borderRadius: 10,
-              fontSize: 14,
-              cursor: 'pointer',
-              fontWeight: 600,
-              transition: 'all .2s ease',
-              boxShadow: 'var(--shadow-primary)'
-            }}
-            onClick={()=>dispatch(me ? openProfileModal() : openGuestProfileModal())}
-            onMouseOver={e => {
-              e.currentTarget.style.opacity = '0.9';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = 'var(--shadow-primary-lg)';
-            }}
-            onMouseOut={e => {
-              e.currentTarget.style.opacity = '1';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = 'var(--shadow-primary)';
-            }}
-          >
-            タップしてプロフィールを見る
-          </button>
+    <div style={{ paddingBottom:80, background:'#fff', minHeight:'100vh' }}>
+      {/* ヘッダー */}
+      <div style={{ 
+        background:'#fff', 
+        borderBottom:'1px solid #e5e7eb',
+        padding:'16px 20px'
+      }}>
+        <div style={{
+          fontSize:20,
+          fontWeight:700,
+          letterSpacing:'0.1em',
+          color:'#000',
+          textAlign:'center'
+        }}>
+          LIFE
         </div>
       </div>
 
-      <div className='settings-list'>
-        {!isAuthenticated ? (
-          <>
-            <div className='settings-item' onClick={handleSignUpLogin} style={{ cursor:'pointer' }}>
-              <span className='settings-icon'><IconUser size={22} /></span>
-              <span className='settings-label'>新規登録 / ログイン</span>
+      {/* プロフィールセクション */}
+      {isAuthenticated && me ? (
+        <div style={{ background:'#fff', padding:'30px 20px 24px' }}>
+          {/* アバター */}
+          <div style={{
+            width:100, 
+            height:100, 
+            borderRadius:'50%', 
+            overflow:'hidden',
+            border:'2px solid #e5e7eb',
+            margin:'0 auto 16px',
+            background:'#f3f4f6'
+          }}>
+            {me?.avatar ? (
+              <img src={me.avatar} alt={me.name} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+            ) : (
+              <div style={{ 
+                width:'100%', 
+                height:'100%', 
+                background:'#e0f2fe', 
+                display:'flex', 
+                alignItems:'center', 
+                justifyContent:'center' 
+              }}>
+                <IconUser size={50} color='#0EA5E9' />
+              </div>
+            )}
+          </div>
+
+          {/* ユーザー情報 */}
+          <div style={{ textAlign:'center', marginBottom:20 }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:8, marginBottom:8 }}>
+              <h2 style={{ margin:0, fontSize:20, fontWeight:700, color:'#000' }}>
+                {me?.name || '未設定'}
+              </h2>
+              <span style={{ 
+                fontSize:11, 
+                background:'#FEF3C7',
+                color:'#92400E',
+                padding:'4px 10px', 
+                borderRadius:12,
+                fontWeight:600
+              }}>
+                🎮 +5
+              </span>
             </div>
-          </>
+            
+            <div style={{ 
+              fontSize:13, 
+              color:'#999',
+              marginBottom:12,
+              display:'flex',
+              alignItems:'center',
+              justifyContent:'center',
+              gap:4
+            }}>
+              📇 ID: 434918634
+            </div>
+            
+            <p style={{ 
+              margin:'0 0 20px', 
+              fontSize:14, 
+              color:'#666',
+              lineHeight:1.6
+            }}>
+              {me?.bio || 'デフォルトのプロフィール紹介です。お好みで変更してください～'}
+            </p>
+
+            {/* 統計 */}
+            <div style={{
+              display:'grid',
+              gridTemplateColumns:'repeat(3, 1fr)',
+              gap:20,
+              marginBottom:20
+            }}>
+              <div style={{ textAlign:'center' }}>
+                <div style={{ 
+                  fontSize:22, 
+                  fontWeight:700, 
+                  color:'#0EA5E9',
+                  marginBottom:4
+                }}>19</div>
+                <div style={{ fontSize:12, color:'#999' }}>フォロー</div>
+              </div>
+              <div style={{ textAlign:'center' }}>
+                <div style={{ 
+                  fontSize:22, 
+                  fontWeight:700, 
+                  color:'#0EA5E9',
+                  marginBottom:4
+                }}>4</div>
+                <div style={{ fontSize:12, color:'#999' }}>フォロワー</div>
+              </div>
+              <div style={{ textAlign:'center' }}>
+                <div style={{ 
+                  fontSize:22, 
+                  fontWeight:700, 
+                  color:'#F43F5E',
+                  marginBottom:4
+                }}>4</div>
+                <div style={{ fontSize:12, color:'#999' }}>いいね</div>
+              </div>
+            </div>
+
+            {/* 編集ボタン */}
+            <button 
+              style={{
+                width:'100%',
+                background:'#E0F2FE',
+                border:'none',
+                color:'#0369A1',
+                padding:'12px',
+                borderRadius:24,
+                fontSize:15,
+                cursor:'pointer',
+                fontWeight:600,
+                transition:'all .2s ease'
+              }}
+              onClick={()=>dispatch(openProfileModal())}
+              onMouseOver={e => {
+                e.currentTarget.style.background = '#BAE6FD';
+              }}
+              onMouseOut={e => {
+                e.currentTarget.style.background = '#E0F2FE';
+              }}
+            >
+              ✏️ 編集
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      {/* メニューリスト */}
+      <div style={{ background:'#fff' }}>
+        {!isAuthenticated ? (
+          <div 
+            onClick={handleSignUpLogin} 
+            style={{ 
+              padding:'16px 20px',
+              display:'flex',
+              alignItems:'center',
+              gap:12,
+              cursor:'pointer',
+              borderBottom:'1px solid #f0f0f0',
+              transition:'background .2s ease'
+            }}
+            onMouseOver={e => {
+              e.currentTarget.style.background = '#fafafa';
+            }}
+            onMouseOut={e => {
+              e.currentTarget.style.background = '#fff';
+            }}
+          >
+            <div style={{
+              width:48,
+              height:48,
+              borderRadius:'50%',
+              background:'#E0F2FE',
+              display:'flex',
+              alignItems:'center',
+              justifyContent:'center',
+              flexShrink:0
+            }}>
+              <IconUser size={24} color="#0EA5E9" />
+            </div>
+            <span style={{ fontSize:15, fontWeight:500, color:'#000', flex:1 }}>新規登録 / ログイン</span>
+            <span style={{ fontSize:20, color:'#ccc' }}>›</span>
+          </div>
         ) : (
           <>
-            <div className='settings-item' onClick={()=>dispatch(openSmsModal())} style={{ cursor:'pointer' }}>
-              <span className='settings-icon'><IconShield size={22} /></span>
-              <span className='settings-label'>SMS本人確認</span>
-              <span className={`badge ${verified? 'badge-neutral':'badge-danger'}`}>{verified? '確認済':'未認証'}</span>
+            <div 
+              onClick={()=>dispatch(openSmsModal())} 
+              style={{ 
+                padding:'16px 20px',
+                display:'flex',
+                alignItems:'center',
+                gap:12,
+                cursor:'pointer',
+                borderBottom:'1px solid #f0f0f0',
+                transition:'background .2s ease'
+              }}
+              onMouseOver={e => {
+                e.currentTarget.style.background = '#fafafa';
+              }}
+              onMouseOut={e => {
+                e.currentTarget.style.background = '#fff';
+              }}
+            >
+              <div style={{
+                width:48,
+                height:48,
+                borderRadius:'50%',
+                background:'#F3E8FF',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                flexShrink:0
+              }}>
+                <IconShield size={24} color="#9333EA" />
+              </div>
+              <span style={{ fontSize:15, fontWeight:500, color:'#000', flex:1 }}>SMS本人確認</span>
+              <span style={{ 
+                fontSize:11, 
+                padding:'3px 8px', 
+                borderRadius:10,
+                background: verified ? '#D1FAE5' : '#FEE2E2',
+                color: verified ? '#065F46' : '#991B1B',
+                fontWeight:600
+              }}>
+                {verified? '確認済':'未認証'}
+              </span>
             </div>
-            <div className='settings-item' onClick={()=>dispatch(navigate('followRequests'))} style={{ cursor:'pointer' }}>
-              <span className='settings-icon'><IconUsers size={22} /></span>
-              <span className='settings-label'>フレンド申請</span>
-              {friendRequestCount>0 && <span className='badge badge-danger'>{friendRequestCount}</span>}
+            
+            <div 
+              onClick={()=>dispatch(navigate('followRequests'))} 
+              style={{ 
+                padding:'16px 20px',
+                display:'flex',
+                alignItems:'center',
+                gap:12,
+                cursor:'pointer',
+                borderBottom:'1px solid #f0f0f0',
+                transition:'background .2s ease'
+              }}
+              onMouseOver={e => {
+                e.currentTarget.style.background = '#fafafa';
+              }}
+              onMouseOut={e => {
+                e.currentTarget.style.background = '#fff';
+              }}
+            >
+              <div style={{
+                width:48,
+                height:48,
+                borderRadius:'50%',
+                background:'#D1FAE5',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                flexShrink:0
+              }}>
+                <IconUsers size={24} color="#059669" />
+              </div>
+              <span style={{ fontSize:15, fontWeight:500, color:'#000', flex:1 }}>フレンド申請</span>
+              {friendRequestCount>0 && (
+                <span style={{ 
+                  fontSize:11, 
+                  padding:'3px 8px', 
+                  borderRadius:10,
+                  background:'#FEE2E2',
+                  color:'#991B1B',
+                  fontWeight:600,
+                  marginRight:4
+                }}>
+                  {friendRequestCount}
+                </span>
+              )}
+              <span style={{ fontSize:20, color:'#ccc' }}>›</span>
             </div>
-            <div className='settings-item' onClick={()=>dispatch(navigate('stampShop'))} style={{ cursor:'pointer' }}>
-              <span className='settings-icon'><IconHeart size={22} /></span>
-              <span className='settings-label'>スタンプ購入</span>
+            
+            <div 
+              onClick={()=>dispatch(navigate('stampShop'))} 
+              style={{ 
+                padding:'16px 20px',
+                display:'flex',
+                alignItems:'center',
+                gap:12,
+                cursor:'pointer',
+                borderBottom:'1px solid #f0f0f0',
+                transition:'background .2s ease'
+              }}
+              onMouseOver={e => {
+                e.currentTarget.style.background = '#fafafa';
+              }}
+              onMouseOut={e => {
+                e.currentTarget.style.background = '#fff';
+              }}
+            >
+              <div style={{
+                width:48,
+                height:48,
+                borderRadius:'50%',
+                background:'#FCE7F3',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                flexShrink:0
+              }}>
+                <IconHeart size={24} color="#E11D48" />
+              </div>
+              <span style={{ fontSize:15, fontWeight:500, color:'#000', flex:1 }}>スタンプ購入</span>
+              <span style={{ fontSize:20, color:'#ccc' }}>›</span>
             </div>
           </>
         )}
-        <div className='settings-item' onClick={()=>dispatch(openLanguageModal())} style={{ cursor:'pointer' }}>
-          <span className='settings-icon'><IconLanguage size={22} /></span>
-          <span className='settings-label'>言語設定</span>
+        
+        <div 
+          onClick={()=>dispatch(openLanguageModal())} 
+          style={{ 
+            padding:'16px 20px',
+            display:'flex',
+            alignItems:'center',
+            gap:12,
+            cursor:'pointer',
+            borderBottom:'1px solid #f0f0f0',
+            transition:'background .2s ease'
+          }}
+          onMouseOver={e => {
+            e.currentTarget.style.background = '#fafafa';
+          }}
+          onMouseOut={e => {
+            e.currentTarget.style.background = '#fff';
+          }}
+        >
+          <div style={{
+            width:48,
+            height:48,
+            borderRadius:'50%',
+            background:'#FEF3C7',
+            display:'flex',
+            alignItems:'center',
+            justifyContent:'center',
+            flexShrink:0
+          }}>
+            <IconLanguage size={24} color="#D97706" />
+          </div>
+          <span style={{ fontSize:15, fontWeight:500, color:'#000', flex:1 }}>言語設定</span>
+          <span style={{ fontSize:20, color:'#ccc' }}>›</span>
         </div>
+        
         {isAuthenticated && (
-          <div className='settings-item settings-item-logout' onClick={handleLogout} style={{ cursor:'pointer' }}>
-            <span className='settings-icon'><IconLogout size={22} /></span>
-            <span className='settings-label'>ログアウト</span>
+          <div 
+            onClick={handleLogout} 
+            style={{ 
+              padding:'16px 20px',
+              display:'flex',
+              alignItems:'center',
+              gap:12,
+              cursor:'pointer',
+              transition:'background .2s ease'
+            }}
+            onMouseOver={e => {
+              e.currentTarget.style.background = '#fafafa';
+            }}
+            onMouseOut={e => {
+              e.currentTarget.style.background = '#fff';
+            }}
+          >
+            <div style={{
+              width:48,
+              height:48,
+              borderRadius:'50%',
+              background:'#FEE2E2',
+              display:'flex',
+              alignItems:'center',
+              justifyContent:'center',
+              flexShrink:0
+            }}>
+              <IconLogout size={24} color="#DC2626" />
+            </div>
+            <span style={{ fontSize:15, fontWeight:500, color:'#DC2626', flex:1 }}>ログアウト</span>
+            <span style={{ fontSize:20, color:'#ccc' }}>›</span>
           </div>
         )}
       </div>
