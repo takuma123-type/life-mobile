@@ -44,10 +44,6 @@ const SplashScreen: React.FC = () => {
           0% { opacity: 0; transform: scale(0.8); }
           100% { opacity: 1; transform: scale(1); }
         }
-        @keyframes pulse {
-          0%, 100% { opacity: 0.5; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.2); }
-        }
         @keyframes geometricFloat {
           0%, 100% { transform: translate(0, 0) rotate(0deg); }
           33% { transform: translate(20px, -20px) rotate(120deg); }
@@ -63,17 +59,6 @@ const SplashScreen: React.FC = () => {
           position: relative;
           z-index: 2;
         }
-        .loading-dot {
-          display: inline-block;
-          width: 10px;
-          height: 10px;
-          background: #999;
-          border-radius: 50%;
-          margin: 0 5px;
-          animation: pulse 1.4s ease-in-out infinite;
-        }
-        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
         .geometric-shape {
           position: absolute;
           opacity: 0.15;
@@ -123,18 +108,6 @@ const SplashScreen: React.FC = () => {
               filter: 'drop-shadow(0 4px 20px rgba(0, 0, 0, 0.15)) drop-shadow(0 8px 40px rgba(14, 165, 233, 0.3))'
             }} 
           />
-        </div>
-        
-        <div style={{ 
-          marginTop: 50, 
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '8px'
-        }}>
-          <div className="loading-dot"></div>
-          <div className="loading-dot"></div>
-          <div className="loading-dot"></div>
         </div>
       </div>
     </div>
