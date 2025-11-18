@@ -5,7 +5,7 @@ import { navigate, openSmsModal, openGuestProfileModal } from '../store/uiSlice'
 import { toggleFollow, setActiveUserId } from '../store/userSlice';
 import { setActiveCommunity } from '../store/communitySlice';
 import BottomNav from '../components/common/BottomNav';
-import { IconSearch, IconAvatar } from '../components/icons';
+import { IconSearch, IconAvatar, IconCalendar, IconMapPin, IconClock } from '../components/icons';
 import Button from '../components/common/Button';
 import { mockTranslate } from '../data/mockData';
 
@@ -45,6 +45,9 @@ const ChatListScreen: React.FC = () => {
   // コミュニティ詳細モーダル
   const [selectedCommunity, setSelectedCommunity] = useState<any>(null);
   const [showCommunityDetail, setShowCommunityDetail] = useState(false);
+  
+  // 都道府県選択画面
+  const [showPrefectureModal, setShowPrefectureModal] = useState(false);
   
   // フレンド一覧（ログイン後のみ表示、デモ用に最初の5人）
   const friendsList = isAuthenticated && me ? users.slice(0, 5) : [];
@@ -936,158 +939,447 @@ const ChatListScreen: React.FC = () => {
           style={{ 
             position:'fixed', 
             inset:0, 
-            background:'rgba(0,0,0,.5)', 
-            backdropFilter:'blur(6px)',
-            display:'flex', 
-            alignItems:'flex-end',
-            zIndex:100
+            background:'#fff',
+            zIndex:100,
+            display:'flex',
+            flexDirection:'column',
+            height:'100vh',
+            overflow:'hidden',
+            animation:'slideInFromBottom 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
           }} 
-          onClick={()=>{setSearchOpen(false); resetSearch();}}
         >
-          <div 
-            style={{ 
-              width:'100%', 
-              background:'#fff',
-              borderRadius:'20px 20px 0 0', 
-              padding:'24px 20px 32px',
-              maxHeight:'80vh', 
-              overflowY:'auto',
-              boxShadow:'0 -4px 20px rgba(0,0,0,.1)'
-            }} 
-            onClick={e=>e.stopPropagation()}
-          >
-            <h2 style={{ margin:'0 0 20px', fontSize:18, fontWeight:700 }}>フレンドを検索</h2>
+          <style>{`
+            @keyframes slideInFromBottom {
+              from {
+                transform: translateY(100%);
+              }
+              to {
+                transform: translateY(0);
+              }
+            }
             
+            @keyframes fadeIn {
+              from {
+                opacity: 0;
+              }
+              to {
+                opacity: 1;
+              }
+            }
+            
+            @keyframes scaleIn {
+              from {
+                opacity: 0;
+                transform: scale(0.95);
+              }
+              to {
+                opacity: 1;
+                transform: scale(1);
+              }
+            }
+          `}</style>
+
+          {/* ヘッダー */}
+          <div style={{
+            padding:'16px 20px',
+            borderBottom:'1px solid #e5e7eb',
+            display:'flex',
+            alignItems:'center',
+            justifyContent:'center',
+            background:'#fff',
+            flexShrink:0,
+            position:'relative',
+            animation:'fadeIn 0.3s ease 0.1s backwards'
+          }}>
+            <button
+              onClick={()=>{setSearchOpen(false); resetSearch();}}
+              style={{
+                background:'none',
+                border:'none',
+                fontSize:24,
+                fontWeight:400,
+                color:'#000',
+                cursor:'pointer',
+                padding:'8px',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                width:40,
+                height:40,
+                position:'absolute',
+                left:12,
+                top:'50%',
+                transform:'translateY(-50%)'
+              }}
+            >
+              ×
+            </button>
+            <h2 style={{ 
+              margin:0, 
+              fontSize:18, 
+              fontWeight:700,
+              color:'#000'
+            }}>
+              絞り込み
+            </h2>
+            <button
+              onClick={()=>{resetSearch();}}
+              style={{
+                background:'none',
+                border:'none',
+                fontSize:15,
+                fontWeight:600,
+                color:'#0EA5E9',
+                cursor:'pointer',
+                padding:'8px',
+                whiteSpace:'nowrap',
+                position:'absolute',
+                right:12,
+                top:'50%',
+                transform:'translateY(-50%)'
+              }}
+            >
+              条件をリセット
+            </button>
+          </div>
+
+          {/* スクロール可能なコンテンツエリア */}
+          <div style={{
+            flex:1,
+            overflowY:'auto',
+            padding:'20px'
+          }}>
             {/* キーワード */}
-            <div style={{ marginBottom:20 }}>
-              <label style={{ display:'block', marginBottom:8, fontSize:14, fontWeight:600 }}>キーワード</label>
+            <div style={{ 
+              marginBottom:32,
+              animation:'scaleIn 0.3s ease 0.15s backwards'
+            }}>
+              <label style={{ 
+                display:'flex',
+                alignItems:'center',
+                gap:8,
+                marginBottom:12, 
+                fontSize:15, 
+                fontWeight:600,
+                color:'#6b7280'
+              }}>
+                <IconSearch size={18} color='#6b7280' />
+                キーワード
+              </label>
               <input 
                 placeholder='ユーザー名、趣味で検索...' 
                 value={keyword} 
                 onChange={e=>setKeyword(e.target.value)} 
                 style={{ 
                   width:'100%',
-                  padding:'12px 16px',
-                  border:'2px solid #000',
+                  padding:'14px 16px',
+                  border:'1px solid #e5e7eb',
                   borderRadius:12,
-                  fontSize:15
-                }} 
+                  fontSize:16,
+                  background:'#fff',
+                  outline:'none',
+                  boxSizing:'border-box',
+                  transition:'border-color 0.2s ease'
+                }}
+                onFocus={e=>(e.currentTarget.style.borderColor='#0EA5E9')}
+                onBlur={e=>(e.currentTarget.style.borderColor='#e5e7eb')}
               />
             </div>
 
             {/* 年代 */}
-            <div style={{ marginBottom:20 }}>
-              <label style={{ display:'block', marginBottom:8, fontSize:14, fontWeight:600 }}>年代</label>
-              <select 
-                value={searchAge} 
-                onChange={e=>setSearchAge(e.target.value)}
-                style={{ 
-                  width:'100%',
-                  padding:'12px 16px',
-                  border:'2px solid #000',
-                  borderRadius:12,
-                  fontSize:15,
-                  background:'#fff'
-                }}
-              >
-                <option value="">選択してください</option>
-                <option value="10代前半">10代前半</option>
-                <option value="10代後半">10代後半</option>
-                <option value="20代">20代</option>
-                <option value="30代">30代</option>
-                <option value="40代">40代</option>
-                <option value="50代以上">50代以上</option>
-              </select>
+            <div style={{ 
+              marginBottom:32,
+              animation:'scaleIn 0.3s ease 0.2s backwards'
+            }}>
+              <label style={{ 
+                display:'flex',
+                alignItems:'center',
+                gap:8,
+                marginBottom:12, 
+                fontSize:15, 
+                fontWeight:600,
+                color:'#6b7280'
+              }}>
+                <IconCalendar size={18} color='#6b7280' />
+                年代
+              </label>
+              <div style={{ 
+                display:'flex', 
+                flexWrap:'wrap', 
+                gap:10 
+              }}>
+                {['10代前半', '10代後半', '20代', '30代', '40代', '50代以上'].map((age) => (
+                  <button
+                    key={age}
+                    onClick={() => setSearchAge(searchAge === age ? '' : age)}
+                    style={{
+                      padding:'12px 22px',
+                      borderRadius:24,
+                      border:`2px solid ${searchAge === age ? '#0EA5E9' : '#e5e7eb'}`,
+                      background: searchAge === age ? '#E0F2FE' : '#fff',
+                      color: searchAge === age ? '#0284c7' : '#6b7280',
+                      fontSize:15,
+                      fontWeight: searchAge === age ? 600 : 400,
+                      cursor:'pointer',
+                      transition:'all 0.2s ease'
+                    }}
+                  >
+                    {age}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* 都道府県 */}
-            <div style={{ marginBottom:20 }}>
-              <label style={{ display:'block', marginBottom:8, fontSize:14, fontWeight:600 }}>都道府県</label>
-              <select 
-                value={searchRegion} 
-                onChange={e=>setSearchRegion(e.target.value)}
-                style={{ 
+            <div style={{ 
+              marginBottom:32,
+              animation:'scaleIn 0.3s ease 0.25s backwards'
+            }}>
+              <label style={{ 
+                display:'flex',
+                alignItems:'center',
+                gap:8,
+                marginBottom:12, 
+                fontSize:15, 
+                fontWeight:600,
+                color:'#6b7280'
+              }}>
+                <IconMapPin size={18} color='#6b7280' />
+                都道府県
+              </label>
+              <button
+                onClick={() => setShowPrefectureModal(true)}
+                style={{
                   width:'100%',
-                  padding:'12px 16px',
-                  border:'2px solid #000',
+                  padding:'14px 16px',
                   borderRadius:12,
-                  fontSize:15,
-                  background:'#fff'
+                  border:'1px solid #e5e7eb',
+                  background:'#fff',
+                  fontSize:16,
+                  cursor:'pointer',
+                  display:'flex',
+                  alignItems:'center',
+                  justifyContent:'space-between',
+                  color: searchRegion ? '#000' : '#9ca3af',
+                  transition:'border-color 0.2s ease'
                 }}
+                onMouseOver={e=>(e.currentTarget.style.borderColor='#cbd5e0')}
+                onMouseOut={e=>(e.currentTarget.style.borderColor='#e5e7eb')}
               >
-                <option value="">選択してください</option>
-                <option value="東京">東京</option>
-                <option value="大阪">大阪</option>
-                <option value="神奈川">神奈川</option>
-                <option value="愛知">愛知</option>
-                <option value="福岡">福岡</option>
-                <option value="北海道">北海道</option>
-              </select>
+                <span>{searchRegion || 'こだわらない'}</span>
+                <span style={{ fontSize:16, color:'#9ca3af' }}>›</span>
+              </button>
             </div>
 
             {/* よく使う時間帯 */}
-            <div style={{ marginBottom:24 }}>
-              <label style={{ display:'block', marginBottom:8, fontSize:14, fontWeight:600 }}>よく使う時間帯</label>
-              <select 
-                value={searchTime} 
-                onChange={e=>setSearchTime(e.target.value)}
-                style={{ 
-                  width:'100%',
-                  padding:'12px 16px',
-                  border:'2px solid #000',
-                  borderRadius:12,
-                  fontSize:15,
-                  background:'#fff'
-                }}
-              >
-                <option value="">選択してください</option>
-                <option value="朝">朝</option>
-                <option value="昼">昼</option>
-                <option value="夜">夜</option>
-                <option value="深夜">深夜</option>
-              </select>
+            <div style={{ 
+              marginBottom:32,
+              animation:'scaleIn 0.3s ease 0.3s backwards'
+            }}>
+              <label style={{ 
+                display:'flex',
+                alignItems:'center',
+                gap:8,
+                marginBottom:12, 
+                fontSize:15, 
+                fontWeight:600,
+                color:'#6b7280'
+              }}>
+                <IconClock size={18} color='#6b7280' />
+                よく使う時間帯
+              </label>
+              <div style={{ 
+                display:'flex', 
+                flexWrap:'wrap', 
+                gap:10 
+              }}>
+                {['朝', '昼', '夜', '深夜'].map((time) => (
+                  <button
+                    key={time}
+                    onClick={() => setSearchTime(searchTime === time ? '' : time)}
+                    style={{
+                      padding:'12px 22px',
+                      borderRadius:24,
+                      border:`2px solid ${searchTime === time ? '#0EA5E9' : '#e5e7eb'}`,
+                      background: searchTime === time ? '#E0F2FE' : '#fff',
+                      color: searchTime === time ? '#0284c7' : '#6b7280',
+                      fontSize:15,
+                      fontWeight: searchTime === time ? 600 : 400,
+                      cursor:'pointer',
+                      transition:'all 0.2s ease'
+                    }}
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
             </div>
+          </div>
 
-            {/* ボタン */}
-            <div style={{ display:'flex', gap:12 }}>
-              <button 
-                onClick={()=>{setSearchOpen(false); resetSearch();}}
-                style={{
-                  flex:1,
-                  background:'#fff',
-                  color:'#000',
-                  border:'2px solid #000',
-                  padding:'14px',
-                  borderRadius:12,
-                  fontSize:15,
-                  fontWeight:600,
-                  cursor:'pointer',
-                  transition:'background .2s ease'
-                }}
-                onMouseOver={e=>(e.currentTarget.style.background='#f9f9f9')}
-                onMouseOut={e=>(e.currentTarget.style.background='#fff')}
-              >
-                キャンセル
-              </button>
-              <button 
-                onClick={handleSearch}
-                style={{
-                  flex:1,
-                  background:'#000',
-                  color:'#fff',
-                  border:'none',
-                  padding:'14px',
-                  borderRadius:12,
-                  fontSize:15,
-                  fontWeight:600,
-                  cursor:'pointer',
-                  transition:'opacity .2s ease'
-                }}
-                onMouseOver={e=>(e.currentTarget.style.opacity='0.85')}
-                onMouseOut={e=>(e.currentTarget.style.opacity='1')}
-              >
-                検索する
-              </button>
+          {/* 下部ボタンエリア */}
+          <div style={{
+            padding:'16px 20px 32px',
+            background:'#fff',
+            borderTop:'1px solid #e5e7eb',
+            flexShrink:0,
+            animation:'fadeIn 0.3s ease 0.35s backwards'
+          }}>
+            <button 
+              onClick={handleSearch}
+              style={{
+                width:'100%',
+                background:'#0EA5E9',
+                color:'#fff',
+                border:'none',
+                padding:'16px',
+                borderRadius:12,
+                fontSize:16,
+                fontWeight:600,
+                cursor:'pointer',
+                transition:'background .2s ease',
+                boxShadow:'0 4px 12px rgba(14, 165, 233, 0.3)'
+              }}
+              onMouseOver={e=>(e.currentTarget.style.background='#0284c7')}
+              onMouseOut={e=>(e.currentTarget.style.background='#0EA5E9')}
+            >
+              検索
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 都道府県選択モーダル */}
+      {showPrefectureModal && (
+        <div 
+          style={{ 
+            position:'fixed', 
+            inset:0, 
+            background:'#fff',
+            zIndex:200,
+            display:'flex',
+            flexDirection:'column',
+            height:'100vh',
+            overflow:'hidden',
+            animation:'slideInFromBottom 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          }} 
+        >
+          {/* ヘッダー */}
+          <div style={{
+            padding:'16px 20px',
+            borderBottom:'1px solid #e5e7eb',
+            display:'flex',
+            alignItems:'center',
+            justifyContent:'center',
+            background:'#fff',
+            flexShrink:0,
+            position:'relative'
+          }}>
+            <button
+              onClick={()=>setShowPrefectureModal(false)}
+              style={{
+                background:'none',
+                border:'none',
+                fontSize:24,
+                color:'#000',
+                cursor:'pointer',
+                padding:'8px',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                position:'absolute',
+                left:12,
+                top:'50%',
+                transform:'translateY(-50%)'
+              }}
+            >
+              ‹
+            </button>
+            <h2 style={{ 
+              margin:0, 
+              fontSize:18, 
+              fontWeight:700,
+              color:'#000'
+            }}>
+              居住地
+            </h2>
+          </div>
+
+          {/* タブ */}
+          <div style={{
+            display:'flex',
+            borderBottom:'1px solid #e5e7eb',
+            background:'#fff',
+            flexShrink:0
+          }}>
+            <button style={{
+              flex:1,
+              padding:'16px',
+              background:'none',
+              border:'none',
+              borderBottom:'3px solid #0EA5E9',
+              color:'#0EA5E9',
+              fontSize:16,
+              fontWeight:600,
+              cursor:'pointer'
+            }}>
+              日本
+            </button>
+            <button style={{
+              flex:1,
+              padding:'16px',
+              background:'none',
+              border:'none',
+              borderBottom:'3px solid transparent',
+              color:'#9ca3af',
+              fontSize:16,
+              fontWeight:400,
+              cursor:'pointer'
+            }}>
+              海外
+            </button>
+          </div>
+
+          {/* 都道府県リスト */}
+          <div style={{
+            flex:1,
+            overflowY:'auto',
+            padding:'20px'
+          }}>
+            <div style={{ 
+              display:'flex', 
+              flexWrap:'wrap', 
+              gap:10 
+            }}>
+              {[
+                '北海道', '青森', '岩手', '宮城', '秋田', '山形', '福島', '茨城', '栃木',
+                '群馬', '埼玉', '千葉', '東京', '神奈川', '新潟', '富山', '石川',
+                '福井', '山梨', '長野', '岐阜', '静岡', '愛知', '三重', '滋賀',
+                '京都', '大阪', '兵庫', '奈良', '和歌山', '鳥取', '島根', '岡山',
+                '広島', '山口', '徳島', '香川', '愛媛', '高知', '福岡', '佐賀',
+                '長崎', '熊本', '大分', '宮崎', '鹿児島', '沖縄'
+              ].map((prefecture) => (
+                <button
+                  key={prefecture}
+                  onClick={() => {
+                    setSearchRegion(prefecture);
+                    setShowPrefectureModal(false);
+                  }}
+                  style={{
+                    padding:'12px 20px',
+                    borderRadius:24,
+                    border:`2px solid ${searchRegion === prefecture ? '#0EA5E9' : '#e5e7eb'}`,
+                    background: searchRegion === prefecture ? '#E0F2FE' : '#fff',
+                    color: searchRegion === prefecture ? '#0284c7' : '#374151',
+                    fontSize:15,
+                    fontWeight: searchRegion === prefecture ? 600 : 400,
+                    cursor:'pointer',
+                    transition:'all 0.2s ease',
+                    whiteSpace:'nowrap'
+                  }}
+                >
+                  {prefecture}
+                </button>
+              ))}
             </div>
           </div>
         </div>
