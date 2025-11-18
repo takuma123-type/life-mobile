@@ -448,8 +448,8 @@ const ChatListScreen: React.FC = () => {
             <div style={{ padding:'8px 8px 16px 8px', background:'#fff' }}>
               <div style={{ 
                 display:'grid', 
-                gridTemplateColumns:'repeat(2, 1fr)', 
-                gap:8 
+                gridTemplateColumns:'repeat(3, 1fr)', 
+                gap:6 
               }}>
                 {displayUsers.map((u:any, index:number)=>(
               <div 
@@ -503,13 +503,13 @@ const ChatListScreen: React.FC = () => {
                     left:0,
                     right:0,
                     background:'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
-                    padding:'24px 8px 8px 8px',
+                    padding:'20px 6px 6px 6px',
                     color:'#fff'
                   }}>
                     <div style={{
-                      fontSize:13,
+                      fontSize:11,
                       fontWeight:700,
-                      lineHeight:1.3,
+                      lineHeight:1.2,
                       overflow:'hidden',
                       textOverflow:'ellipsis',
                       display:'-webkit-box',
@@ -524,10 +524,10 @@ const ChatListScreen: React.FC = () => {
                 
                 {/* ユーザー情報（カード下部） */}
                 <div style={{ 
-                  padding:'8px 10px'
+                  padding:'6px 8px'
                 }}>
                   <div style={{
-                    fontSize:12,
+                    fontSize:11,
                     fontWeight:600,
                     color:'#000',
                     overflow:'hidden',
@@ -537,8 +537,8 @@ const ChatListScreen: React.FC = () => {
                     {u.name}
                     {u.age && (
                       <span style={{ 
-                        marginLeft:6,
-                        fontSize:11,
+                        marginLeft:4,
+                        fontSize:10,
                         color:'#666',
                         fontWeight:500
                       }}>
@@ -1020,7 +1020,7 @@ const ChatListScreen: React.FC = () => {
               fontWeight:700,
               color:'#000'
             }}>
-              絞り込み
+              詳細検索
             </h2>
             <button
               onClick={()=>{resetSearch();}}
@@ -1039,7 +1039,7 @@ const ChatListScreen: React.FC = () => {
                 transform:'translateY(-50%)'
               }}
             >
-              条件をリセット
+              条件をクリア
             </button>
           </div>
 
@@ -1595,7 +1595,7 @@ const ChatListScreen: React.FC = () => {
               fontWeight:700,
               color:'#000'
             }}>
-              コミュニティを検索
+              コミュニティ検索
             </h2>
             <button
               onClick={()=>{setCommunitySearchOpen(false); resetCommunitySearch();}}
@@ -1643,7 +1643,7 @@ const ChatListScreen: React.FC = () => {
               </div>
               <input 
                 type="text" 
-                placeholder="興味のあるマイタグを検索" 
+                placeholder="カテゴリ名で検索..." 
                 value={communityKeyword} 
                 onChange={e=>setCommunityKeyword(e.target.value)}
                 style={{ 
