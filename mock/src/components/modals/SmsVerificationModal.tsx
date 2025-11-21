@@ -46,7 +46,7 @@ const SmsVerificationModal: React.FC = () => {
   const resend = () => { sendCode(); };
 
   return (
-    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.5)', display:'flex', alignItems:'flex-end', justifyContent:'center', padding:0, zIndex:300, animation:'fadeIn .3s ease' }}>
+    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.45)', display:'flex', alignItems:'flex-end', justifyContent:'center', padding:0, zIndex:300, animation:'fadeIn .25s ease-out' }}>
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0; }
@@ -56,17 +56,8 @@ const SmsVerificationModal: React.FC = () => {
           from { transform: translateY(100%); }
           to { transform: translateY(0); }
         }
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-10px); }
-          75% { transform: translateX(10px); }
-        }
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-        }
       `}</style>
-      <div style={{ background:'#fff', width:'100%', maxHeight:'90vh', borderRadius:'24px 24px 0 0', padding:'0', position:'relative', overflow:'auto', animation:'slideUp .4s cubic-bezier(0.16, 1, 0.3, 1)' }} onClick={e=>e.stopPropagation()}>
+      <div style={{ background:'#fff', width:'100%', maxHeight:'90vh', borderRadius:'24px 24px 0 0', padding:0, position:'relative', overflow:'auto', animation:'slideUp .35s cubic-bezier(0.16, 1, 0.3, 1)' }} onClick={e=>e.stopPropagation()}>
         {/* ヘッダー */}
         <div style={{ 
           position:'sticky',
@@ -74,7 +65,7 @@ const SmsVerificationModal: React.FC = () => {
           background:'linear-gradient(180deg, #ffffff 0%, #ffffff 100%)',
           backdropFilter:'blur(10px)',
           borderBottom:'1px solid #f0f0f0',
-          padding:'20px 24px 16px',
+          padding:'18px 20px 14px',
           display:'flex',
           alignItems:'center',
           justifyContent:'space-between',
@@ -91,7 +82,7 @@ const SmsVerificationModal: React.FC = () => {
               fontWeight:600,
               cursor:'pointer',
               padding:'8px 16px',
-              borderRadius:20,
+              borderRadius:999,
               transition:'all .2s ease',
               display:'flex',
               alignItems:'center',
@@ -109,7 +100,7 @@ const SmsVerificationModal: React.FC = () => {
           <div style={{ width:80 }}></div>
         </div>
 
-        <div style={{ padding:'32px 24px', maxWidth:480, margin:'0 auto' }}>
+        <div style={{ padding:'28px 20px 32px', maxWidth:480, margin:'0 auto' }}>
           {step === 'phone' && (
             <div style={{ marginBottom:24 }}>
 
@@ -127,10 +118,10 @@ const SmsVerificationModal: React.FC = () => {
                     placeholder='090-1234-5678'
                     style={{ 
                       width:'100%', 
-                      padding:'18px 20px', 
+                      padding:'16px 18px', 
                       fontSize:16, 
                       border:'2px solid #e5e7eb', 
-                      borderRadius:12, 
+                      borderRadius:16, 
                       outline:'none',
                       boxSizing:'border-box',
                       transition:'all .3s ease',
@@ -149,7 +140,7 @@ const SmsVerificationModal: React.FC = () => {
               </div>
 
               {/* パスワード入力 */}
-              <div style={{ marginBottom:32 }}>
+              <div style={{ marginBottom:28 }}>
                 <label style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:15, marginBottom:12, color:'#1a1a1a' }}>
                   <IconLock size={20} color='#0EA5E9' />
                   パスワード
@@ -162,10 +153,10 @@ const SmsVerificationModal: React.FC = () => {
                     placeholder='8文字以上のパスワード'
                     style={{ 
                       width:'100%', 
-                      padding:'18px 20px', 
+                      padding:'16px 18px', 
                       fontSize:16, 
                       border:'2px solid #e5e7eb', 
-                      borderRadius:12, 
+                      borderRadius:16, 
                       outline:'none',
                       boxSizing:'border-box',
                       transition:'all .3s ease',
@@ -192,10 +183,10 @@ const SmsVerificationModal: React.FC = () => {
                   background: loading ? '#cbd5e1' : 'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)', 
                   color:'#fff', 
                   border:'none', 
-                  padding:'18px', 
+                  padding:'16px', 
                   fontSize:17, 
                   fontWeight:700, 
-                  borderRadius:12, 
+                  borderRadius:16, 
                   cursor: loading?'not-allowed':'pointer', 
                   transition:'all .3s ease',
                   marginBottom:20,
@@ -231,7 +222,7 @@ const SmsVerificationModal: React.FC = () => {
               {/* ログインへのリンク */}
               <div style={{ 
                 textAlign:'center',
-                padding:'20px 0',
+                padding:'16px 0',
                 borderTop:'1px solid #f0f0f0',
                 marginTop:20
               }}>
@@ -247,7 +238,7 @@ const SmsVerificationModal: React.FC = () => {
                     background:'rgba(14, 165, 233, 0.1)', 
                     border:'2px solid #0EA5E9', 
                     color:'#0EA5E9', 
-                    padding:'14px 32px',
+                    padding:'12px 28px',
                     fontSize:16,
                     fontWeight:700,
                     borderRadius:12,
@@ -279,7 +270,7 @@ const SmsVerificationModal: React.FC = () => {
                 textAlign:'center',
                 lineHeight:1.8,
                 marginTop:24,
-                padding:'20px 0'
+                padding:'16px 0'
               }}>
                 登録することで、
                 <a href="#" style={{ color:'#0EA5E9', textDecoration:'none', fontWeight:600 }}>利用規約</a>
@@ -296,9 +287,9 @@ const SmsVerificationModal: React.FC = () => {
               <div style={{ 
                 background:'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)', 
                 borderRadius:16, 
-                padding:'16px 20px', 
-                marginBottom:32,
-                boxShadow:'0 4px 20px rgba(14, 165, 233, 0.2)',
+                padding:'16px 18px', 
+                marginBottom:24,
+                boxShadow:'0 3px 12px rgba(14, 165, 233, 0.18)',
                 display:'flex',
                 alignItems:'center',
                 gap:12
@@ -308,7 +299,7 @@ const SmsVerificationModal: React.FC = () => {
                   <p style={{ margin:0, fontSize:15, color:'#fff', fontWeight:600, lineHeight:1.5 }}>
                     SMSを送信しました
                   </p>
-                  <p style={{ margin:'4px 0 0', fontSize:14, color:'rgba(255,255,255,0.9)' }}>
+                  <p style={{ margin:'3px 0 0', fontSize:13, color:'rgba(255,255,255,0.9)' }}>
                     {maskPhone(phone)}
                   </p>
                 </div>
@@ -326,12 +317,12 @@ const SmsVerificationModal: React.FC = () => {
                 autoFocus
                 style={{ 
                   width:'100%', 
-                  padding:'20px', 
-                  fontSize:32, 
+                  padding:'18px', 
+                  fontSize:28, 
                   textAlign:'center', 
-                  letterSpacing:'12px', 
+                  letterSpacing:'10px', 
                   border:'2px solid #e5e7eb', 
-                  borderRadius:12, 
+                  borderRadius:16, 
                   fontWeight:700, 
                   background:'#fff', 
                   outline:'none', 
@@ -355,10 +346,10 @@ const SmsVerificationModal: React.FC = () => {
                   background:'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)', 
                   color:'#fff', 
                   border:'none', 
-                  padding:'18px', 
+                  padding:'16px', 
                   fontSize:17, 
                   fontWeight:700, 
-                  borderRadius:12, 
+                  borderRadius:16, 
                   cursor:'pointer', 
                   transition:'all .3s ease', 
                   marginTop:24,
@@ -373,8 +364,8 @@ const SmsVerificationModal: React.FC = () => {
               {/* 戻る・再送信 */}
               <div style={{ 
                 display:'flex',
-                gap:12,
-                marginTop:16
+                gap:10,
+                marginTop:20
               }}>
                 <button 
                   onClick={()=>dispatch(setSmsStep('phone'))} 
@@ -383,10 +374,10 @@ const SmsVerificationModal: React.FC = () => {
                     background:'#fff', 
                     color:'#6b7280', 
                     border:'2px solid #e5e7eb', 
-                    padding:'14px', 
+                    padding:'12px', 
                     fontSize:15, 
                     fontWeight:600, 
-                    borderRadius:12, 
+                    borderRadius:16, 
                     cursor:'pointer', 
                     transition:'all .3s ease'
                   }} 
@@ -402,10 +393,10 @@ const SmsVerificationModal: React.FC = () => {
                     background:'rgba(14, 165, 233, 0.1)', 
                     border:'2px solid #0EA5E9', 
                     color:'#0EA5E9', 
-                    padding:'14px',
+                    padding:'12px',
                     fontSize:15,
                     fontWeight:600,
-                    borderRadius:12,
+                    borderRadius:16,
                     cursor:'pointer',
                     transition:'all .3s ease'
                   }} 

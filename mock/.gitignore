@@ -1,3 +1,4 @@
 mock/node_modules
 mock/dist
 mock/.env
+node_modules
