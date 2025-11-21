@@ -449,17 +449,17 @@ const ChatListScreen: React.FC = () => {
               <div style={{ 
                 display:'grid', 
                 gridTemplateColumns:'repeat(3, 1fr)', 
-                gap:6 
+                gap:10 
               }}>
                 {displayUsers.map((u:any, index:number)=>(
               <div 
                 key={u.id} 
                 style={{ 
                   cursor:'pointer',
-                  borderRadius:12,
+                  borderRadius:14,
                   overflow:'hidden',
                   background:'#fff',
-                  boxShadow:'0 2px 8px rgba(0,0,0,0.08)',
+                  boxShadow:'0 4px 14px rgba(15,23,42,0.12)',
                   transition:'all .2s ease'
                 }} 
                 onClick={()=> {
@@ -503,23 +503,22 @@ const ChatListScreen: React.FC = () => {
                   {/* タイトルテキスト（下部） */}
                   <div style={{
                     position:'absolute',
-                    bottom:0,
                     left:0,
                     right:0,
-                    background:'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
-                    padding:'20px 6px 6px 6px',
+                    bottom:0,
+                    padding:'12px 8px 8px',
+                    background:'linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.7) 40%, transparent 100%)',
                     color:'#fff'
                   }}>
                     <div style={{
-                      fontSize:11,
+                      fontSize:12,
                       fontWeight:700,
-                      lineHeight:1.2,
+                      lineHeight:1.4,
                       overflow:'hidden',
-                      textOverflow:'ellipsis',
                       display:'-webkit-box',
                       WebkitLineClamp:2,
                       WebkitBoxOrient:'vertical',
-                      textShadow:'0 1px 3px rgba(0,0,0,0.5)'
+                      textShadow:'0 1px 3px rgba(0,0,0,0.7)'
                     }}>
                       {u.message || 'よろしくお願いします'}
                     </div>
@@ -528,12 +527,12 @@ const ChatListScreen: React.FC = () => {
                 
                 {/* ユーザー情報（カード下部） */}
                 <div style={{ 
-                  padding:'6px 8px'
+                  padding:'8px 8px 10px'
                 }}>
                   <div style={{
-                    fontSize:11,
+                    fontSize:12,
                     fontWeight:600,
-                    color:'#000',
+                    color:'#0f172a',
                     overflow:'hidden',
                     textOverflow:'ellipsis',
                     whiteSpace:'nowrap'
@@ -542,8 +541,8 @@ const ChatListScreen: React.FC = () => {
                     {u.age && (
                       <span style={{ 
                         marginLeft:4,
-                        fontSize:10,
-                        color:'#666',
+                        fontSize:11,
+                        color:'#94a3b8',
                         fontWeight:500
                       }}>
                         {u.age}
@@ -814,17 +813,17 @@ const ChatListScreen: React.FC = () => {
               <div style={{ 
                 display:'grid', 
                 gridTemplateColumns:'repeat(3, 1fr)', 
-                gap:6 
+                gap:10 
               }}>
             {filteredCommunities.map((c:any, index:number)=>(
               <div 
                 key={c.id} 
                 style={{ 
                   cursor:'pointer',
-                  borderRadius:12,
+                  borderRadius:14,
                   overflow:'hidden',
                   background:'#fff',
-                  boxShadow:'0 2px 8px rgba(0,0,0,0.08)',
+                  boxShadow:'0 4px 14px rgba(15,23,42,0.12)',
                   transition:'all .2s ease'
                 }} 
                 onClick={()=> {
@@ -870,37 +869,37 @@ const ChatListScreen: React.FC = () => {
                   {/* タイトルテキスト（下部） */}
                   <div style={{
                     position:'absolute',
-                    bottom:0,
                     left:0,
                     right:0,
-                    background:'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%)',
-                    padding:'20px 6px 6px 6px',
+                    bottom:0,
+                    padding:'12px 8px 8px',
+                    background:'linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.7) 40%, transparent 100%)',
                     color:'#fff'
                   }}>
                     <div style={{
-                      fontSize:11,
+                      fontSize:12,
                       fontWeight:700,
-                      lineHeight:1.2,
+                      lineHeight:1.4,
                       overflow:'hidden',
-                      textOverflow:'ellipsis',
                       display:'-webkit-box',
                       WebkitLineClamp:2,
                       WebkitBoxOrient:'vertical',
-                      textShadow:'0 1px 3px rgba(0,0,0,0.5)'
+                      textShadow:'0 1px 3px rgba(0,0,0,0.7)'
                     }}>
                       {c.name}
                     </div>
                     {c.category && (
                       <div style={{ 
-                        display:'inline-block',
+                        display:'inline-flex',
+                        alignItems:'center',
                         fontSize:9, 
-                        background:'rgba(0,0,0,0.6)',
-                        color:'#fff',
-                        padding:'2px 6px', 
-                        borderRadius:10,
+                        background:'rgba(15,118,110,0.9)',
+                        color:'#ecfdf5',
+                        padding:'2px 8px', 
+                        borderRadius:999,
                         fontWeight:600,
-                        marginTop:3,
-                        backdropFilter:'blur(4px)'
+                        marginTop:4,
+                        textShadow:'0 1px 2px rgba(0,0,0,0.4)'
                       }}>
                         {c.category}
                       </div>
@@ -910,21 +909,21 @@ const ChatListScreen: React.FC = () => {
                 
                 {/* コミュニティ情報（カード下部） */}
                 <div style={{ 
-                  padding:'6px',
+                  padding:'8px 8px 10px',
                   display:'flex',
                   alignItems:'center',
                   justifyContent:'space-between'
                 }}>
                   <div style={{
-                    fontSize:10,
-                    color:'#666',
+                    fontSize:11,
+                    color:'#4b5563',
                     fontWeight:600
                   }}>
                     {c.members}人
                   </div>
                   <div style={{
                     fontSize:9,
-                    color:'#999',
+                    color:'#9ca3af',
                     fontWeight:500
                   }}>
                     {c.posts}投稿
