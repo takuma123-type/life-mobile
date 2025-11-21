@@ -27,9 +27,27 @@ const ChatDetailScreen: React.FC = () => {
   };
 
   const send = () => {
-    if(!input.trim()) return;
-    dispatch(pushMessage({ chatId: activeChatId, message: { id: 'm_'+Date.now(), sender:'me', message: input.trim(), time: new Date().toLocaleTimeString().slice(0,5) }}));
+    if (!input.trim()) return;
+    dispatch(
+      pushMessage({
+        chatId: activeChatId,
+        message: {
+          id: 'm_' + Date.now(),
+          sender: 'me',
+          message: input.trim(),
+          time: new Date().toLocaleTimeString().slice(0, 5)
+        }
+      })
+    );
     setInput('');
+  };
+
+  const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
+    // Enter は改行、Cmd+Enter / Ctrl+Enter で送信
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      send();
+    }
   };
 
   // オンラインステータスの判定
@@ -515,23 +533,26 @@ const ChatDetailScreen: React.FC = () => {
           <IconPlus size={24} />
         </button>
 
-        <input
-          type="text"
+        <textarea
           placeholder="メッセージを入力..."
           value={input}
           onChange={e => setInput(e.target.value)}
-          onKeyPress={e => e.key === 'Enter' && send()}
+          onKeyDown={handleKeyDown}
+          rows={1}
           style={{
             flex: 1,
-            padding: '11px 18px',
+            padding: '12px 16px',
             border: '1.5px solid #e5e7eb',
-            borderRadius: 999,
+            borderRadius: 16,
             fontSize: 15,
             outline: 'none',
             background: '#f8fafc',
             transition: 'all 0.18s ease-out',
             color: '#0f172a',
-            boxShadow: '0 2px 8px rgba(15, 23, 42, 0.08)'
+            boxShadow: '0 2px 8px rgba(15, 23, 42, 0.08)',
+            resize: 'none',
+            lineHeight: 1.5,
+            maxHeight: 96 // 約3〜4行で打ち止め
           }}
           onFocus={e => {
             e.target.style.borderColor = '#0EA5E9';

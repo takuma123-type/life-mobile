@@ -274,7 +274,7 @@ const ChatListScreen: React.FC = () => {
         <div>
           {/* サブタブ: すべて / フレンド */}
           <div style={{ 
-            padding:'12px 16px 16px 16px', 
+            padding:'12px 16px 28px 16px', 
             background: '#fff'
           }}>
             <div style={{ display:'flex', gap:24 }}>
