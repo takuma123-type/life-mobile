@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { navigate } from '../store/uiSlice';
-import { IconBack, IconSend, IconPlus, IconAvatar, IconGlobe } from '../components/icons';
+import { IconBack, IconSend, IconPlus, IconAvatar, IconGlobe, IconStamp, IconFileText } from '../components/icons';
 import { mockTranslate } from '../data/mockData';
 
 // モックメッセージデータ
@@ -52,81 +52,109 @@ const GroupChatScreen: React.FC = () => {
   };
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      height: '100vh', 
-      background: '#f8f9fa' 
-    }}>
-      {/* Header */}
-      <div style={{ 
-        background: 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)', 
-        padding: '16px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 12,
-        boxShadow: '0 2px 8px rgba(14, 165, 233, 0.2)'
-      }}>
+    <div 
+      style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        height: '100vh', 
+        background: '#f8fafc',
+        WebkitOverflowScrolling: 'touch'
+      }}
+    >
+      {/* ヘッダー */}
+      <div
+        style={{ 
+          background: '#ffffffcc',
+          padding: '12px 16px 10px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          backdropFilter: 'blur(18px)',
+          WebkitBackdropFilter: 'blur(18px)',
+          borderBottom: '1px solid rgba(226, 232, 240, 0.8)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 30
+        }}
+      >
         <button 
           onClick={() => dispatch(navigate('chat'))} 
           aria-label='戻る' 
           style={{ 
-            background: 'rgba(255, 255, 255, 0.2)', 
+            background: '#e5f2ff', 
             border: 'none', 
             cursor: 'pointer',
-            width: 36,
-            height: 36,
+            width: 32,
+            height: 32,
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#fff',
-            transition: 'all 0.2s'
+            color: '#0f172a',
+            transition: 'all 0.18s ease-out',
+            boxShadow: '0 2px 8px rgba(148, 163, 184, 0.35)'
           }}
-          onMouseOver={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)'}
-          onMouseOut={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
+          onMouseOver={e => {
+            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.background = '#dbeafe';
+          }}
+          onMouseOut={e => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.background = '#e5f2ff';
+          }}
         >
           <IconBack size={24} />
         </button>
-        <div style={{ flex: 1 }}>
-          <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: '#fff' }}>
-            {community?.name || 'グループチャット'}
+
+        <div style={{ flex: 1, overflow: 'hidden' }}>
+          <h2 style={{ 
+            margin: 0, 
+            fontSize: 16, 
+            fontWeight: 700, 
+            color: '#0f172a',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis'
+          }}>
+            {community?.name || 'カフェ好き集まれ'}
           </h2>
-          <p style={{ margin: '2px 0 0', fontSize: 12, color: 'rgba(255, 255, 255, 0.9)' }}>
+          <p style={{ margin: '2px 0 0', fontSize: 12, color: '#64748b', fontWeight: 500 }}>
             {community?.members || '231'}人のメンバー
           </p>
         </div>
       </div>
 
-      {/* 今日のセパレーター */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        padding: '20px 0',
-        position: 'sticky',
-        top: 0,
-        zIndex: 10
-      }}>
-        <span style={{ 
-          background: 'rgba(148, 163, 184, 0.15)', 
-          color: '#64748b',
-          padding: '8px 20px', 
-          borderRadius: 20,
-          fontSize: 13,
-          fontWeight: 600,
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(148, 163, 184, 0.1)'
-        }}>
-          今日
-        </span>
-      </div>
-
       {/* メッセージリスト */}
-      <div style={{ 
-        flex: 1, 
-        overflowY: 'auto', 
-        padding: '0 16px 16px'
-      }}>
+      <div 
+        style={{ 
+          flex: 1, 
+          overflowY: 'auto', 
+          padding: '12px 16px 16px',
+          background: 'linear-gradient(to bottom, #f9fafb 0%, #ecfeff 40%, #f9fafb 100%)'
+        }}
+      >
+        {/* 日付セパレーター */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          padding: '8px 0 20px',
+          position: 'sticky',
+          top: 0,
+          zIndex: 10
+        }}>
+          <span style={{ 
+            background: 'rgba(148, 163, 184, 0.16)', 
+            color: '#64748b',
+            padding: '6px 18px', 
+            borderRadius: 999,
+            fontSize: 12,
+            fontWeight: 600,
+            letterSpacing: '0.08em',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(148, 163, 184, 0.18)'
+          }}>
+            2025.11.13. 木曜日
+          </span>
+        </div>
         {messages.map((msg) => {
           const isMe = msg.userId === 'me';
           const needsTranslation = msg.lang !== 'ja';
@@ -139,7 +167,8 @@ const GroupChatScreen: React.FC = () => {
                 display: 'flex',
                 flexDirection: isMe ? 'row-reverse' : 'row',
                 gap: 12,
-                alignItems: 'flex-start'
+                alignItems: 'flex-start',
+                animation: 'messageSlideIn 0.3s ease-out'
               }}
             >
               {/* アバター */}
@@ -163,7 +192,7 @@ const GroupChatScreen: React.FC = () => {
               )}
 
               <div style={{ 
-                maxWidth: '70%',
+                maxWidth: '76%',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: isMe ? 'flex-end' : 'flex-start'
@@ -184,20 +213,21 @@ const GroupChatScreen: React.FC = () => {
                 {/* メッセージバブル */}
                 <div style={{ 
                   background: isMe 
-                    ? 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)' 
-                    : '#fff',
-                  color: isMe ? '#fff' : '#1f2937',
-                  padding: '14px 18px',
-                  borderRadius: isMe ? '20px 20px 4px 20px' : '20px 20px 20px 4px',
+                    ? 'linear-gradient(135deg, #10b981 0%, #14b8a6 45%, #06b6d4 100%)' 
+                    : '#ffffff',
+                  color: isMe ? '#f9fafb' : '#0f172a',
+                  padding: '10px 14px',
+                  borderRadius: isMe ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                   fontSize: 15,
                   lineHeight: 1.6,
                   wordBreak: 'break-word',
                   boxShadow: isMe 
-                    ? '0 4px 12px rgba(14, 165, 233, 0.3)' 
-                    : '0 2px 8px rgba(0,0,0,.08)',
-                  animation: 'messageSlideIn 0.3s ease-out'
+                    ? '0 4px 14px rgba(34, 197, 94, 0.35)' 
+                    : '0 2px 8px rgba(15, 23, 42, 0.12)',
+                  border: isMe ? 'none' : '1px solid rgba(226, 232, 240, 0.9)',
+                  transition: 'transform .18s ease-out, box-shadow .18s ease-out'
                 }}>
-                  {msg.message}
+                  {translations[msg.id] || msg.message}
                 </div>
 
                 {/* 時間と翻訳ボタン */}
@@ -217,13 +247,15 @@ const GroupChatScreen: React.FC = () => {
                     {msg.time}
                   </span>
                   
-                  {/* 翻訳ボタン（他言語メッセージのみ） */}
+                  {/* 翻訳ボタン(他言語メッセージのみ) */}
                   {needsTranslation && !isMe && (
                     <button
                       onClick={() => handleTranslate(msg.id, msg.message)}
                       disabled={translating === msg.id}
                       style={{
-                        background: 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)',
+                        background: translations[msg.id]
+                          ? 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)'
+                          : 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)',
                         border: '1.5px solid #BAE6FD',
                         borderRadius: 14,
                         padding: '6px 12px',
@@ -247,27 +279,10 @@ const GroupChatScreen: React.FC = () => {
                       }}
                     >
                       <IconGlobe size={14} />
-                      {translating === msg.id ? '翻訳中...' : '翻訳'}
+                      {translating === msg.id ? '翻訳中...' : translations[msg.id] ? '原文' : '翻訳'}
                     </button>
                   )}
                 </div>
-
-                {/* 翻訳結果 */}
-                {translations[msg.id] && (
-                  <div style={{ 
-                    background: '#f0f9ff',
-                    border: '1px solid #bae6fd',
-                    padding: '10px 14px',
-                    borderRadius: 12,
-                    fontSize: 14,
-                    lineHeight: 1.5,
-                    marginTop: 8,
-                    maxWidth: '100%',
-                    color: '#0c4a6e'
-                  }}>
-                    {translations[msg.id]}
-                  </div>
-                )}
               </div>
 
               {/* 自分のアバター */}
@@ -332,31 +347,32 @@ const GroupChatScreen: React.FC = () => {
                 padding: '14px 16px',
                 background: 'none',
                 border: 'none',
-                borderRadius: 12,
+                borderRadius: 16,
                 cursor: 'pointer',
                 fontSize: 15,
                 fontWeight: 500,
-                color: '#1f2937',
+                color: '#0f172a',
                 transition: 'all 0.2s'
               }}
               onClick={() => {
                 alert('画像選択機能は開発中です');
                 setShowAttachMenu(false);
               }}
-              onMouseOver={e => e.currentTarget.style.background = '#f8f9fa'}
+              onMouseOver={e => e.currentTarget.style.background = '#f8fafc'}
               onMouseOut={e => e.currentTarget.style.background = 'none'}
             >
               <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: 12,
+                width: 44,
+                height: 44,
+                borderRadius: 16,
                 background: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 20
+                color: '#ecfdf5',
+                boxShadow: '0 6px 16px rgba(16, 185, 129, 0.5)'
               }}>
-                🖼️
+                <IconFileText size={22} />
               </div>
               <span>画像</span>
             </button>
@@ -370,31 +386,32 @@ const GroupChatScreen: React.FC = () => {
                 padding: '14px 16px',
                 background: 'none',
                 border: 'none',
-                borderRadius: 12,
+                borderRadius: 16,
                 cursor: 'pointer',
                 fontSize: 15,
                 fontWeight: 500,
-                color: '#1f2937',
+                color: '#0f172a',
                 transition: 'all 0.2s'
               }}
               onClick={() => {
                 alert('スタンプ選択機能は開発中です');
                 setShowAttachMenu(false);
               }}
-              onMouseOver={e => e.currentTarget.style.background = '#f8f9fa'}
+              onMouseOver={e => e.currentTarget.style.background = '#f8fafc'}
               onMouseOut={e => e.currentTarget.style.background = 'none'}
             >
               <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: 12,
+                width: 44,
+                height: 44,
+                borderRadius: 16,
                 background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 20
+                color: '#fefce8',
+                boxShadow: '0 6px 16px rgba(245, 158, 11, 0.5)'
               }}>
-                😊
+                <IconStamp size={22} />
               </div>
               <span>スタンプ</span>
             </button>
@@ -408,31 +425,32 @@ const GroupChatScreen: React.FC = () => {
                 padding: '14px 16px',
                 background: 'none',
                 border: 'none',
-                borderRadius: 12,
+                borderRadius: 16,
                 cursor: 'pointer',
                 fontSize: 15,
                 fontWeight: 500,
-                color: '#1f2937',
+                color: '#0f172a',
                 transition: 'all 0.2s'
               }}
               onClick={() => {
                 alert('ファイル選択機能は開発中です');
                 setShowAttachMenu(false);
               }}
-              onMouseOver={e => e.currentTarget.style.background = '#f8f9fa'}
+              onMouseOver={e => e.currentTarget.style.background = '#f8fafc'}
               onMouseOut={e => e.currentTarget.style.background = 'none'}
             >
               <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: 12,
+                width: 44,
+                height: 44,
+                borderRadius: 16,
                 background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: 20
+                color: '#eef2ff',
+                boxShadow: '0 6px 16px rgba(79, 70, 229, 0.55)'
               }}>
-                📎
+                <IconFileText size={22} />
               </div>
               <span>ファイル</span>
             </button>
@@ -441,67 +459,82 @@ const GroupChatScreen: React.FC = () => {
       )}
 
       {/* 入力エリア */}
-      <div style={{ 
-        background: '#fff',
-        borderTop: '1px solid #e5e7eb',
-        padding: '16px',
-        display: 'flex',
-        gap: 12,
-        alignItems: 'flex-end',
-        boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.05)'
-      }}>
+      <div 
+        style={{ 
+          background: '#ffffffcc',
+          borderTop: '1px solid rgba(226, 232, 240, 0.9)',
+          padding: '10px 12px 18px',
+          display: 'flex',
+          gap: 10,
+          alignItems: 'flex-end',
+          boxShadow: '0 -8px 30px rgba(15, 23, 42, 0.18)',
+          backdropFilter: 'blur(18px)',
+          WebkitBackdropFilter: 'blur(18px)'
+        }}
+      >
         <button
           aria-label='添付'
           style={{
             background: showAttachMenu 
               ? 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)'
-              : '#f1f5f9',
+              : '#e5f2ff',
             border: 'none',
             cursor: 'pointer',
-            width: 44,
-            height: 44,
+            width: 40,
+            height: 40,
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: showAttachMenu ? '#fff' : '#64748b',
-            transition: 'all 0.2s',
+            color: showAttachMenu ? '#fff' : '#0f172a',
+            transition: 'all 0.18s ease-out',
             flexShrink: 0,
             boxShadow: showAttachMenu 
-              ? '0 4px 12px rgba(14, 165, 233, 0.3)'
-              : 'none'
+              ? '0 4px 14px rgba(14, 165, 233, 0.45)'
+              : '0 2px 8px rgba(148, 163, 184, 0.35)'
           }}
           onClick={() => setShowAttachMenu(!showAttachMenu)}
           onMouseOver={e => {
             if (!showAttachMenu) {
-              e.currentTarget.style.background = '#e2e8f0';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.background = '#dbeafe';
             }
           }}
           onMouseOut={e => {
             if (!showAttachMenu) {
-              e.currentTarget.style.background = '#f1f5f9';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.background = '#e5f2ff';
             }
           }}
         >
           <IconPlus size={24} />
         </button>
 
-        <input
-          type="text"
+        <textarea
           placeholder="メッセージを入力..."
           value={message}
           onChange={e => setMessage(e.target.value)}
-          onKeyPress={e => e.key === 'Enter' && handleSend()}
+          onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
+          rows={1}
           style={{
             flex: 1,
-            padding: '14px 20px',
-            border: '2px solid #e5e7eb',
-            borderRadius: 24,
+            padding: '12px 16px',
+            border: '1.5px solid #e5e7eb',
+            borderRadius: 16,
             fontSize: 15,
             outline: 'none',
-            background: '#f8f9fa',
-            transition: 'all 0.2s',
-            color: '#1f2937'
+            background: '#f8fafc',
+            transition: 'all 0.18s ease-out',
+            color: '#0f172a',
+            boxShadow: '0 2px 8px rgba(15, 23, 42, 0.08)',
+            resize: 'none',
+            lineHeight: 1.5,
+            maxHeight: 96
           }}
           onFocus={e => {
             e.target.style.borderColor = '#0EA5E9';
@@ -526,17 +559,17 @@ const GroupChatScreen: React.FC = () => {
             color: message.trim() ? '#fff' : '#94a3b8',
             border: 'none',
             cursor: message.trim() ? 'pointer' : 'not-allowed',
-            width: 48,
-            height: 48,
+            width: 44,
+            height: 44,
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            transition: 'all .2s ease',
+            transition: 'all .18s ease-out',
             flexShrink: 0,
             boxShadow: message.trim() 
-              ? '0 4px 12px rgba(14, 165, 233, 0.3)' 
-              : 'none'
+              ? '0 4px 14px rgba(14, 165, 233, 0.45)' 
+              : '0 1px 4px rgba(148, 163, 184, 0.3)'
           }}
           onMouseOver={e => {
             if (message.trim()) {
