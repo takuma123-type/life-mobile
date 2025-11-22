@@ -18,6 +18,8 @@ import LanguageModal from './components/modals/LanguageModal';
 import LoginModal from './components/modals/LoginModal';
 import { setUsers, setFollowRequests, setMe } from './store/userSlice';
 import { setCommunities } from './store/communitySlice';
+import { setAuthenticated, setRegistered, setLanguage } from './store/uiSlice';
+import { loadSession } from './utils/session';
 import { seedMessages } from './store/chatSlice';
 import { mockUsers, mockCommunities, seedChat, mockFollowRequests } from './data/mockData';
 
@@ -32,6 +34,17 @@ const App: React.FC = () => {
 
   // 初期データシード
   useEffect(() => {
+    // 既存セッションのロード（初回のみ）
+    const { user, isAuthenticated, isRegistered, language } = loadSession();
+    if (user) {
+      dispatch(setMe(user));
+      dispatch(setAuthenticated(isAuthenticated));
+      dispatch(setRegistered(isRegistered));
+    }
+    if (language) {
+      dispatch(setLanguage(language));
+    }
+
     if (usersLen === 0) {
       dispatch(setUsers(mockUsers));
       dispatch(setFollowRequests(mockFollowRequests));

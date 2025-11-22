@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { closeLoginModal, setAuthenticated, setRegistered, navigate, openSmsModal } from '../../store/uiSlice';
+import { saveSession } from '../../utils/session';
 import { setMe } from '../../store/userSlice';
 import { IconX, IconUser, IconLock, IconShield } from '../icons';
 
@@ -34,6 +35,8 @@ const LoginModal: React.FC = () => {
       dispatch(setMe(user));
       dispatch(setAuthenticated(true));
       dispatch(setRegistered(true));
+      // persist session
+      saveSession(user, true, true);
       dispatch(closeLoginModal());
       dispatch(navigate('chat'));
     } else {
@@ -95,7 +98,6 @@ const LoginModal: React.FC = () => {
             閉じる
           </button>
           <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-            <IconShield size={20} color='#0EA5E9' />
             <h2 style={{ margin:0, fontSize:18, fontWeight:700, color:'#1a1a1a' }}>ログイン</h2>
           </div>
           <div style={{ width:80 }}></div>

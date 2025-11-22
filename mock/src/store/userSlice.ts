@@ -12,6 +12,11 @@ export interface UserProfile {
   verified?: boolean;
   online?: boolean;
   country?: string;
+  // 以下は登録・編集画面で追加される拡張フィールド
+  activeTime?: string; // よく使う時間帯
+  gallery?: string[];  // 画像ギャラリー
+  phone?: string;      // デモ用: 認証済電話番号
+  password?: string;   // デモ用: 簡易パスワード（本番では保持しない）
 }
 
 export interface FollowRequest {

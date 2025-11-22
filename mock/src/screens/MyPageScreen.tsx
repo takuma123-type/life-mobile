@@ -2,6 +2,7 @@ import React from 'react';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import BottomNav from '../components/common/BottomNav';
 import { openProfileModal, navigate, openLanguageModal, setAuthenticated, setRegistered, openLoginModal } from '../store/uiSlice';
+import { clearSession } from '../utils/session';
 import { setMe } from '../store/userSlice';
 
 const MyPageScreen: React.FC = () => {
@@ -14,7 +15,9 @@ const MyPageScreen: React.FC = () => {
       dispatch(setMe(null));
       dispatch(setAuthenticated(false));
       dispatch(setRegistered(false));
-      dispatch(navigate('login'));
+      clearSession();
+      // 以前は login 画面へ遷移していたが、マイページ上で未ログイン状態の UI を表示したい要件のため遷移を削除
+      // dispatch(navigate('mypage')); // 現在も mypage のため不要
     }
   };
 
