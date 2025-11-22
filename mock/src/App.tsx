@@ -16,6 +16,7 @@ import GuestProfileModal from './components/modals/GuestProfileModal';
 import SmsVerificationModal from './components/modals/SmsVerificationModal';
 import LanguageModal from './components/modals/LanguageModal';
 import LoginModal from './components/modals/LoginModal';
+import FollowRequestsModal from './components/modals/FollowRequestsModal';
 import { setUsers, setFollowRequests, setMe } from './store/userSlice';
 import { setCommunities } from './store/communitySlice';
 import { setAuthenticated, setRegistered, setLanguage } from './store/uiSlice';
@@ -81,6 +82,7 @@ const App: React.FC = () => {
       <SmsVerificationModal />
       <LanguageModal />
       <LoginModal />
+      <FollowRequestsModal />
     </div>
   );
 };

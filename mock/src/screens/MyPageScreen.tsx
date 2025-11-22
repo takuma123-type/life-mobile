@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import BottomNav from '../components/common/BottomNav';
-import { openProfileModal, navigate, openLanguageModal, setAuthenticated, setRegistered, openLoginModal } from '../store/uiSlice';
+import { openProfileModal, navigate, openLanguageModal, setAuthenticated, setRegistered, openLoginModal, openFollowRequestsModal } from '../store/uiSlice';
 import { clearSession } from '../utils/session';
 import { setMe } from '../store/userSlice';
 
@@ -58,7 +58,7 @@ const MyPageScreen: React.FC = () => {
             <li>
               <button
                 type="button"
-                onClick={() => dispatch(navigate('followRequests'))}
+                onClick={() => dispatch(openFollowRequestsModal())}
                 className="w-full flex items-center justify-between px-6 py-4 text-left focus:outline-none focus:bg-slate-50"
                 aria-label="フレンド申請"
               >

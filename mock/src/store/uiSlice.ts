@@ -20,6 +20,7 @@ interface UIState {
   languageModalOpen: boolean;
   language: 'ja' | 'en';
   loginModalOpen: boolean;
+  followRequestsModalOpen: boolean; // 追加: フレンド申請モーダル
 }
 
 const initialState: UIState = {
@@ -42,6 +43,7 @@ const initialState: UIState = {
   languageModalOpen: false,
   language: 'ja',
   loginModalOpen: false,
+  followRequestsModalOpen: false,
 };
 
 const uiSlice = createSlice({
@@ -78,8 +80,10 @@ const uiSlice = createSlice({
     setLanguage(state, action: PayloadAction<'ja' | 'en'>) { state.language = action.payload; },
     openLoginModal(state) { state.loginModalOpen = true; },
     closeLoginModal(state) { state.loginModalOpen = false; },
+    openFollowRequestsModal(state) { state.followRequestsModalOpen = true; },
+    closeFollowRequestsModal(state) { state.followRequestsModalOpen = false; },
   }
 });
 
-export const { hideSplash, setOnboarded, setTheme, navigate, openAuthModal, closeAuthModal, openProfileModal, closeProfileModal, openGuestProfileModal, closeGuestProfileModal, openSmsModal, closeSmsModal, setSmsPhone, setSmsStep, setSmsSentCode, setSmsVerified, setAuthCallback, setAuthenticated, setRegistered, runAuthCallback, openLanguageModal, closeLanguageModal, setLanguage, openLoginModal, closeLoginModal } = uiSlice.actions;
+export const { hideSplash, setOnboarded, setTheme, navigate, openAuthModal, closeAuthModal, openProfileModal, closeProfileModal, openGuestProfileModal, closeGuestProfileModal, openSmsModal, closeSmsModal, setSmsPhone, setSmsStep, setSmsSentCode, setSmsVerified, setAuthCallback, setAuthenticated, setRegistered, runAuthCallback, openLanguageModal, closeLanguageModal, setLanguage, openLoginModal, closeLoginModal, openFollowRequestsModal, closeFollowRequestsModal } = uiSlice.actions;
 export default uiSlice.reducer;
