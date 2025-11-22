@@ -4,6 +4,8 @@ import { closeFollowRequestsModal } from '../../store/uiSlice';
 import { acceptFollowRequest, rejectFollowRequest } from '../../store/userSlice';
 import type { FollowRequest } from '../../store/userSlice';
 import { IconX, IconAvatar } from '../icons';
+import { designTokens } from '../../styles/designTokens';
+import Button from '../common/Button';
 
 // フレンド申請モーダル: 新規登録などと同じ下からスライド表示 UI
 const FollowRequestsModal: React.FC = () => {
@@ -32,11 +34,40 @@ const FollowRequestsModal: React.FC = () => {
       `}</style>
       <div style={{ background:'#fff', width:'100%', maxHeight:'90vh', borderRadius:'28px 28px 0 0', padding:0, position:'relative', overflow:'auto', animation:'slideUp .35s cubic-bezier(0.16,1,0.3,1)' }} onClick={e=>e.stopPropagation()}>
         {/* ヘッダー */}
-        <div style={{ position:'sticky', top:0, background:'#fff', borderBottom:'1px solid #f1f5f9', padding:'18px 22px 14px', display:'flex', alignItems:'center', justifyContent:'space-between', zIndex:10 }}>
-          <button onClick={()=>dispatch(closeFollowRequestsModal())} style={{ background:'rgba(14,165,233,0.12)', border:'none', color:'#0EA5E9', fontSize:14, fontWeight:600, cursor:'pointer', padding:'8px 14px', borderRadius:999, display:'flex', alignItems:'center', gap:4 }}>
+        <div style={{ 
+          position:'sticky', 
+          top:0, 
+          background: designTokens.colors.background.primary, 
+          borderBottom: `1px solid ${designTokens.colors.border.light}`, 
+          padding: `${designTokens.spacing.md} ${designTokens.spacing.lg} ${designTokens.spacing.md}`, 
+          display:'flex', 
+          alignItems:'center', 
+          justifyContent:'space-between', 
+          zIndex:10,
+          boxShadow: designTokens.shadow.sm
+        }}>
+          <button 
+            onClick={()=>dispatch(closeFollowRequestsModal())} 
+            style={{ 
+              background: designTokens.colors.primary.pale, 
+              border:'none', 
+              color: designTokens.colors.primary.main, 
+              fontSize: designTokens.typography.body.fontSize, 
+              fontWeight:600, 
+              cursor:'pointer', 
+              padding: `${designTokens.spacing.sm} ${designTokens.spacing.md}`, 
+              borderRadius: designTokens.radius.full, 
+              display:'flex', 
+              alignItems:'center', 
+              gap: designTokens.spacing.xs
+            }}>
             <IconX size={16} />閉じる
           </button>
-          <h2 style={{ margin:0, fontSize:18, fontWeight:700 }}>フレンド申請</h2>
+          <h2 style={{ 
+            margin:0, 
+            fontSize: designTokens.typography.h3.fontSize, 
+            fontWeight: designTokens.typography.h3.fontWeight as number 
+          }}>フレンド申請</h2>
           <div style={{ width:70 }} />
         </div>
 
@@ -58,9 +89,23 @@ const FollowRequestsModal: React.FC = () => {
                   <p style={{ margin:0, fontSize:14, lineHeight:1.6, color:'#475569', wordBreak:'break-word' }}>{r.message}</p>
                 </div>
               </div>
-              <div style={{ display:'flex', gap:14 }}>
-                <button onClick={()=>setConfirm({ type:'accept', id:r.id })} style={{ flex:1, background:'#0EA5E9', color:'#fff', border:'none', padding:'14px 0', fontSize:15, fontWeight:700, borderRadius:16, cursor:'pointer', transition:'background .25s', boxShadow:'0 4px 14px rgba(14,165,233,.28)' }} onMouseOver={e=>e.currentTarget.style.background='#06B6D4'} onMouseOut={e=>e.currentTarget.style.background='#0EA5E9'}>承認</button>
-                <button onClick={()=>setConfirm({ type:'reject', id:r.id })} style={{ flex:1, background:'#fff', color:'#0f172a', border:'2px solid #e2e8f0', padding:'14px 0', fontSize:15, fontWeight:700, borderRadius:16, cursor:'pointer', transition:'all .25s' }} onMouseOver={e=>{e.currentTarget.style.background='#f1f5f9';}} onMouseOut={e=>{e.currentTarget.style.background='#fff';}}>拒否</button>
+              <div style={{ display:'flex', gap: designTokens.spacing.md }}>
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={()=>setConfirm({ type:'accept', id:r.id })}
+                  style={{ flex:1 }}
+                >
+                  承認
+                </Button>
+                <Button
+                  variant="tertiary"
+                  size="md"
+                  onClick={()=>setConfirm({ type:'reject', id:r.id })}
+                  style={{ flex:1 }}
+                >
+                  拒否
+                </Button>
               </div>
             </div>
           ))}

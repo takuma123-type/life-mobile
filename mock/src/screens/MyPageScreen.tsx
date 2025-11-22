@@ -5,6 +5,8 @@ import { openProfileModal, navigate, openLanguageModal, setAuthenticated, setReg
 import { clearSession } from '../utils/session';
 import { setMe } from '../store/userSlice';
 import { IconUser, IconUsers, IconStamp, IconLanguage, IconLogout } from '../components/icons';
+import { designTokens } from '../styles/designTokens';
+import Button from '../components/common/Button';
 
 const MyPageScreen: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -27,48 +29,33 @@ const MyPageScreen: React.FC = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f1f5f9', paddingBottom: 96 }}>
-      <header style={{ padding: '48px 20px 32px', background: 'linear-gradient(180deg, #ffffff 0%, #fafbfc 100%)' }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.02em', color: '#0f172a', margin: 0 }}>マイページ</h1>
+    <div style={{ minHeight: '100vh', background: designTokens.colors.background.secondary, paddingBottom: 96 }}>
+      <header style={{ 
+        padding: `${designTokens.spacing.xxl} ${designTokens.spacing.lg} ${designTokens.spacing.xl}`, 
+        background: designTokens.colors.background.gradient 
+      }}>
+        <h1 style={{ 
+          fontSize: designTokens.typography.h1.fontSize, 
+          fontWeight: designTokens.typography.h1.fontWeight as number, 
+          letterSpacing: designTokens.typography.h1.letterSpacing, 
+          color: designTokens.colors.text.primary, 
+          margin: 0 
+        }}>マイページ</h1>
       </header>
 
       {/* メインメニューグリッド */}
-      <div style={{ padding: '24px 20px' }}>
+      <div style={{ padding: `${designTokens.spacing.lg} ${designTokens.spacing.lg}` }}>
         {!isAuthenticated && (
-          <div style={{ marginBottom: 20 }}>
-            <button
-              type="button"
+          <div style={{ marginBottom: designTokens.spacing.lg }}>
+            <Button
+              variant="primary"
+              size="lg"
+              fullWidth
+              leftIcon={<IconUser size={22} color="#fff" />}
               onClick={() => dispatch(openLoginModal())}
-              style={{
-                width: '100%',
-                padding: '18px 24px',
-                background: 'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)',
-                border: 'none',
-                borderRadius: 20,
-                color: '#fff',
-                fontSize: 16,
-                fontWeight: 700,
-                cursor: 'pointer',
-                boxShadow: '0 8px 24px rgba(14, 165, 233, 0.25)',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 10,
-                letterSpacing: '0.02em'
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 12px 32px rgba(14, 165, 233, 0.35)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(14, 165, 233, 0.25)';
-              }}
             >
-              <IconUser size={22} color="#fff" />
-              <span>新規登録 / ログイン</span>
-            </button>
+              新規登録 / ログイン
+            </Button>
           </div>
         )}
 

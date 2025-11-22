@@ -6,6 +6,8 @@ import BottomNav from '../components/common/BottomNav';
 import { IconBack, IconStamp } from '../components/icons';
 import { mockStampPacks } from '../data/mockData';
 import type { StampPack } from '../store/userSlice';
+import { designTokens } from '../styles/designTokens';
+import Button from '../components/common/Button';
 
 const StampShopScreen: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -40,42 +42,44 @@ const StampShopScreen: React.FC = () => {
         position:'sticky', 
         top:0, 
         zIndex:100, 
-        background:'var(--color-surface)', 
-        borderBottom:'1px solid var(--color-border)', 
-        padding:'14px 20px', 
+        background: designTokens.colors.background.primary, 
+        borderBottom: `1px solid ${designTokens.colors.border.medium}`, 
+        padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`, 
         display:'flex', 
         alignItems:'center', 
-        gap:12,
+        gap: designTokens.spacing.md,
         justifyContent:'flex-start',
-        position:'sticky'
+        boxShadow: designTokens.shadow.sm
       }}>
         <button 
           onClick={()=>dispatch(navigate('mypage'))} 
           aria-label='戻る' 
           style={{ 
-            background:'none', 
+            background: designTokens.colors.primary.pale, 
             border:'none', 
             cursor:'pointer', 
             display:'flex',
-            padding:8,
-            transition:'opacity .2s ease',
-            opacity:1
+            padding: designTokens.spacing.sm,
+            borderRadius: designTokens.radius.circle,
+            transition: designTokens.transition.fast,
+            boxShadow: designTokens.shadow.md
           }}
-          onMouseOver={e=>(e.currentTarget.style.opacity='0.6')}
-          onMouseOut={e=>(e.currentTarget.style.opacity='1')}
+          onMouseOver={e=>{e.currentTarget.style.background = designTokens.colors.primary.light;}}
+          onMouseOut={e=>{e.currentTarget.style.background = designTokens.colors.primary.pale;}}
         >
           <IconBack size={24} />
         </button>
         <h1 style={{ 
           margin:0, 
-          fontSize:18, 
-          fontWeight:600, 
-          letterSpacing:'.5px', 
+          fontSize: designTokens.typography.h3.fontSize, 
+          fontWeight: designTokens.typography.h3.fontWeight as number, 
+          letterSpacing: designTokens.typography.h3.letterSpacing, 
           position:'absolute', 
           left:'50%', 
           transform:'translateX(-50%)', 
           top:'50%', 
-          translate:'0 -50%'
+          translate:'0 -50%',
+          color: designTokens.colors.text.primary
         }}>スタンプ購入</h1>
       </div>
 
@@ -96,32 +100,13 @@ const StampShopScreen: React.FC = () => {
             <span style={{ fontSize:14, fontWeight:600, color:'#0f172a' }}>保有ポイント</span>
             <span style={{ fontSize:22, fontWeight:700, color:'#0EA5E9', textShadow:'0 1px 0 rgba(255,255,255,.6)' }}>{points}</span>
           </div>
-          <button
+          <Button
+            variant="primary"
+            size="sm"
             onClick={()=>setShowAdModal(true)}
-            style={{
-              background:'#0EA5E9',
-              color:'#fff',
-              border:'1px solid #0EA5E9',
-              padding:'10px 20px',
-              borderRadius:10,
-              fontSize:14,
-              fontWeight:600,
-              cursor:'pointer',
-              transition:'all .25s cubic-bezier(.4,0,.2,1)',
-              whiteSpace:'nowrap',
-              boxShadow:'0 4px 10px rgba(14,165,233,.25)'
-            }}
-            onMouseOver={e=>{
-              e.currentTarget.style.background='#0284c7';
-              e.currentTarget.style.boxShadow='0 6px 16px rgba(2,132,199,.35)';
-            }}
-            onMouseOut={e=>{
-              e.currentTarget.style.background='#0EA5E9';
-              e.currentTarget.style.boxShadow='0 4px 10px rgba(14,165,233,.25)';
-            }}
           >
             広告を見る
-          </button>
+          </Button>
         </div>
 
         {/* Section Title */}

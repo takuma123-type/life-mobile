@@ -4,6 +4,8 @@ import { closeLoginModal, setAuthenticated, setRegistered, navigate, openSmsModa
 import { saveSession } from '../../utils/session';
 import { setMe } from '../../store/userSlice';
 import { IconX, IconUser, IconLock, IconShield } from '../icons';
+import { designTokens } from '../../styles/designTokens';
+import Button from '../common/Button';
 
 const LoginModal: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -104,10 +106,18 @@ const LoginModal: React.FC = () => {
         </div>
 
         <div style={{ padding:'32px 24px', maxWidth:480, margin:'0 auto' }}>
-          {/* 電話番号入力 */}
-          <div style={{ marginBottom:24 }}>
-            <label style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:15, marginBottom:12, color:'#1a1a1a' }}>
-              <IconUser size={20} color='#0EA5E9' />
+          {/* 電話番号入力 (UI改善.md Q9対応) */}
+          <div style={{ marginBottom: designTokens.spacing.lg }}>
+            <label style={{ 
+              display:'flex', 
+              alignItems:'center', 
+              gap: designTokens.spacing.sm, 
+              fontWeight:600, 
+              fontSize: designTokens.typography.body.fontSize, 
+              marginBottom: designTokens.spacing.md, 
+              color: designTokens.colors.text.primary 
+            }}>
+              <IconUser size={20} color={designTokens.colors.primary.main} />
               電話番号
             </label>
             <input
@@ -117,30 +127,39 @@ const LoginModal: React.FC = () => {
               placeholder='090-1234-5678'
               style={{ 
                 width:'100%', 
-                padding:'18px 20px', 
-                fontSize:16, 
-                border:'2px solid #e5e7eb', 
-                borderRadius:12, 
+                padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`, 
+                fontSize: designTokens.typography.body.fontSize, 
+                border: `2px solid ${designTokens.colors.border.medium}`, 
+                borderRadius: designTokens.radius.md, 
                 outline:'none',
                 boxSizing:'border-box',
-                transition:'all .3s ease',
-                fontWeight:500
+                transition: designTokens.transition.base,
+                fontWeight:500,
+                color: designTokens.colors.text.primary
               }}
               onFocus={e => {
-                e.currentTarget.style.borderColor='#0EA5E9';
-                e.currentTarget.style.boxShadow='0 0 0 4px rgba(14, 165, 233, 0.1)';
+                e.currentTarget.style.borderColor = designTokens.colors.primary.main;
+                e.currentTarget.style.boxShadow = `0 0 0 4px ${designTokens.colors.primary.pale}`;
               }}
               onBlur={e => {
-                e.currentTarget.style.borderColor='#e5e7eb';
+                e.currentTarget.style.borderColor = designTokens.colors.border.medium;
                 e.currentTarget.style.boxShadow='none';
               }}
             />
           </div>
 
-          {/* パスワード入力 */}
-          <div style={{ marginBottom:32 }}>
-            <label style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:15, marginBottom:12, color:'#1a1a1a' }}>
-              <IconLock size={20} color='#0EA5E9' />
+          {/* パスワード入力 (UI改善.md Q9対応) */}
+          <div style={{ marginBottom: designTokens.spacing.xl }}>
+            <label style={{ 
+              display:'flex', 
+              alignItems:'center', 
+              gap: designTokens.spacing.sm, 
+              fontWeight:600, 
+              fontSize: designTokens.typography.body.fontSize, 
+              marginBottom: designTokens.spacing.md, 
+              color: designTokens.colors.text.primary 
+            }}>
+              <IconLock size={20} color={designTokens.colors.primary.main} />
               パスワード
             </label>
             <input
@@ -151,62 +170,39 @@ const LoginModal: React.FC = () => {
               placeholder='8文字以上のパスワード'
               style={{ 
                 width:'100%', 
-                padding:'18px 20px', 
-                fontSize:16, 
-                border:'2px solid #e5e7eb', 
-                borderRadius:12, 
+                padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`, 
+                fontSize: designTokens.typography.body.fontSize, 
+                border: `2px solid ${designTokens.colors.border.medium}`, 
+                borderRadius: designTokens.radius.md, 
                 outline:'none',
                 boxSizing:'border-box',
-                transition:'all .3s ease',
-                fontWeight:500
+                transition: designTokens.transition.base,
+                fontWeight:500,
+                color: designTokens.colors.text.primary
               }}
               onFocus={e => {
-                e.currentTarget.style.borderColor='#0EA5E9';
-                e.currentTarget.style.boxShadow='0 0 0 4px rgba(14, 165, 233, 0.1)';
+                e.currentTarget.style.borderColor = designTokens.colors.primary.main;
+                e.currentTarget.style.boxShadow = `0 0 0 4px ${designTokens.colors.primary.pale}`;
               }}
               onBlur={e => {
-                e.currentTarget.style.borderColor='#e5e7eb';
+                e.currentTarget.style.borderColor = designTokens.colors.border.medium;
                 e.currentTarget.style.boxShadow='none';
               }}
             />
           </div>
 
           {/* ログインボタン */}
-          <button 
-            onClick={handleLogin} 
-            disabled={loading} 
-            style={{ 
-              width:'100%', 
-              background: loading ? '#cbd5e1' : 'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)', 
-              color:'#fff', 
-              border:'none', 
-              padding:'18px', 
-              fontSize:17, 
-              fontWeight:700, 
-              borderRadius:12, 
-              cursor: loading?'not-allowed':'pointer', 
-              transition:'all .3s ease',
-              marginBottom:20,
-              boxShadow: loading ? 'none' : '0 4px 16px rgba(14, 165, 233, 0.3)'
-            }} 
-            onMouseOver={e=>!loading && (e.currentTarget.style.transform='scale(1.02)')} 
-            onMouseOut={e=>!loading && (e.currentTarget.style.transform='scale(1)')}
-          >
-            {loading? (
-              <span style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:8 }}>
-                <span style={{ 
-                  width:16, 
-                  height:16, 
-                  border:'2px solid #fff',
-                  borderTopColor:'transparent',
-                  borderRadius:'50%',
-                  animation:'spin 0.8s linear infinite',
-                  display:'inline-block'
-                }}></span>
-                ログイン中...
-              </span>
-            ) : 'ログイン'}
-          </button>
+          <div style={{ marginBottom: designTokens.spacing.lg }}>
+            <Button
+              variant="primary"
+              size="lg"
+              fullWidth
+              loading={loading}
+              onClick={handleLogin}
+            >
+              ログイン
+            </Button>
+          </div>
 
           {/* 新規登録へのリンク */}
           <div style={{ 

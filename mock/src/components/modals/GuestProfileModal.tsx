@@ -3,6 +3,8 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { closeGuestProfileModal, openSmsModal, navigate } from '../../store/uiSlice';
 import { setActiveChat } from '../../store/chatSlice';
 import { IconX, IconAvatar } from '../icons';
+import { designTokens } from '../../styles/designTokens';
+import Button from '../common/Button';
 
 const GuestProfileModal: React.FC = () => {
   const open = useAppSelector((s:any)=> s.ui.guestProfileModalOpen);
@@ -57,25 +59,31 @@ const GuestProfileModal: React.FC = () => {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div style={{ padding: '22px 24px', borderBottom: '1px solid rgba(15, 23, 42, 0.06)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+        <div style={{ 
+          padding: `${designTokens.spacing.lg} ${designTokens.spacing.lg}`, 
+          borderBottom: `1px solid ${designTokens.colors.border.light}`, 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'flex-end' 
+        }}>
           <button 
             aria-label='閉じる' 
             onClick={() => dispatch(closeGuestProfileModal())} 
             style={{ 
-              background: 'rgba(15, 23, 42, 0.04)', 
+              background: designTokens.colors.neutral[100], 
               border: 'none', 
               cursor: 'pointer', 
               width: 40, 
               height: 40, 
-              borderRadius: '50%', 
+              borderRadius: designTokens.radius.circle, 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center', 
-              transition: 'background .15s ease', 
+              transition: designTokens.transition.fast, 
               zIndex: 10 
             }} 
-            onMouseOver={e => (e.currentTarget.style.background = 'rgba(15,23,42,0.08)')} 
-            onMouseOut={e => (e.currentTarget.style.background = 'rgba(15,23,42,0.04)')}
+            onMouseOver={e => (e.currentTarget.style.background = designTokens.colors.neutral[200])} 
+            onMouseOut={e => (e.currentTarget.style.background = designTokens.colors.neutral[100])}
           >
             <IconX size={18} />
           </button>
@@ -103,34 +111,16 @@ const GuestProfileModal: React.FC = () => {
               <h3 style={{ margin: '0 0 6px', fontSize: 24, fontWeight: 800, color: '#0b1220' }}>{user.name || '未設定'}</h3>
               <p style={{ margin: '0 0 20px', fontSize: 13, color: '#6b7280' }}>ID: {user.id || 'guest_001'}</p>
 
-              <button 
-                onClick={handleStartChat}
-                style={{ 
-                  background: 'linear-gradient(135deg,#0EA5E9 0%, #06B6D4 100%)', 
-                  color: '#fff', 
-                  border: 'none', 
-                  width: '100%', 
-                  maxWidth: 420, 
-                  padding: '15px 20px', 
-                  fontSize: 16, 
-                  borderRadius: 18, 
-                  cursor: 'pointer', 
-                  fontWeight: 700, 
-                  letterSpacing: '.5px', 
-                  transition: 'transform .15s ease, box-shadow .15s ease, filter .15s ease', 
-                  boxShadow: '0 10px 30px rgba(14,165,233,0.35)' 
-                }} 
-                onMouseOver={e => { 
-                  e.currentTarget.style.transform = 'translateY(-2px)'; 
-                  e.currentTarget.style.filter = 'brightness(1.08)'; 
-                }} 
-                onMouseOut={e => { 
-                  e.currentTarget.style.transform = 'translateY(0)'; 
-                  e.currentTarget.style.filter = 'brightness(1)'; 
-                }}
-              >
-                {isAuthenticated ? 'フレンド申請する' : 'ログインしてフレンド申請'}
-              </button>
+              <div style={{ width: '100%', maxWidth: 420 }}>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  onClick={handleStartChat}
+                >
+                  {isAuthenticated ? 'フレンド申請する' : 'ログインしてフレンド申請'}
+                </Button>
+              </div>
             </div>
 
             {/* Info card */}

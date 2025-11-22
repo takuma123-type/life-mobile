@@ -4,6 +4,7 @@ import { pushMessage } from '../store/chatSlice';
 import { navigate } from '../store/uiSlice';
 import { IconBack, IconGlobe, IconSend, IconPlus, IconStamp, IconFileText } from '../components/icons';
 import { mockTranslate } from '../data/mockData';
+import { designTokens } from '../styles/designTokens';
 
 const ChatDetailScreen: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -66,43 +67,46 @@ const ChatDetailScreen: React.FC = () => {
       {/* ヘッダー */}
       <div
         style={{ 
-          background: '#ffffffcc',
-          padding: '12px 16px 10px',
+          background: `${designTokens.colors.background.primary}cc`,
+          padding: `${designTokens.spacing.md} ${designTokens.spacing.md} ${designTokens.spacing.sm}`,
           display: 'flex',
           alignItems: 'center',
-          gap: 12,
+          gap: designTokens.spacing.md,
           backdropFilter: 'blur(18px)',
           WebkitBackdropFilter: 'blur(18px)',
-          borderBottom: '1px solid rgba(226, 232, 240, 0.8)',
+          borderBottom: `1px solid ${designTokens.colors.border.light}`,
           position: 'sticky',
           top: 0,
-          zIndex: 30
+          zIndex: 30,
+          boxShadow: designTokens.shadow.sm
         }}
       >
         <button 
           onClick={() => dispatch(navigate('chat'))} 
           aria-label='戻る' 
           style={{ 
-            background: '#e5f2ff', 
+            background: designTokens.colors.primary.pale, 
             border: 'none', 
             cursor: 'pointer',
             width: 32,
             height: 32,
-            borderRadius: '50%',
+            borderRadius: designTokens.radius.circle,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#0f172a',
-            transition: 'all 0.18s ease-out',
-            boxShadow: '0 2px 8px rgba(148, 163, 184, 0.35)'
+            color: designTokens.colors.text.primary,
+            transition: designTokens.transition.fast,
+            boxShadow: designTokens.shadow.md
           }}
           onMouseOver={e => {
-            e.currentTarget.style.transform = 'translateY(-1px)';
-            e.currentTarget.style.background = '#dbeafe';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.background = designTokens.colors.primary.light;
+            e.currentTarget.style.boxShadow = designTokens.shadow.lg;
           }}
           onMouseOut={e => {
             e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.background = '#e5f2ff';
+            e.currentTarget.style.background = designTokens.colors.primary.pale;
+            e.currentTarget.style.boxShadow = designTokens.shadow.md;
           }}
         >
           <IconBack size={24} />

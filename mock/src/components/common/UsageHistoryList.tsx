@@ -1,4 +1,5 @@
 import React from 'react';
+import { designTokens } from '../../styles/designTokens';
 
 interface UsageHistoryListProps {
   onOrders?: () => void;
@@ -7,9 +8,9 @@ interface UsageHistoryListProps {
 
 const UsageHistoryList: React.FC<UsageHistoryListProps> = ({ onOrders, onHiddenOrders }) => {
   return (
-    <section className="mt-8 px-5">
-      <h2 className="text-[13px] font-semibold text-slate-500 mb-2 tracking-wide">利用履歴</h2>
-      <ul className="rounded-xl overflow-hidden border border-slate-200 bg-white">
+    <section style={{ marginTop: designTokens.spacing.xxl, padding: `0 ${designTokens.spacing.lg}` }}>
+      <h2 style={{ fontSize: designTokens.typography.body.fontSize, fontWeight: 600, color: designTokens.colors.text.tertiary, marginBottom: designTokens.spacing.sm, letterSpacing: '0.5px' }}>利用履歴</h2>
+      <ul style={{ borderRadius: designTokens.radius.xl, overflow: 'hidden', border: `1px solid ${designTokens.colors.border.medium}`, background: designTokens.colors.background.primary, listStyle: 'none', margin: 0, padding: 0 }}>
         <li>
           <button
             type="button"

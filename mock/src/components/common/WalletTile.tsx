@@ -1,4 +1,5 @@
 import React from 'react';
+import { designTokens } from '../../styles/designTokens';
 
 interface WalletTileProps {
   title: string;
@@ -17,12 +18,28 @@ const WalletTile: React.FC<WalletTileProps> = ({ title, subText, rightText, badg
       type="button"
       onClick={onClick}
       aria-label={title}
-      className={[
-        'group relative text-left bg-white rounded-xl',
-        'border border-slate-200 shadow-[0_1px_2px_rgba(0,0,0,0.04)]',
-        'focus:outline-none focus:ring-2 focus:ring-sky-400 transition',
-        columns === 2 ? 'col-span-2 px-5 py-4 flex items-center' : 'p-4 flex flex-col justify-between min-h-[112px]'
-      ].join(' ')}
+      style={{
+        position: 'relative',
+        textAlign: 'left',
+        background: designTokens.colors.background.primary,
+        borderRadius: designTokens.radius.xl,
+        border: `1px solid ${designTokens.colors.border.medium}`,
+        boxShadow: designTokens.shadow.xs,
+        transition: designTokens.transition.base,
+        cursor: 'pointer',
+        ...(columns === 2 ? {
+          gridColumn: 'span 2',
+          padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`,
+          display: 'flex',
+          alignItems: 'center'
+        } : {
+          padding: designTokens.spacing.md,
+          display: 'flex',
+          flexDirection: 'column' as const,
+          justifyContent: 'space-between',
+          minHeight: '112px'
+        })
+      }}
     >
       {/* Top row */}
       <div className={columns === 2 ? 'flex items-center justify-between w-full gap-3' : 'mb-2'}>

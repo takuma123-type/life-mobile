@@ -1,4 +1,5 @@
 import React from 'react';
+import { designTokens } from '../../styles/designTokens';
 
 interface HistoryItemProps {
   title: string;
@@ -12,7 +13,21 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ title, icon, badge, onClick }
     <button
       type="button"
       onClick={onClick}
-      className="w-full flex items-center gap-4 py-3 px-5 bg-white text-left border-b border-slate-200 last:border-b-0 focus:outline-none focus:ring-2 focus:ring-sky-400 hover:bg-slate-50 transition"
+      style={{
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        gap: designTokens.spacing.md,
+        padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`,
+        background: designTokens.colors.background.primary,
+        textAlign: 'left',
+        borderBottom: `1px solid ${designTokens.colors.border.medium}`,
+        transition: designTokens.transition.base,
+        cursor: 'pointer',
+        border: 'none'
+      }}
+      onMouseOver={e => e.currentTarget.style.background = designTokens.colors.background.secondary}
+      onMouseOut={e => e.currentTarget.style.background = designTokens.colors.background.primary}
       aria-label={title}
     >
       <div className="w-9 h-9 flex items-center justify-center rounded-lg bg-slate-100 border border-slate-200">

@@ -2,6 +2,103 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 
+  🎨 LIFE デザインシステム - Design Tokens
+  UI改善.md に基づいた標準化されたデザイントークン
+*/
+:root {
+  /* === Primary Color System (Q4, Q5, Q15) === */
+  --ds-primary-main: #00A0E9;
+  --ds-primary-light: #36C5F5;
+  --ds-primary-dark: #0095db;
+  --ds-primary-pale: #E0F7FF;
+  
+  --ds-secondary-main: #06B6D4;
+  --ds-secondary-light: #2BBEF3;
+  --ds-secondary-dark: #0891b2;
+
+  /* === Neutral Grays === */
+  --ds-neutral-50: #FAFBFC;
+  --ds-neutral-100: #F5F5F5;
+  --ds-neutral-200: #E5E7EB;
+  --ds-neutral-300: #D1D5DB;
+  --ds-neutral-400: #9CA3AF;
+  --ds-neutral-500: #6B7280;
+  --ds-neutral-600: #4B5563;
+  --ds-neutral-700: #374151;
+  --ds-neutral-800: #1F2937;
+  --ds-neutral-900: #111827;
+
+  /* === Slate Grays === */
+  --ds-slate-50: #f8fafc;
+  --ds-slate-100: #f1f5f9;
+  --ds-slate-200: #e2e8f0;
+  --ds-slate-300: #cbd5e1;
+  --ds-slate-400: #94a3b8;
+  --ds-slate-500: #64748b;
+  --ds-slate-600: #475569;
+  --ds-slate-700: #334155;
+  --ds-slate-800: #1e293b;
+  --ds-slate-900: #0f172a;
+
+  /* === Status Colors === */
+  --ds-success-main: #10b981;
+  --ds-success-pale: #ecfdf5;
+  --ds-danger-main: #ef4444;
+  --ds-danger-pale: #fef2f2;
+  --ds-warning-main: #f59e0b;
+
+  /* === Text Colors (Q19 - WCAG準拠) === */
+  --ds-text-primary: #0f172a;
+  --ds-text-secondary: #475569;
+  --ds-text-tertiary: #64748b;
+  --ds-text-disabled: #94a3b8;
+  --ds-text-inverse: #ffffff;
+
+  /* === Background === */
+  --ds-bg-primary: #ffffff;
+  --ds-bg-secondary: #f8fafc;
+  --ds-bg-tertiary: #f1f5f9;
+
+  /* === Border === */
+  --ds-border-light: rgba(226, 232, 240, 0.8);
+  --ds-border-medium: #e5e7eb;
+  --ds-border-dark: #cbd5e1;
+
+  /* === Spacing System (Q2) === */
+  --ds-spacing-xs: 4px;
+  --ds-spacing-sm: 8px;
+  --ds-spacing-md: 16px;
+  --ds-spacing-lg: 24px;
+  --ds-spacing-xl: 32px;
+  --ds-spacing-xxl: 48px;
+  --ds-spacing-xxxl: 64px;
+
+  /* === Border Radius (Q3) === */
+  --ds-radius-xs: 4px;
+  --ds-radius-sm: 8px;
+  --ds-radius-md: 12px;
+  --ds-radius-lg: 16px;
+  --ds-radius-xl: 20px;
+  --ds-radius-xxl: 24px;
+  --ds-radius-pill: 999px;
+
+  /* === Shadows (Q1, Q18) === */
+  --ds-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --ds-shadow-md: 0 2px 8px rgba(15, 23, 42, 0.12);
+  --ds-shadow-lg: 0 8px 20px rgba(15, 23, 42, 0.15);
+  --ds-shadow-xl: 0 12px 32px rgba(15, 23, 42, 0.18);
+  --ds-shadow-primary: 0 8px 24px rgba(0, 160, 233, 0.35);
+  --ds-shadow-primary-hover: 0 12px 32px rgba(0, 160, 233, 0.45);
+  --ds-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --ds-shadow-card-hover: 0 8px 24px rgba(0, 160, 233, 0.12);
+
+  /* === Transitions === */
+  --ds-transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --ds-transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --ds-transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* ベーステーマ: 水色ベースのモダンデザイン */
 :root {
   /* 🎨 水色ベースのカラーパレット */

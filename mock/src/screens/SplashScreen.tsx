@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { hideSplash } from '../store/uiSlice';
+import { designTokens } from '../styles/designTokens';
 
 const SplashScreen: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -24,12 +25,12 @@ const SplashScreen: React.FC = () => {
       style={{ 
         position:'fixed', 
         inset:0, 
-        background:'#fff',
+        background: designTokens.colors.background.primary,
         display:'flex', 
         alignItems:'center', 
         justifyContent:'center', 
         zIndex:9999,
-        transition:'opacity 0.5s ease',
+        transition: designTokens.transition.slow,
         opacity: fadeOut ? 0 : 1,
         overflow: 'hidden'
       }} 
@@ -103,8 +104,8 @@ const SplashScreen: React.FC = () => {
             fontSize: 80,
             fontWeight: 900,
             letterSpacing: '0.05em',
-            color: '#0EA5E9',
-            textShadow: '0 4px 20px rgba(0, 0, 0, 0.15), 0 8px 40px rgba(14, 165, 233, 0.3)',
+            color: designTokens.colors.primary.main,
+            textShadow: `0 4px 20px rgba(0, 0, 0, 0.15), 0 8px 40px ${designTokens.colors.primary.main}33`,
             fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
           }}>
             LIFE

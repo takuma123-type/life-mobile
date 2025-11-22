@@ -1,5 +1,7 @@
 import React from 'react';
 import { IconUser } from '../../components/icons';
+import { designTokens } from '../../styles/designTokens';
+import Button from './Button';
 
 interface ProfileCardProps {
   name?: string | null;
@@ -65,15 +67,16 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       )}
       {/* 編集ボタン */}
       {onEdit && (
-        <button
-          type="button"
+        <Button
+          variant="secondary"
+          size="lg"
+          fullWidth
           onClick={onEdit}
-          className="w-full bg-sky-50 border border-sky-100 text-sky-600 font-semibold rounded-full py-3 text-[16px] shadow-sm hover:bg-sky-100 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-sky-300 transition"
           aria-label="プロフィールを編集"
         >
-          <span className="mr-2">✏️</span>
+          <span style={{ marginRight: designTokens.spacing.sm }}>✏️</span>
           <span>編集</span>
-        </button>
+        </Button>
       )}
     </section>
   );

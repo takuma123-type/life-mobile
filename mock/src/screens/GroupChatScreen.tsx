@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { navigate } from '../store/uiSlice';
 import { IconBack, IconSend, IconPlus, IconAvatar, IconGlobe, IconStamp, IconFileText } from '../components/icons';
 import { mockTranslate } from '../data/mockData';
+import { designTokens } from '../styles/designTokens';
 
 // モックメッセージデータ
 const mockGroupMessages = [
@@ -64,43 +65,46 @@ const GroupChatScreen: React.FC = () => {
       {/* ヘッダー */}
       <div
         style={{ 
-          background: '#ffffffcc',
-          padding: '12px 16px 10px',
+          background: `${designTokens.colors.background.primary}cc`,
+          padding: `${designTokens.spacing.md} ${designTokens.spacing.md} ${designTokens.spacing.sm}`,
           display: 'flex',
           alignItems: 'center',
-          gap: 12,
+          gap: designTokens.spacing.md,
           backdropFilter: 'blur(18px)',
           WebkitBackdropFilter: 'blur(18px)',
-          borderBottom: '1px solid rgba(226, 232, 240, 0.8)',
+          borderBottom: `1px solid ${designTokens.colors.border.light}`,
           position: 'sticky',
           top: 0,
-          zIndex: 30
+          zIndex: 30,
+          boxShadow: designTokens.shadow.sm
         }}
       >
         <button 
           onClick={() => dispatch(navigate('chat'))} 
           aria-label='戻る' 
           style={{ 
-            background: '#e5f2ff', 
+            background: designTokens.colors.primary.pale, 
             border: 'none', 
             cursor: 'pointer',
             width: 32,
             height: 32,
-            borderRadius: '50%',
+            borderRadius: designTokens.radius.circle,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#0f172a',
-            transition: 'all 0.18s ease-out',
-            boxShadow: '0 2px 8px rgba(148, 163, 184, 0.35)'
+            color: designTokens.colors.text.primary,
+            transition: designTokens.transition.fast,
+            boxShadow: designTokens.shadow.md
           }}
           onMouseOver={e => {
-            e.currentTarget.style.transform = 'translateY(-1px)';
-            e.currentTarget.style.background = '#dbeafe';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.background = designTokens.colors.primary.light;
+            e.currentTarget.style.boxShadow = designTokens.shadow.lg;
           }}
           onMouseOut={e => {
             e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.background = '#e5f2ff';
+            e.currentTarget.style.background = designTokens.colors.primary.pale;
+            e.currentTarget.style.boxShadow = designTokens.shadow.md;
           }}
         >
           <IconBack size={24} />
@@ -109,15 +113,15 @@ const GroupChatScreen: React.FC = () => {
         <div style={{ flex: 1, overflow: 'hidden' }}>
           <h2 style={{ 
             margin: 0, 
-            fontSize: 16, 
-            fontWeight: 700, 
-            color: '#0f172a',
+            fontSize: designTokens.typography.h4.fontSize, 
+            fontWeight: designTokens.typography.h4.fontWeight as number, 
+            color: designTokens.colors.text.primary,
             whiteSpace: 'nowrap',
             textOverflow: 'ellipsis'
           }}>
             {community?.name || 'カフェ好き集まれ'}
           </h2>
-          <p style={{ margin: '2px 0 0', fontSize: 12, color: '#64748b', fontWeight: 500 }}>
+          <p style={{ margin: `${designTokens.spacing.xs} 0 0`, fontSize: designTokens.typography.caption.fontSize, color: designTokens.colors.text.tertiary, fontWeight: 500 }}>
             {community?.members || '231'}人のメンバー
           </p>
         </div>
@@ -128,29 +132,29 @@ const GroupChatScreen: React.FC = () => {
         style={{ 
           flex: 1, 
           overflowY: 'auto', 
-          padding: '12px 16px 16px',
-          background: 'linear-gradient(to bottom, #f9fafb 0%, #ecfeff 40%, #f9fafb 100%)'
+          padding: `${designTokens.spacing.md} ${designTokens.spacing.lg} ${designTokens.spacing.lg}`,
+          background: `linear-gradient(to bottom, ${designTokens.colors.neutral[50]} 0%, ${designTokens.colors.primary.pale} 40%, ${designTokens.colors.neutral[50]} 100%)`
         }}
       >
         {/* 日付セパレーター */}
         <div style={{ 
           display: 'flex', 
           justifyContent: 'center', 
-          padding: '8px 0 20px',
+          padding: `${designTokens.spacing.sm} 0 ${designTokens.spacing.xl}`,
           position: 'sticky',
           top: 0,
           zIndex: 10
         }}>
           <span style={{ 
-            background: 'rgba(148, 163, 184, 0.16)', 
-            color: '#64748b',
-            padding: '6px 18px', 
-            borderRadius: 999,
-            fontSize: 12,
+            background: designTokens.colors.neutral[100], 
+            color: designTokens.colors.text.tertiary,
+            padding: `6px ${designTokens.spacing.lg}`, 
+            borderRadius: designTokens.radius.pill,
+            fontSize: designTokens.typography.caption.fontSize,
             fontWeight: 600,
             letterSpacing: '0.08em',
             backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(148, 163, 184, 0.18)'
+            border: `1px solid ${designTokens.colors.border.light}`
           }}>
             2025.11.13. 木曜日
           </span>
@@ -176,16 +180,16 @@ const GroupChatScreen: React.FC = () => {
                 <div style={{ 
                   width: 44, 
                   height: 44, 
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
+                  borderRadius: designTokens.radius.circle,
+                  background: `linear-gradient(135deg, ${designTokens.colors.primary.pale} 0%, ${designTokens.colors.secondary.light} 100%)`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 16,
+                  fontSize: designTokens.typography.body.fontSize,
                   fontWeight: 700,
-                  color: '#0284c7',
+                  color: designTokens.colors.secondary.dark,
                   flexShrink: 0,
-                  boxShadow: '0 2px 8px rgba(14, 165, 233, 0.15)'
+                  boxShadow: designTokens.shadow.sm
                 }}>
                   {msg.avatar}
                 </div>
@@ -200,8 +204,8 @@ const GroupChatScreen: React.FC = () => {
                 {/* ユーザー名 */}
                 {!isMe && (
                   <span style={{ 
-                    fontSize: 13, 
-                    color: '#64748b',
+                    fontSize: designTokens.typography.small.fontSize, 
+                    color: designTokens.colors.text.tertiary,
                     marginBottom: 6,
                     paddingLeft: 4,
                     fontWeight: 600
@@ -213,19 +217,19 @@ const GroupChatScreen: React.FC = () => {
                 {/* メッセージバブル */}
                 <div style={{ 
                   background: isMe 
-                    ? 'linear-gradient(135deg, #10b981 0%, #14b8a6 45%, #06b6d4 100%)' 
-                    : '#ffffff',
-                  color: isMe ? '#f9fafb' : '#0f172a',
-                  padding: '10px 14px',
-                  borderRadius: isMe ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                  fontSize: 15,
+                    ? `linear-gradient(135deg, ${designTokens.colors.primary.main} 0%, ${designTokens.colors.secondary.main} 100%)` 
+                    : designTokens.colors.background.primary,
+                  color: isMe ? designTokens.colors.text.inverse : designTokens.colors.text.primary,
+                  padding: `10px ${designTokens.spacing.md}`,
+                  borderRadius: isMe ? `${designTokens.radius.lg} ${designTokens.radius.lg} 4px ${designTokens.radius.lg}` : `${designTokens.radius.lg} ${designTokens.radius.lg} ${designTokens.radius.lg} 4px`,
+                  fontSize: designTokens.typography.h4.fontSize,
                   lineHeight: 1.6,
                   wordBreak: 'break-word',
                   boxShadow: isMe 
-                    ? '0 4px 14px rgba(34, 197, 94, 0.35)' 
-                    : '0 2px 8px rgba(15, 23, 42, 0.12)',
-                  border: isMe ? 'none' : '1px solid rgba(226, 232, 240, 0.9)',
-                  transition: 'transform .18s ease-out, box-shadow .18s ease-out'
+                    ? designTokens.shadow.primary 
+                    : designTokens.shadow.sm,
+                  border: isMe ? 'none' : `1px solid ${designTokens.colors.border.light}`,
+                  transition: `${designTokens.transition.fast} cubic-bezier(0.4,0,0.2,1)`
                 }}>
                   {translations[msg.id] || msg.message}
                 </div>
@@ -234,14 +238,14 @@ const GroupChatScreen: React.FC = () => {
                 <div style={{ 
                   display: 'flex', 
                   alignItems: 'center', 
-                  gap: 8,
+                  gap: designTokens.spacing.sm,
                   marginTop: 6,
                   paddingLeft: isMe ? 0 : 4,
                   paddingRight: isMe ? 4 : 0
                 }}>
                   <span style={{ 
-                    fontSize: 12, 
-                    color: '#94a3b8',
+                    fontSize: designTokens.typography.caption.fontSize, 
+                    color: designTokens.colors.neutral[400],
                     fontWeight: 500
                   }}>
                     {msg.time}
@@ -253,29 +257,27 @@ const GroupChatScreen: React.FC = () => {
                       onClick={() => handleTranslate(msg.id, msg.message)}
                       disabled={translating === msg.id}
                       style={{
-                        background: translations[msg.id]
-                          ? 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)'
-                          : 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)',
-                        border: '1.5px solid #BAE6FD',
-                        borderRadius: 14,
-                        padding: '6px 12px',
-                        fontSize: 12,
+                        background: `linear-gradient(135deg, ${designTokens.colors.primary.pale} 0%, ${designTokens.colors.secondary.light} 100%)`,
+                        border: `1.5px solid ${designTokens.colors.secondary.light}`,
+                        borderRadius: designTokens.radius.md,
+                        padding: `6px ${designTokens.spacing.md}`,
+                        fontSize: designTokens.typography.caption.fontSize,
                         cursor: translating === msg.id ? 'wait' : 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         gap: 5,
                         fontWeight: 600,
-                        color: '#0284c7',
-                        transition: 'all .2s ease',
-                        boxShadow: '0 2px 4px rgba(14, 165, 233, 0.1)'
+                        color: designTokens.colors.secondary.dark,
+                        transition: designTokens.transition.base,
+                        boxShadow: designTokens.shadow.sm
                       }}
                       onMouseOver={e => {
                         e.currentTarget.style.transform = 'translateY(-1px)';
-                        e.currentTarget.style.boxShadow = '0 4px 8px rgba(14, 165, 233, 0.2)';
+                        e.currentTarget.style.boxShadow = designTokens.shadow.md;
                       }}
                       onMouseOut={e => {
                         e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = '0 2px 4px rgba(14, 165, 233, 0.1)';
+                        e.currentTarget.style.boxShadow = designTokens.shadow.sm;
                       }}
                     >
                       <IconGlobe size={14} />
@@ -290,16 +292,16 @@ const GroupChatScreen: React.FC = () => {
                 <div style={{ 
                   width: 44, 
                   height: 44, 
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
-                  color: '#fff',
+                  borderRadius: designTokens.radius.circle,
+                  background: `linear-gradient(135deg, ${designTokens.colors.neutral[800]} 0%, ${designTokens.colors.neutral[600]} 100%)`,
+                  color: designTokens.colors.text.inverse,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: 16,
+                  fontSize: designTokens.typography.body.fontSize,
                   fontWeight: 700,
                   flexShrink: 0,
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
+                  boxShadow: designTokens.shadow.sm
                 }}>
                   {msg.avatar}
                 </div>
@@ -328,11 +330,11 @@ const GroupChatScreen: React.FC = () => {
             style={{
               position: 'absolute',
               bottom: 80,
-              left: 16,
-              background: '#fff',
-              borderRadius: 20,
-              padding: '12px',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
+              left: designTokens.spacing.lg,
+              background: designTokens.colors.background.primary,
+              borderRadius: designTokens.radius.xl,
+              padding: designTokens.spacing.md,
+              boxShadow: designTokens.shadow.xl,
               animation: 'slideUp 0.3s ease-out',
               minWidth: 200
             }}
@@ -342,35 +344,35 @@ const GroupChatScreen: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 12,
+                gap: designTokens.spacing.md,
                 width: '100%',
-                padding: '14px 16px',
+                padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`,
                 background: 'none',
                 border: 'none',
-                borderRadius: 16,
+                borderRadius: designTokens.radius.lg,
                 cursor: 'pointer',
-                fontSize: 15,
+                fontSize: designTokens.typography.h4.fontSize,
                 fontWeight: 500,
-                color: '#0f172a',
-                transition: 'all 0.2s'
+                color: designTokens.colors.text.primary,
+                transition: designTokens.transition.base
               }}
               onClick={() => {
                 alert('画像選択機能は開発中です');
                 setShowAttachMenu(false);
               }}
-              onMouseOver={e => e.currentTarget.style.background = '#f8fafc'}
+              onMouseOver={e => e.currentTarget.style.background = designTokens.colors.neutral[50]}
               onMouseOut={e => e.currentTarget.style.background = 'none'}
             >
               <div style={{
                 width: 44,
                 height: 44,
-                borderRadius: 16,
-                background: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
+                borderRadius: designTokens.radius.lg,
+                background: `linear-gradient(135deg, ${designTokens.colors.primary.main} 0%, ${designTokens.colors.primary.light} 100%)`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#ecfdf5',
-                boxShadow: '0 6px 16px rgba(16, 185, 129, 0.5)'
+                color: designTokens.colors.text.inverse,
+                boxShadow: designTokens.shadow.primary
               }}>
                 <IconFileText size={22} />
               </div>
@@ -381,35 +383,35 @@ const GroupChatScreen: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 12,
+                gap: designTokens.spacing.md,
                 width: '100%',
-                padding: '14px 16px',
+                padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`,
                 background: 'none',
                 border: 'none',
-                borderRadius: 16,
+                borderRadius: designTokens.radius.lg,
                 cursor: 'pointer',
-                fontSize: 15,
+                fontSize: designTokens.typography.h4.fontSize,
                 fontWeight: 500,
-                color: '#0f172a',
-                transition: 'all 0.2s'
+                color: designTokens.colors.text.primary,
+                transition: designTokens.transition.base
               }}
               onClick={() => {
                 alert('スタンプ選択機能は開発中です');
                 setShowAttachMenu(false);
               }}
-              onMouseOver={e => e.currentTarget.style.background = '#f8fafc'}
+              onMouseOver={e => e.currentTarget.style.background = designTokens.colors.neutral[50]}
               onMouseOut={e => e.currentTarget.style.background = 'none'}
             >
               <div style={{
                 width: 44,
                 height: 44,
-                borderRadius: 16,
-                background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
+                borderRadius: designTokens.radius.lg,
+                background: `linear-gradient(135deg, ${designTokens.colors.secondary.main} 0%, ${designTokens.colors.secondary.light} 100%)`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#fefce8',
-                boxShadow: '0 6px 16px rgba(245, 158, 11, 0.5)'
+                color: designTokens.colors.text.inverse,
+                boxShadow: designTokens.shadow.md
               }}>
                 <IconStamp size={22} />
               </div>
@@ -420,35 +422,35 @@ const GroupChatScreen: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 12,
+                gap: designTokens.spacing.md,
                 width: '100%',
-                padding: '14px 16px',
+                padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`,
                 background: 'none',
                 border: 'none',
-                borderRadius: 16,
+                borderRadius: designTokens.radius.lg,
                 cursor: 'pointer',
-                fontSize: 15,
+                fontSize: designTokens.typography.h4.fontSize,
                 fontWeight: 500,
-                color: '#0f172a',
-                transition: 'all 0.2s'
+                color: designTokens.colors.text.primary,
+                transition: designTokens.transition.base
               }}
               onClick={() => {
                 alert('ファイル選択機能は開発中です');
                 setShowAttachMenu(false);
               }}
-              onMouseOver={e => e.currentTarget.style.background = '#f8fafc'}
+              onMouseOver={e => e.currentTarget.style.background = designTokens.colors.neutral[50]}
               onMouseOut={e => e.currentTarget.style.background = 'none'}
             >
               <div style={{
                 width: 44,
                 height: 44,
-                borderRadius: 16,
-                background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                borderRadius: designTokens.radius.lg,
+                background: `linear-gradient(135deg, ${designTokens.colors.neutral[600]} 0%, ${designTokens.colors.neutral[500]} 100%)`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#eef2ff',
-                boxShadow: '0 6px 16px rgba(79, 70, 229, 0.55)'
+                color: designTokens.colors.text.inverse,
+                boxShadow: designTokens.shadow.md
               }}>
                 <IconFileText size={22} />
               </div>
@@ -461,13 +463,13 @@ const GroupChatScreen: React.FC = () => {
       {/* 入力エリア */}
       <div 
         style={{ 
-          background: '#ffffffcc',
-          borderTop: '1px solid rgba(226, 232, 240, 0.9)',
-          padding: '10px 12px 18px',
+          background: `${designTokens.colors.background.primary}cc`,
+          borderTop: `1px solid ${designTokens.colors.border.light}`,
+          padding: `10px ${designTokens.spacing.md} ${designTokens.spacing.lg}`,
           display: 'flex',
           gap: 10,
           alignItems: 'flex-end',
-          boxShadow: '0 -8px 30px rgba(15, 23, 42, 0.18)',
+          boxShadow: designTokens.shadow.lg,
           backdropFilter: 'blur(18px)',
           WebkitBackdropFilter: 'blur(18px)'
         }}
@@ -476,34 +478,34 @@ const GroupChatScreen: React.FC = () => {
           aria-label='添付'
           style={{
             background: showAttachMenu 
-              ? 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)'
-              : '#e5f2ff',
+              ? `linear-gradient(135deg, ${designTokens.colors.secondary.main} 0%, ${designTokens.colors.secondary.light} 100%)`
+              : designTokens.colors.primary.pale,
             border: 'none',
             cursor: 'pointer',
             width: 40,
             height: 40,
-            borderRadius: '50%',
+            borderRadius: designTokens.radius.circle,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: showAttachMenu ? '#fff' : '#0f172a',
-            transition: 'all 0.18s ease-out',
+            color: showAttachMenu ? designTokens.colors.text.inverse : designTokens.colors.text.primary,
+            transition: designTokens.transition.fast,
             flexShrink: 0,
             boxShadow: showAttachMenu 
-              ? '0 4px 14px rgba(14, 165, 233, 0.45)'
-              : '0 2px 8px rgba(148, 163, 184, 0.35)'
+              ? designTokens.shadow.md
+              : designTokens.shadow.sm
           }}
           onClick={() => setShowAttachMenu(!showAttachMenu)}
           onMouseOver={e => {
             if (!showAttachMenu) {
               e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.background = '#dbeafe';
+              e.currentTarget.style.background = designTokens.colors.secondary.light;
             }
           }}
           onMouseOut={e => {
             if (!showAttachMenu) {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.background = '#e5f2ff';
+              e.currentTarget.style.background = designTokens.colors.primary.pale;
             }
           }}
         >
@@ -523,27 +525,27 @@ const GroupChatScreen: React.FC = () => {
           rows={1}
           style={{
             flex: 1,
-            padding: '12px 16px',
-            border: '1.5px solid #e5e7eb',
-            borderRadius: 16,
-            fontSize: 15,
+            padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`,
+            border: `1.5px solid ${designTokens.colors.border.medium}`,
+            borderRadius: designTokens.radius.lg,
+            fontSize: designTokens.typography.h4.fontSize,
             outline: 'none',
-            background: '#f8fafc',
-            transition: 'all 0.18s ease-out',
-            color: '#0f172a',
-            boxShadow: '0 2px 8px rgba(15, 23, 42, 0.08)',
+            background: designTokens.colors.neutral[50],
+            transition: designTokens.transition.fast,
+            color: designTokens.colors.text.primary,
+            boxShadow: designTokens.shadow.sm,
             resize: 'none',
             lineHeight: 1.5,
             maxHeight: 96
           }}
           onFocus={e => {
-            e.target.style.borderColor = '#0EA5E9';
-            e.target.style.background = '#fff';
-            e.target.style.boxShadow = '0 0 0 4px rgba(14, 165, 233, 0.1)';
+            e.target.style.borderColor = designTokens.colors.secondary.main;
+            e.target.style.background = designTokens.colors.background.primary;
+            e.target.style.boxShadow = `0 0 0 4px ${designTokens.colors.primary.pale}`;
           }}
           onBlur={e => {
-            e.target.style.borderColor = '#e5e7eb';
-            e.target.style.background = '#f8f9fa';
+            e.target.style.borderColor = designTokens.colors.border.medium;
+            e.target.style.background = designTokens.colors.neutral[50];
             e.target.style.boxShadow = 'none';
           }}
         />
@@ -554,33 +556,33 @@ const GroupChatScreen: React.FC = () => {
           disabled={!message.trim()}
           style={{
             background: message.trim() 
-              ? 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)' 
-              : '#e5e7eb',
-            color: message.trim() ? '#fff' : '#94a3b8',
+              ? `linear-gradient(135deg, ${designTokens.colors.secondary.main} 0%, ${designTokens.colors.secondary.light} 100%)` 
+              : designTokens.colors.border.medium,
+            color: message.trim() ? designTokens.colors.text.inverse : designTokens.colors.neutral[400],
             border: 'none',
             cursor: message.trim() ? 'pointer' : 'not-allowed',
             width: 44,
             height: 44,
-            borderRadius: '50%',
+            borderRadius: designTokens.radius.circle,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            transition: 'all .18s ease-out',
+            transition: designTokens.transition.fast,
             flexShrink: 0,
             boxShadow: message.trim() 
-              ? '0 4px 14px rgba(14, 165, 233, 0.45)' 
-              : '0 1px 4px rgba(148, 163, 184, 0.3)'
+              ? designTokens.shadow.md 
+              : designTokens.shadow.sm
           }}
           onMouseOver={e => {
             if (message.trim()) {
               e.currentTarget.style.transform = 'scale(1.08)';
-              e.currentTarget.style.boxShadow = '0 6px 20px rgba(14, 165, 233, 0.4)';
+              e.currentTarget.style.boxShadow = designTokens.shadow.lg;
             }
           }}
           onMouseOut={e => {
             e.currentTarget.style.transform = 'scale(1)';
             e.currentTarget.style.boxShadow = message.trim() 
-              ? '0 4px 12px rgba(14, 165, 233, 0.3)' 
+              ? designTokens.shadow.md 
               : 'none';
           }}
         >

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { closeSmsModal, openSmsModal, setSmsPhone, setSmsStep, setSmsSentCode, setSmsVerified, navigate, openLoginModal } from '../../store/uiSlice';
 import { IconX, IconLock, IconShield, IconUser } from '../icons';
+import { designTokens } from '../../styles/designTokens';
 
 const maskPhone = (phone:string) => phone.replace(/(\d{3})(\d+)(\d{3})/, (m,p1,mid,p3)=> p1 + mid.replace(/\d/g,'*') + p3);
 
@@ -106,10 +107,18 @@ const SmsVerificationModal: React.FC = () => {
           {step === 'phone' && (
             <div style={{ marginBottom:24 }}>
 
-              {/* 電話番号入力 */}
-              <div style={{ marginBottom:24 }}>
-                <label style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:15, marginBottom:12, color:'#1a1a1a' }}>
-                  <IconUser size={20} color='#0EA5E9' />
+              {/* 電話番号入力 (UI改善.md Q9対応) */}
+              <div style={{ marginBottom: designTokens.spacing.lg }}>
+                <label style={{ 
+                  display:'flex', 
+                  alignItems:'center', 
+                  gap: designTokens.spacing.sm, 
+                  fontWeight:600, 
+                  fontSize: designTokens.typography.body.fontSize, 
+                  marginBottom: designTokens.spacing.md, 
+                  color: designTokens.colors.text.primary 
+                }}>
+                  <IconUser size={20} color={designTokens.colors.primary.main} />
                   電話番号
                 </label>
                 <div style={{ position:'relative' }}>
@@ -120,31 +129,40 @@ const SmsVerificationModal: React.FC = () => {
                     placeholder='090-1234-5678'
                     style={{ 
                       width:'100%', 
-                      padding:'16px 18px', 
-                      fontSize:16, 
-                      border:'2px solid #e5e7eb', 
-                      borderRadius:16, 
+                      padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`, 
+                      fontSize: designTokens.typography.body.fontSize, 
+                      border: `2px solid ${designTokens.colors.border.medium}`, 
+                      borderRadius: designTokens.radius.lg, 
                       outline:'none',
                       boxSizing:'border-box',
-                      transition:'all .3s ease',
-                      fontWeight:500
+                      transition: designTokens.transition.base,
+                      fontWeight:500,
+                      color: designTokens.colors.text.primary
                     }}
                     onFocus={e => {
-                      e.currentTarget.style.borderColor='#0EA5E9';
-                      e.currentTarget.style.boxShadow='0 0 0 4px rgba(14, 165, 233, 0.1)';
+                      e.currentTarget.style.borderColor = designTokens.colors.primary.main;
+                      e.currentTarget.style.boxShadow = `0 0 0 4px ${designTokens.colors.primary.pale}`;
                     }}
                     onBlur={e => {
-                      e.currentTarget.style.borderColor='#e5e7eb';
+                      e.currentTarget.style.borderColor = designTokens.colors.border.medium;
                       e.currentTarget.style.boxShadow='none';
                     }}
                   />
                 </div>
               </div>
 
-              {/* パスワード入力 */}
-              <div style={{ marginBottom:28 }}>
-                <label style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:15, marginBottom:12, color:'#1a1a1a' }}>
-                  <IconLock size={20} color='#0EA5E9' />
+              {/* パスワード入力 (UI改善.md Q9対応) */}
+              <div style={{ marginBottom: designTokens.spacing.xl }}>
+                <label style={{ 
+                  display:'flex', 
+                  alignItems:'center', 
+                  gap: designTokens.spacing.sm, 
+                  fontWeight:600, 
+                  fontSize: designTokens.typography.body.fontSize, 
+                  marginBottom: designTokens.spacing.md, 
+                  color: designTokens.colors.text.primary 
+                }}>
+                  <IconLock size={20} color={designTokens.colors.primary.main} />
                   パスワード
                 </label>
                 <div style={{ position:'relative' }}>

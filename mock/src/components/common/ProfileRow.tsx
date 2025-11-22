@@ -1,5 +1,6 @@
 import React from 'react';
 import { IconUser } from '../../components/icons';
+import { designTokens } from '../../styles/designTokens';
 
 interface ProfileRowProps {
   name?: string | null;
@@ -15,7 +16,22 @@ const ProfileRow: React.FC<ProfileRowProps> = ({ name, avatar, onClick }) => {
       type="button"
       aria-label="プロフィールを開く"
       onClick={onClick}
-      className="w-full flex items-center gap-4 px-5 py-4 bg-white rounded-xl shadow-sm border border-slate-200 text-left focus:outline-none focus:ring-2 focus:ring-sky-400 transition hover:bg-slate-50"
+      style={{
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        gap: designTokens.spacing.md,
+        padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`,
+        background: designTokens.colors.background.primary,
+        borderRadius: designTokens.radius.xl,
+        boxShadow: designTokens.shadow.sm,
+        border: `1px solid ${designTokens.colors.border.medium}`,
+        textAlign: 'left',
+        transition: designTokens.transition.base,
+        cursor: 'pointer'
+      }}
+      onMouseOver={e => e.currentTarget.style.background = designTokens.colors.background.secondary}
+      onMouseOut={e => e.currentTarget.style.background = designTokens.colors.background.primary}
     >
       <div className="w-16 h-16 rounded-full border border-slate-200 bg-slate-100 overflow-hidden flex items-center justify-center">
         {avatar ? (

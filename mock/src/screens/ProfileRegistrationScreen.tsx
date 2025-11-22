@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { setMe, addUser } from '../store/userSlice';
 import { setRegistered, navigate, setAuthenticated } from '../store/uiSlice';
 import { IconX, IconUser, IconCalendar, IconMapPin, IconClock, IconFileText } from '../components/icons';
+import { designTokens } from '../styles/designTokens';
+import Button from '../components/common/Button';
 
 const ProfileRegistrationScreen: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -80,9 +82,20 @@ const ProfileRegistrationScreen: React.FC = () => {
   };
 
   return (
-    <div style={{ background: '#f8f8f8', minHeight: '100vh', paddingBottom: 100 }}>
-      <div style={{ background: '#fff', padding: '60px 20px 20px', borderBottom: '1px solid #f0f0f0' }}>
-        <h1 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 700, textAlign: 'center', color: '#333' }}>
+    <div style={{ background: designTokens.colors.background.secondary, minHeight: '100vh', paddingBottom: 100 }}>
+      <div style={{ 
+        background: designTokens.colors.background.primary, 
+        padding: `${designTokens.spacing.xxxl} ${designTokens.spacing.lg} ${designTokens.spacing.lg}`, 
+        borderBottom: `1px solid ${designTokens.colors.border.medium}`,
+        boxShadow: designTokens.shadow.sm
+      }}>
+        <h1 style={{ 
+          margin: `0 0 ${designTokens.spacing.sm}`, 
+          fontSize: designTokens.typography.h2.fontSize, 
+          fontWeight: designTokens.typography.h2.fontWeight as number, 
+          textAlign: 'center', 
+          color: designTokens.colors.text.primary 
+        }}>
           プロフィールを登録してください
         </h1>
       </div>
@@ -93,48 +106,38 @@ const ProfileRegistrationScreen: React.FC = () => {
               key={item.key}
               onClick={() => handleItemClick(item.key)}
               style={{
-                padding: '20px',
-                borderBottom: index < profileItems.length - 1 ? '1px solid #f0f0f0' : 'none',
+                padding: designTokens.spacing.lg,
+                borderBottom: index < profileItems.length - 1 ? `1px solid ${designTokens.colors.border.medium}` : 'none',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 cursor: 'pointer',
-                transition: 'background .2s ease'
+                transition: designTokens.transition.base,
+                background: designTokens.colors.background.primary
               }}
-              onMouseOver={e => (e.currentTarget.style.background = '#f8f8f8')}
-              onMouseOut={e => (e.currentTarget.style.background = '#fff')}
+              onMouseOver={e => (e.currentTarget.style.background = designTokens.colors.background.secondary)}
+              onMouseOut={e => (e.currentTarget.style.background = designTokens.colors.background.primary)}
             >
-              <span style={{ fontSize: 16, color: '#333', fontWeight: 500 }}>{item.label}</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: 16, color: '#999' }}>{item.value || '未設定'}</span>
-                <span style={{ fontSize: 20, color: '#ccc' }}>›</span>
+              <span style={{ fontSize: designTokens.typography.h4.fontSize, color: designTokens.colors.text.primary, fontWeight: 500 }}>{item.label}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: designTokens.spacing.sm }}>
+                <span style={{ fontSize: designTokens.typography.h4.fontSize, color: designTokens.colors.text.tertiary }}>{item.value || '未設定'}</span>
+                <span style={{ fontSize: designTokens.typography.h2.fontSize, color: designTokens.colors.border.dark }}>›</span>
               </div>
             </div>
           ))}
         </div>
-        <p style={{ margin: '20px', fontSize: 13, color: '#999', textAlign: 'center', lineHeight: 1.6 }}>
+        <p style={{ margin: `${designTokens.spacing.xl} ${designTokens.spacing.xl}`, fontSize: designTokens.typography.small.fontSize, color: designTokens.colors.text.tertiary, textAlign: 'center', lineHeight: 1.6 }}>
           ※内容はあとから変更可能です
         </p>
-        <div style={{ padding: '0 20px' }}>
-          <button
+        <div style={{ padding: `0 ${designTokens.spacing.lg}` }}>
+          <Button
+            variant="primary"
+            size="lg"
+            fullWidth
             onClick={complete}
-            style={{
-              width: '100%',
-              padding: '18px',
-              background: '#ddd',
-              color: '#999',
-              border: 'none',
-              borderRadius: 12,
-              fontSize: 17,
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all .2s ease'
-            }}
-            onMouseOver={e => { e.currentTarget.style.background = '#ccc'; }}
-            onMouseOut={e => { e.currentTarget.style.background = '#ddd'; }}
           >
             保存して次へ
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -167,8 +170,8 @@ const ProfileRegistrationScreen: React.FC = () => {
             style={{
               width: '100%',
               maxHeight: '80vh',
-              background: '#fff',
-              borderRadius: '24px 24px 0 0',
+              background: designTokens.colors.background.primary,
+              borderRadius: `${designTokens.radius.xxl} ${designTokens.radius.xxl} 0 0`,
               padding: '24px',
               animation: 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               overflowY: 'auto'
@@ -177,7 +180,7 @@ const ProfileRegistrationScreen: React.FC = () => {
           >
             {/* ヘッダー */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: '#333' }}>
+              <h2 style={{ margin: 0, fontSize: designTokens.typography.h3.fontSize, fontWeight: designTokens.typography.h3.fontWeight as number, color: designTokens.colors.text.primary }}>
                 {modalType === 'name' && 'ユーザー名'}
                 {modalType === 'age' && '年代'}
                 {modalType === 'region' && '居住地'}
@@ -198,7 +201,7 @@ const ProfileRegistrationScreen: React.FC = () => {
                   justifyContent: 'center'
                 }}
               >
-                <IconX size={24} color="#666" />
+                <IconX size={24} color={designTokens.colors.text.secondary} />
               </button>
             </div>
 
@@ -212,13 +215,13 @@ const ProfileRegistrationScreen: React.FC = () => {
                   placeholder="ユーザー名を入力"
                   style={{
                     width: '100%',
-                    padding: '14px 16px',
-                    border: '2px solid #e5e7eb',
-                    borderRadius: 12,
-                    fontSize: 16,
+                    padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`,
+                    border: `2px solid ${designTokens.colors.border.medium}`,
+                    borderRadius: designTokens.radius.md,
+                    fontSize: designTokens.typography.h4.fontSize,
                     outline: 'none',
                     boxSizing: 'border-box',
-                    marginBottom: 16
+                    marginBottom: designTokens.spacing.lg
                   }}
                   autoFocus
                 />
@@ -226,17 +229,17 @@ const ProfileRegistrationScreen: React.FC = () => {
                   onClick={handleSave}
                   style={{
                     width: '100%',
-                    padding: '16px',
-                    background: 'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)',
-                    color: '#fff',
+                    padding: designTokens.spacing.lg,
+                    background: designTokens.colors.background.secondary,
+                    color: designTokens.colors.text.primary,
                     border: 'none',
-                    borderRadius: 12,
-                    fontSize: 16,
+                    borderRadius: designTokens.radius.md,
+                    fontSize: designTokens.typography.h4.fontSize,
                     fontWeight: 700,
                     cursor: 'pointer'
                   }}
                 >
-                  保存
+                  完了
                 </button>
               </div>
             )}
@@ -252,14 +255,14 @@ const ProfileRegistrationScreen: React.FC = () => {
                       handleSave();
                     }}
                     style={{
-                      padding: '16px',
-                      borderBottom: '1px solid #f0f0f0',
+                      padding: designTokens.spacing.lg,
+                      borderBottom: `1px solid ${designTokens.colors.border.light}`,
                       cursor: 'pointer',
-                      background: age === option ? '#f0f9ff' : '#fff',
+                      background: age === option ? designTokens.colors.primary.pale : designTokens.colors.background.primary,
                       transition: 'background .2s ease'
                     }}
                   >
-                    <span style={{ fontSize: 16, color: age === option ? '#0EA5E9' : '#333', fontWeight: age === option ? 600 : 400 }}>
+                    <span style={{ fontSize: designTokens.typography.h4.fontSize, color: age === option ? designTokens.colors.secondary.main : designTokens.colors.text.primary, fontWeight: age === option ? 600 : 400 }}>
                       {option}
                     </span>
                   </div>
@@ -278,14 +281,14 @@ const ProfileRegistrationScreen: React.FC = () => {
                       handleSave();
                     }}
                     style={{
-                      padding: '16px',
-                      borderBottom: '1px solid #f0f0f0',
+                      padding: designTokens.spacing.lg,
+                      borderBottom: `1px solid ${designTokens.colors.border.light}`,
                       cursor: 'pointer',
-                      background: region === option ? '#f0f9ff' : '#fff',
+                      background: region === option ? designTokens.colors.primary.pale : designTokens.colors.background.primary,
                       transition: 'background .2s ease'
                     }}
                   >
-                    <span style={{ fontSize: 16, color: region === option ? '#0EA5E9' : '#333', fontWeight: region === option ? 600 : 400 }}>
+                    <span style={{ fontSize: designTokens.typography.h4.fontSize, color: region === option ? designTokens.colors.secondary.main : designTokens.colors.text.primary, fontWeight: region === option ? 600 : 400 }}>
                       {option}
                     </span>
                   </div>
@@ -304,14 +307,14 @@ const ProfileRegistrationScreen: React.FC = () => {
                       handleSave();
                     }}
                     style={{
-                      padding: '16px',
-                      borderBottom: '1px solid #f0f0f0',
+                      padding: designTokens.spacing.lg,
+                      borderBottom: `1px solid ${designTokens.colors.border.light}`,
                       cursor: 'pointer',
-                      background: activeTime === option ? '#f0f9ff' : '#fff',
+                      background: activeTime === option ? designTokens.colors.primary.pale : designTokens.colors.background.primary,
                       transition: 'background .2s ease'
                     }}
                   >
-                    <span style={{ fontSize: 16, color: activeTime === option ? '#0EA5E9' : '#333', fontWeight: activeTime === option ? 600 : 400 }}>
+                    <span style={{ fontSize: designTokens.typography.h4.fontSize, color: activeTime === option ? designTokens.colors.secondary.main : designTokens.colors.text.primary, fontWeight: activeTime === option ? 600 : 400 }}>
                       {option}
                     </span>
                   </div>
@@ -345,12 +348,12 @@ const ProfileRegistrationScreen: React.FC = () => {
                   onClick={handleSave}
                   style={{
                     width: '100%',
-                    padding: '16px',
-                    background: 'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)',
-                    color: '#fff',
+                    padding: designTokens.spacing.lg,
+                    background: `linear-gradient(135deg, ${designTokens.colors.secondary.main} 0%, ${designTokens.colors.secondary.light} 100%)`,
+                    color: designTokens.colors.text.inverse,
                     border: 'none',
-                    borderRadius: 12,
-                    fontSize: 16,
+                    borderRadius: designTokens.radius.md,
+                    fontSize: designTokens.typography.h4.fontSize,
                     fontWeight: 700,
                     cursor: 'pointer'
                   }}
@@ -371,7 +374,7 @@ const ProfileRegistrationScreen: React.FC = () => {
                       borderRadius: '50%',
                       margin: '0 auto',
                       background: `url(${avatar}) center/cover`,
-                      border: '3px solid #0EA5E9'
+                      border: `3px solid ${designTokens.colors.secondary.main}`
                     }} />
                   </div>
                 )}
@@ -382,15 +385,15 @@ const ProfileRegistrationScreen: React.FC = () => {
                   }}
                   style={{
                     width: '100%',
-                    padding: '16px',
-                    background: 'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)',
-                    color: '#fff',
+                    padding: designTokens.spacing.lg,
+                    background: `linear-gradient(135deg, ${designTokens.colors.secondary.main} 0%, ${designTokens.colors.secondary.light} 100%)`,
+                    color: designTokens.colors.text.inverse,
                     border: 'none',
-                    borderRadius: 12,
-                    fontSize: 16,
+                    borderRadius: designTokens.radius.md,
+                    fontSize: designTokens.typography.h4.fontSize,
                     fontWeight: 700,
                     cursor: 'pointer',
-                    marginBottom: 12
+                    marginBottom: designTokens.spacing.md
                   }}
                 >
                   {avatar ? '画像を変更' : '画像をアップロード'}
@@ -403,9 +406,9 @@ const ProfileRegistrationScreen: React.FC = () => {
                     }}
                     style={{
                       width: '100%',
-                      padding: '16px',
-                      background: '#f3f4f6',
-                      color: '#666',
+                      padding: designTokens.spacing.lg,
+                      background: designTokens.colors.background.secondary,
+                      color: designTokens.colors.text.secondary,
                       border: 'none',
                       borderRadius: 12,
                       fontSize: 16,
@@ -453,15 +456,15 @@ const ProfileRegistrationScreen: React.FC = () => {
                   onClick={handleGalleryUpload}
                   style={{
                     width: '100%',
-                    padding: '16px',
-                    background: 'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)',
-                    color: '#fff',
+                    padding: designTokens.spacing.lg,
+                    background: `linear-gradient(135deg, ${designTokens.colors.secondary.main} 0%, ${designTokens.colors.secondary.light} 100%)`,
+                    color: designTokens.colors.text.inverse,
                     border: 'none',
-                    borderRadius: 12,
-                    fontSize: 16,
+                    borderRadius: designTokens.radius.md,
+                    fontSize: designTokens.typography.h4.fontSize,
                     fontWeight: 700,
                     cursor: 'pointer',
-                    marginBottom: 12
+                    marginBottom: designTokens.spacing.md
                   }}
                 >
                   画像を追加
@@ -470,9 +473,9 @@ const ProfileRegistrationScreen: React.FC = () => {
                   onClick={handleSave}
                   style={{
                     width: '100%',
-                    padding: '16px',
-                    background: '#f3f4f6',
-                    color: '#333',
+                    padding: designTokens.spacing.lg,
+                    background: designTokens.colors.background.secondary,
+                    color: designTokens.colors.text.primary,
                     border: 'none',
                     borderRadius: 12,
                     fontSize: 16,

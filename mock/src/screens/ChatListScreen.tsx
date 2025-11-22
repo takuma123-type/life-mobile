@@ -8,6 +8,7 @@ import BottomNav from '../components/common/BottomNav';
 import { IconSearch, IconAvatar, IconCalendar, IconMapPin, IconClock } from '../components/icons';
 import Button from '../components/common/Button';
 import { mockTranslate } from '../data/mockData';
+import { designTokens } from '../styles/designTokens';
 
 const ChatListScreen: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -147,7 +148,7 @@ const ChatListScreen: React.FC = () => {
 
   return (
     <div 
-      style={{ paddingBottom:80, background:'var(--color-bg)', minHeight:'100vh', height:'100vh' }}
+      style={{ paddingBottom:80, background: designTokens.colors.background.primary, minHeight:'100vh', height:'100vh' }}
       onScroll={handleScroll}
     >
       {/* ヘッダー */}
@@ -155,8 +156,8 @@ const ChatListScreen: React.FC = () => {
         position:'sticky', 
         top:0, 
         zIndex:10,
-        background:'#fff', 
-        borderBottom:'1px solid var(--color-border)'
+        background: designTokens.colors.background.primary, 
+        borderBottom: `1px solid ${designTokens.colors.border.light}`
       }}>
         {/* アプリ名と検索 */}
         <div style={{ 
@@ -205,26 +206,26 @@ const ChatListScreen: React.FC = () => {
           </button>
         </div>
         
-        {/* タブ */}
+        {/* タブ (UI改善.md Q6対応) */}
         <div style={{ 
           display:'flex', 
           alignItems:'center',
           justifyContent:'center',
           padding:'0 20px',
-          gap:32
+          gap:40
         }}>
           <button 
             onClick={()=>setTab('following')}
             style={{ 
               background:'none',
               border:'none',
-              padding:'12px 0',
-              fontSize: tab === 'following' ? 16 : 15,
-              fontWeight: tab === 'following' ? 600 : 400,
-              color: tab === 'following' ? '#000' : '#999',
+              padding:'14px 0',
+              fontSize: tab === 'following' ? designTokens.typography.h4.fontSize : designTokens.typography.body.fontSize,
+              fontWeight: tab === 'following' ? 700 : 400,
+              color: tab === 'following' ? designTokens.colors.text.primary : designTokens.colors.text.tertiary,
               cursor:'pointer',
               position:'relative',
-              transition:'all .2s ease'
+              transition: designTokens.transition.base
             }}
           >
             さがす
@@ -235,8 +236,9 @@ const ChatListScreen: React.FC = () => {
                 left:0,
                 right:0,
                 height:3,
-                background:'#0EA5E9',
-                borderRadius:'3px 3px 0 0'
+                background: `linear-gradient(90deg, ${designTokens.colors.primary.dark} 0%, ${designTokens.colors.primary.main} 100%)`,
+                borderRadius: `${designTokens.radius.xs} ${designTokens.radius.xs} 0 0`,
+                boxShadow: designTokens.shadow.primary
               }} />
             )}
           </button>
@@ -245,13 +247,13 @@ const ChatListScreen: React.FC = () => {
             style={{ 
               background:'none',
               border:'none',
-              padding:'12px 0',
-              fontSize: tab === 'open' ? 16 : 15,
-              fontWeight: tab === 'open' ? 600 : 400,
-              color: tab === 'open' ? '#000' : '#999',
+              padding:'14px 0',
+              fontSize: tab === 'open' ? designTokens.typography.h4.fontSize : designTokens.typography.body.fontSize,
+              fontWeight: tab === 'open' ? 700 : 400,
+              color: tab === 'open' ? designTokens.colors.text.primary : designTokens.colors.text.tertiary,
               cursor:'pointer',
               position:'relative',
-              transition:'all .2s ease'
+              transition: designTokens.transition.base
             }}
           >
             コミュニティ
@@ -262,8 +264,9 @@ const ChatListScreen: React.FC = () => {
                 left:0,
                 right:0,
                 height:3,
-                background:'#0EA5E9',
-                borderRadius:'3px 3px 0 0'
+                background: `linear-gradient(90deg, ${designTokens.colors.primary.dark} 0%, ${designTokens.colors.primary.main} 100%)`,
+                borderRadius: `${designTokens.radius.xs} ${designTokens.radius.xs} 0 0`,
+                boxShadow: designTokens.shadow.primary
               }} />
             )}
           </button>
@@ -272,24 +275,24 @@ const ChatListScreen: React.FC = () => {
 
       {tab==='following' && (
         <div>
-          {/* サブタブ: すべて / フレンド */}
+          {/* サブタブ: すべて / フレンド (UI改善.md Q6対応) */}
           <div style={{ 
-            padding:'12px 16px 28px 16px', 
-            background: '#fff'
+            padding: `${designTokens.spacing.md} ${designTokens.spacing.md} ${designTokens.spacing.xl} ${designTokens.spacing.md}`, 
+            background: designTokens.colors.background.primary
           }}>
-            <div style={{ display:'flex', gap:24 }}>
+            <div style={{ display:'flex', gap:designTokens.spacing.lg }}>
               <button
                 onClick={() => setUserMode('all')}
                 style={{
                   background:'none',
                   border:'none',
-                  padding:'8px 0',
-                  fontSize:16,
+                  padding: `${designTokens.spacing.sm} 0`,
+                  fontSize: designTokens.typography.h4.fontSize,
                   fontWeight: userMode === 'all' ? 700 : 400,
-                  color: userMode === 'all' ? '#000' : '#999',
+                  color: userMode === 'all' ? designTokens.colors.text.primary : designTokens.colors.text.tertiary,
                   cursor:'pointer',
                   position:'relative',
-                  transition:'all .2s ease',
+                  transition: designTokens.transition.base,
                   whiteSpace:'nowrap'
                 }}
               >
@@ -297,11 +300,12 @@ const ChatListScreen: React.FC = () => {
                 {userMode === 'all' && (
                   <div style={{
                     position:'absolute',
-                    bottom:-12,
+                    bottom: `-${designTokens.spacing.md}`,
                     left:0,
                     right:0,
                     height:3,
-                    background:'#000'
+                    background: designTokens.colors.text.primary,
+                    borderRadius: designTokens.radius.xs
                   }} />
                 )}
               </button>
@@ -316,13 +320,13 @@ const ChatListScreen: React.FC = () => {
                 style={{
                   background:'none',
                   border:'none',
-                  padding:'8px 0',
-                  fontSize:16,
+                  padding: `${designTokens.spacing.sm} 0`,
+                  fontSize: designTokens.typography.h4.fontSize,
                   fontWeight: userMode === 'friends' ? 700 : 400,
-                  color: userMode === 'friends' ? '#000' : '#999',
+                  color: userMode === 'friends' ? designTokens.colors.text.primary : designTokens.colors.text.tertiary,
                   cursor:'pointer',
                   position:'relative',
-                  transition:'all .2s ease',
+                  transition: designTokens.transition.base,
                   whiteSpace:'nowrap'
                 }}
               >
@@ -330,11 +334,12 @@ const ChatListScreen: React.FC = () => {
                 {userMode === 'friends' && (
                   <div style={{
                     position:'absolute',
-                    bottom:-12,
+                    bottom: `-${designTokens.spacing.md}`,
                     left:0,
                     right:0,
                     height:3,
-                    background:'#000'
+                    background: designTokens.colors.text.primary,
+                    borderRadius: designTokens.radius.xs
                   }} />
                 )}
               </button>
@@ -343,15 +348,15 @@ const ChatListScreen: React.FC = () => {
 
           {/* フレンドモード: ログイン後のみ表示 */}
           {isAuthenticated && me && userMode === 'friends' && (
-            <div style={{ padding:'16px', background:'#fff' }}>
+            <div style={{ padding: designTokens.spacing.lg, background: designTokens.colors.background.primary }}>
               <div style={{ 
-                padding:'0 4px 12px', 
+                padding: `0 4px ${designTokens.spacing.md}`, 
                 display:'flex',
                 alignItems:'center',
                 justifyContent:'space-between'
               }}>
-                <h3 style={{ margin:0, fontSize:16, fontWeight:700, color:'#000' }}>フレンド</h3>
-                <span style={{ fontSize:13, color:'#666', fontWeight:600 }}>{friendsList.length}人</span>
+                <h3 style={{ margin:0, fontSize: designTokens.typography.h4.fontSize, fontWeight: designTokens.typography.h4.fontWeight as number, color: designTokens.colors.text.primary }}>フレンド</h3>
+                <span style={{ fontSize: designTokens.typography.small.fontSize, color: designTokens.colors.text.secondary, fontWeight:600 }}>{friendsList.length}人</span>
               </div>
               
               {/* カードUIリスト */}
@@ -366,22 +371,24 @@ const ChatListScreen: React.FC = () => {
                     style={{
                       display:'flex',
                       alignItems:'center',
-                      gap:14,
-                      padding:'16px',
+                      gap: designTokens.spacing.md,
+                      padding: designTokens.spacing.md,
                       cursor:'pointer',
-                      transition:'all .3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                      background:'#fff',
-                      borderRadius:16,
-                      boxShadow:'0 2px 8px rgba(0,0,0,0.06)',
-                      border:'1px solid rgba(0,0,0,0.04)'
+                      transition: `all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)`,
+                      background: designTokens.colors.background.primary,
+                      borderRadius: designTokens.radius.lg,
+                      boxShadow: designTokens.shadow.card,
+                      border: `1px solid ${designTokens.colors.border.light}`
                     }}
                     onMouseOver={e => {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+                      e.currentTarget.style.transform = 'translateY(-3px)';
+                      e.currentTarget.style.boxShadow = designTokens.shadow.cardHover;
+                      e.currentTarget.style.borderColor = designTokens.colors.primary.main;
                     }}
                     onMouseOut={e => {
                       e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
+                      e.currentTarget.style.boxShadow = designTokens.shadow.card;
+                      e.currentTarget.style.borderColor = designTokens.colors.border.light;
                     }}
                   >
                     {/* アバター */}
@@ -389,14 +396,14 @@ const ChatListScreen: React.FC = () => {
                       <div style={{
                         width:60,
                         height:60,
-                        borderRadius:'50%',
+                        borderRadius: designTokens.radius.circle,
                         overflow:'hidden',
-                        background:'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
+                        background: `linear-gradient(135deg, ${designTokens.colors.primary.pale} 0%, ${designTokens.colors.secondary.light} 100%)`,
                         display:'flex',
                         alignItems:'center',
                         justifyContent:'center',
-                        border:'2px solid #fff',
-                        boxShadow:'0 2px 8px rgba(14, 165, 233, 0.15)'
+                        border: `2px solid ${designTokens.colors.background.primary}`,
+                        boxShadow: designTokens.shadow.sm
                       }}>
                         <img 
                           src={u.avatar || 'https://image.p-c2-x.abema-tv.com/image/series/19-15/thumb.png?height=720&quality=75&version=1741061716&width=1280'} 
@@ -411,10 +418,10 @@ const ChatListScreen: React.FC = () => {
                           right:0,
                           width:18,
                           height:18,
-                          background:'#10b981',
-                          border:'3px solid #fff',
-                          borderRadius:'50%',
-                          boxShadow:'0 2px 4px rgba(16, 185, 129, 0.3)'
+                          background: designTokens.colors.success.main,
+                          border: `3px solid ${designTokens.colors.background.primary}`,
+                          borderRadius: designTokens.radius.circle,
+                          boxShadow: '0 2px 4px rgba(16, 185, 129, 0.3)'
                         }} />
                       )}
                     </div>
@@ -422,13 +429,13 @@ const ChatListScreen: React.FC = () => {
                     {/* メッセージ情報 */}
                     <div style={{ flex:1, minWidth:0 }}>
                       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:6 }}>
-                        <span style={{ fontWeight:700, fontSize:16, color:'#000' }}>{u.name}</span>
-                        <span style={{ fontSize:12, color:'#999', fontWeight:500 }}>10:30</span>
+                        <span style={{ fontWeight:700, fontSize: designTokens.typography.h4.fontSize, color: designTokens.colors.text.primary }}>{u.name}</span>
+                        <span style={{ fontSize: designTokens.typography.caption.fontSize, color: designTokens.colors.text.disabled, fontWeight:500 }}>10:30</span>
                       </div>
                       <p style={{
                         margin:0,
-                        fontSize:14,
-                        color:'#666',
+                        fontSize: designTokens.typography.small.fontSize,
+                        color: designTokens.colors.text.secondary,
                         overflow:'hidden',
                         textOverflow:'ellipsis',
                         whiteSpace:'nowrap',
@@ -445,7 +452,7 @@ const ChatListScreen: React.FC = () => {
           
           {/* 全てのユーザーモード: ライブ風グリッド表示 */}
           {userMode === 'all' && (
-            <div style={{ padding:'8px 8px 16px 8px', background:'#fff' }}>
+            <div style={{ padding: `${designTokens.spacing.sm} ${designTokens.spacing.sm} ${designTokens.spacing.lg} ${designTokens.spacing.sm}`, background: designTokens.colors.background.primary }}>
               <div style={{ 
                 display:'grid', 
                 gridTemplateColumns:'repeat(3, 1fr)', 
@@ -456,11 +463,12 @@ const ChatListScreen: React.FC = () => {
                 key={u.id} 
                 style={{ 
                   cursor:'pointer',
-                  borderRadius:14,
+                  borderRadius: designTokens.radius.lg,
                   overflow:'hidden',
-                  background:'#fff',
-                  boxShadow:'0 4px 14px rgba(15,23,42,0.12)',
-                  transition:'all .2s ease'
+                  background: designTokens.colors.background.primary,
+                  boxShadow: designTokens.shadow.md,
+                  transition: designTokens.transition.base,
+                  border: `1px solid ${designTokens.colors.border.light}`
                 }} 
                 onClick={()=> {
                   if (!isAuthenticated || !me) {
@@ -471,12 +479,14 @@ const ChatListScreen: React.FC = () => {
                   dispatch(openGuestProfileModal());
                 }}
                 onMouseOver={e=>{
-                  e.currentTarget.style.boxShadow='0 4px 16px rgba(0,0,0,0.12)';
-                  e.currentTarget.style.transform='translateY(-2px)';
+                  e.currentTarget.style.boxShadow = designTokens.shadow.cardHover;
+                  e.currentTarget.style.transform='translateY(-3px)';
+                  e.currentTarget.style.borderColor = designTokens.colors.primary.light;
                 }}
                 onMouseOut={e=>{
-                  e.currentTarget.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)';
+                  e.currentTarget.style.boxShadow = designTokens.shadow.md;
                   e.currentTarget.style.transform='translateY(0)';
+                  e.currentTarget.style.borderColor = designTokens.colors.border.light;
                 }}
               >
                 {/* サムネイル画像エリア */}
@@ -602,40 +612,37 @@ const ChatListScreen: React.FC = () => {
               <p style={{ color:'var(--color-text-soft)', marginBottom:20 }}>
                 参加中のコミュニティを表示するには<br/>ログインしてください
               </p>
-              <button
+              <Button
+                variant="primary"
+                size="lg"
                 onClick={() => dispatch(openSmsModal())}
-                className="btn-gradient"
-                style={{
-                  padding:'12px 32px',
-                  fontSize:15
-                }}
               >
                 ログイン
-              </button>
+              </Button>
             </div>
           )}
           
-          {/* コミュニティモード切り替えボタン */}
+          {/* コミュニティモード切り替えボタン (UI改善.md Q6対応) */}
           <div style={{ 
-            padding:'12px 16px 28px 16px', 
-            background:'#fff'
+            padding: `${designTokens.spacing.md} ${designTokens.spacing.md} ${designTokens.spacing.xl} ${designTokens.spacing.md}`, 
+            background: designTokens.colors.background.primary
           }}>
             <div style={{ 
               display:'flex', 
-              gap:24
+              gap: designTokens.spacing.lg
             }}>
               <button
                 onClick={() => setCommunityMode('all')}
                 style={{
                   background:'none',
                   border:'none',
-                  padding:'8px 0',
-                  fontSize:16,
+                  padding: `${designTokens.spacing.sm} 0`,
+                  fontSize: designTokens.typography.h4.fontSize,
                   fontWeight: communityMode === 'all' ? 700 : 400,
-                  color: communityMode === 'all' ? '#000' : '#999',
+                  color: communityMode === 'all' ? designTokens.colors.text.primary : designTokens.colors.text.tertiary,
                   cursor:'pointer',
                   position:'relative',
-                  transition:'all .2s ease',
+                  transition: designTokens.transition.base,
                   whiteSpace:'nowrap'
                 }}
               >
@@ -643,11 +650,12 @@ const ChatListScreen: React.FC = () => {
                 {communityMode === 'all' && (
                   <div style={{
                     position:'absolute',
-                    bottom:-12,
+                    bottom: `-${designTokens.spacing.md}`,
                     left:0,
                     right:0,
                     height:3,
-                    background:'#000'
+                    background: designTokens.colors.text.primary,
+                    borderRadius: designTokens.radius.xs
                   }} />
                 )}
               </button>
@@ -662,13 +670,13 @@ const ChatListScreen: React.FC = () => {
                 style={{
                   background:'none',
                   border:'none',
-                  padding:'8px 0',
-                  fontSize:16,
+                  padding: `${designTokens.spacing.sm} 0`,
+                  fontSize: designTokens.typography.h4.fontSize,
                   fontWeight: communityMode === 'joined' ? 700 : 400,
-                  color: communityMode === 'joined' ? '#000' : '#999',
+                  color: communityMode === 'joined' ? designTokens.colors.text.primary : designTokens.colors.text.tertiary,
                   cursor:'pointer',
                   position:'relative',
-                  transition:'all .2s ease',
+                  transition: designTokens.transition.base,
                   whiteSpace:'nowrap'
                 }}
               >
@@ -676,11 +684,12 @@ const ChatListScreen: React.FC = () => {
                 {communityMode === 'joined' && (
                   <div style={{
                     position:'absolute',
-                    bottom:-12,
+                    bottom: `-${designTokens.spacing.md}`,
                     left:0,
                     right:0,
                     height:3,
-                    background:'#000'
+                    background: designTokens.colors.text.primary,
+                    borderRadius: designTokens.radius.xs
                   }} />
                 )}
               </button>
@@ -690,15 +699,15 @@ const ChatListScreen: React.FC = () => {
           {/* 参加中セクション - ログイン後のみ表示、LINE風リスト */}
                     {/* 参加中モード: ログイン後のみ表示 */}
           {communityMode === 'joined' && isAuthenticated && me && (
-            <div style={{ padding:'16px', background:'#f8f9fa' }}>
+            <div style={{ padding: designTokens.spacing.lg, background: designTokens.colors.background.primary }}>
               <div style={{ 
-                padding:'0 4px 12px', 
+                padding: `0 4px ${designTokens.spacing.md}`, 
                 display:'flex',
                 alignItems:'center',
                 justifyContent:'space-between'
               }}>
-                <h3 style={{ margin:0, fontSize:16, fontWeight:700, color:'#000' }}>参加中のコミュニティ</h3>
-                <span style={{ fontSize:13, color:'#666', fontWeight:600 }}>{joinedCommunities.length}件</span>
+                <h3 style={{ margin:0, fontSize: designTokens.typography.h4.fontSize, fontWeight: designTokens.typography.h4.fontWeight as number, color: designTokens.colors.text.primary }}>参加中のコミュニティ</h3>
+                <span style={{ fontSize: designTokens.typography.small.fontSize, color: designTokens.colors.text.secondary, fontWeight:600 }}>{joinedCommunities.length}件</span>
               </div>
               
               {/* カードUIリスト */}
@@ -713,22 +722,24 @@ const ChatListScreen: React.FC = () => {
                     style={{
                       display:'flex',
                       alignItems:'center',
-                      gap:14,
-                      padding:'16px',
+                      gap: designTokens.spacing.md,
+                      padding: designTokens.spacing.md,
                       cursor:'pointer',
-                      transition:'all .3s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                      background:'#fff',
-                      borderRadius:16,
-                      boxShadow:'0 2px 8px rgba(0,0,0,0.06)',
-                      border:'1px solid rgba(0,0,0,0.04)'
+                      transition: `all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)`,
+                      background: designTokens.colors.background.primary,
+                      borderRadius: designTokens.radius.lg,
+                      boxShadow: designTokens.shadow.card,
+                      border: `1px solid ${designTokens.colors.border.light}`
                     }}
                     onMouseOver={e => {
-                      e.currentTarget.style.transform = 'translateY(-2px)';
-                      e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+                      e.currentTarget.style.transform = 'translateY(-3px)';
+                      e.currentTarget.style.boxShadow = designTokens.shadow.cardHover;
+                      e.currentTarget.style.borderColor = designTokens.colors.primary.main;
                     }}
                     onMouseOut={e => {
                       e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
+                      e.currentTarget.style.boxShadow = designTokens.shadow.card;
+                      e.currentTarget.style.borderColor = designTokens.colors.border.light;
                     }}
                   >
                     {/* コミュニティアイコン */}
@@ -736,16 +747,16 @@ const ChatListScreen: React.FC = () => {
                       <div style={{
                         width:60,
                         height:60,
-                        borderRadius:14,
-                        background:'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)',
-                        border:'2px solid #fff',
+                        borderRadius: designTokens.radius.md,
+                        background: `linear-gradient(135deg, ${designTokens.colors.primary.pale} 0%, ${designTokens.colors.secondary.light} 100%)`,
+                        border: `2px solid ${designTokens.colors.background.primary}`,
                         display:'flex',
                         alignItems:'center',
                         justifyContent:'center',
-                        fontSize:12,
+                        fontSize: designTokens.typography.caption.fontSize,
                         fontWeight:700,
-                        color:'#0EA5E9',
-                        boxShadow:'0 2px 8px rgba(14, 165, 233, 0.15)'
+                        color: designTokens.colors.secondary.main,
+                        boxShadow: designTokens.shadow.sm
                       }}>
                         IMG
                       </div>
@@ -757,8 +768,8 @@ const ChatListScreen: React.FC = () => {
                         <div style={{ display:'flex', alignItems:'center', gap:6, flex:1, minWidth:0 }}>
                           <span style={{ 
                             fontWeight:700, 
-                            fontSize:16, 
-                            color:'#000',
+                            fontSize: designTokens.typography.h4.fontSize, 
+                            color: designTokens.colors.text.primary,
                             overflow:'hidden',
                             textOverflow:'ellipsis',
                             whiteSpace:'nowrap'
@@ -767,25 +778,25 @@ const ChatListScreen: React.FC = () => {
                           </span>
                           {c.category && (
                             <span style={{ 
-                              fontSize:11, 
-                              background:'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)',
-                              color:'#fff',
-                              padding:'3px 8px', 
-                              borderRadius:12,
+                              fontSize: designTokens.typography.caption.fontSize, 
+                              background: `linear-gradient(135deg, ${designTokens.colors.secondary.main} 0%, ${designTokens.colors.secondary.light} 100%)`,
+                              color: designTokens.colors.text.inverse,
+                              padding: `3px ${designTokens.spacing.sm}`, 
+                              borderRadius: designTokens.radius.md,
                               fontWeight:700,
                               flexShrink:0,
-                              boxShadow:'0 2px 4px rgba(14, 165, 233, 0.3)'
+                              boxShadow: designTokens.shadow.sm
                             }}>
                               {c.category}
                             </span>
                           )}
                         </div>
-                        <span style={{ fontSize:12, color:'#999', fontWeight:500, marginLeft:8, flexShrink:0 }}>2時間前</span>
+                        <span style={{ fontSize: designTokens.typography.caption.fontSize, color: designTokens.colors.text.disabled, fontWeight:500, marginLeft: designTokens.spacing.sm, flexShrink:0 }}>2時間前</span>
                       </div>
                       <p style={{
-                        margin:'0 0 6px',
-                        fontSize:14,
-                        color:'#666',
+                        margin: `0 0 6px`,
+                        fontSize: designTokens.typography.small.fontSize,
+                        color: designTokens.colors.text.secondary,
                         overflow:'hidden',
                         textOverflow:'ellipsis',
                         whiteSpace:'nowrap',
@@ -794,8 +805,8 @@ const ChatListScreen: React.FC = () => {
                         最新のメッセージがここに表示されます
                       </p>
                       <div style={{ 
-                        fontSize:13,
-                        color:'#999',
+                        fontSize: designTokens.typography.small.fontSize,
+                        color: designTokens.colors.text.disabled,
                         fontWeight:600
                       }}>
                         👥 {c.members}人
@@ -809,7 +820,7 @@ const ChatListScreen: React.FC = () => {
 
           {/* 全て/人気モード用のライブ風グリッド表示 */}
           {(communityMode === 'all' || communityMode === 'popular') && (
-            <div style={{ padding:'8px 8px 16px 8px', background:'#fff' }}>
+            <div style={{ padding: `${designTokens.spacing.sm} ${designTokens.spacing.sm} ${designTokens.spacing.lg} ${designTokens.spacing.sm}`, background: designTokens.colors.background.primary }}>
               <div style={{ 
                 display:'grid', 
                 gridTemplateColumns:'repeat(3, 1fr)', 
@@ -820,11 +831,12 @@ const ChatListScreen: React.FC = () => {
                 key={c.id} 
                 style={{ 
                   cursor:'pointer',
-                  borderRadius:14,
+                  borderRadius: designTokens.radius.lg,
                   overflow:'hidden',
-                  background:'#fff',
-                  boxShadow:'0 4px 14px rgba(15,23,42,0.12)',
-                  transition:'all .2s ease'
+                  background: designTokens.colors.background.primary,
+                  boxShadow: designTokens.shadow.md,
+                  transition: designTokens.transition.base,
+                  border: `1px solid ${designTokens.colors.border.light}`
                 }} 
                 onClick={()=> {
                   if (!isAuthenticated || !me) {
@@ -835,12 +847,14 @@ const ChatListScreen: React.FC = () => {
                   setShowCommunityDetail(true);
                 }}
                 onMouseOver={e=>{
-                  e.currentTarget.style.boxShadow='0 4px 16px rgba(0,0,0,0.12)';
-                  e.currentTarget.style.transform='translateY(-2px)';
+                  e.currentTarget.style.boxShadow = designTokens.shadow.cardHover;
+                  e.currentTarget.style.transform='translateY(-3px)';
+                  e.currentTarget.style.borderColor = designTokens.colors.secondary.main;
                 }}
                 onMouseOut={e=>{
-                  e.currentTarget.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)';
+                  e.currentTarget.style.boxShadow = designTokens.shadow.md;
                   e.currentTarget.style.transform='translateY(0)';
+                  e.currentTarget.style.borderColor = designTokens.colors.border.light;
                 }}
               >
                 {/* サムネイル画像エリア */}
@@ -942,7 +956,7 @@ const ChatListScreen: React.FC = () => {
           style={{ 
             position:'fixed', 
             inset:0, 
-            background:'#fff',
+            background: designTokens.colors.background.primary,
             zIndex:100,
             display:'flex',
             flexDirection:'column',
@@ -984,12 +998,12 @@ const ChatListScreen: React.FC = () => {
 
           {/* ヘッダー */}
           <div style={{
-            padding:'16px 20px',
-            borderBottom:'1px solid #e5e7eb',
+            padding: `${designTokens.spacing.lg} ${designTokens.spacing.xl}`,
+            borderBottom: `1px solid ${designTokens.colors.border.medium}`,
             display:'flex',
             alignItems:'center',
             justifyContent:'center',
-            background:'#fff',
+            background: designTokens.colors.background.primary,
             flexShrink:0,
             position:'relative',
             animation:'fadeIn 0.3s ease 0.1s backwards'
@@ -1076,10 +1090,10 @@ const ChatListScreen: React.FC = () => {
                 style={{ 
                   width:'100%',
                   padding:'14px 16px',
-                  border:'1px solid #e5e7eb',
-                  borderRadius:12,
-                  fontSize:16,
-                  background:'#fff',
+                  border: `1px solid ${designTokens.colors.border.medium}`,
+                  borderRadius: designTokens.radius.md,
+                  fontSize: designTokens.typography.h4.fontSize,
+                  background: designTokens.colors.background.primary,
                   outline:'none',
                   boxSizing:'border-box',
                   transition:'border-color 0.2s ease'
@@ -1116,11 +1130,11 @@ const ChatListScreen: React.FC = () => {
                     key={age}
                     onClick={() => setSearchAge(searchAge === age ? '' : age)}
                     style={{
-                      padding:'12px 22px',
-                      borderRadius:24,
-                      border:`2px solid ${searchAge === age ? '#0EA5E9' : '#e5e7eb'}`,
-                      background: searchAge === age ? '#E0F2FE' : '#fff',
-                      color: searchAge === age ? '#0284c7' : '#6b7280',
+                      padding: `${designTokens.spacing.md} 22px`,
+                      borderRadius: designTokens.radius.pill,
+                      border: `2px solid ${searchAge === age ? designTokens.colors.secondary.main : designTokens.colors.border.medium}`,
+                      background: searchAge === age ? designTokens.colors.primary.pale : designTokens.colors.background.primary,
+                      color: searchAge === age ? designTokens.colors.secondary.dark : designTokens.colors.text.secondary,
                       fontSize:15,
                       fontWeight: searchAge === age ? 600 : 400,
                       cursor:'pointer',
@@ -1155,10 +1169,10 @@ const ChatListScreen: React.FC = () => {
                 style={{
                   width:'100%',
                   padding:'14px 16px',
-                  borderRadius:12,
-                  border:'1px solid #e5e7eb',
-                  background:'#fff',
-                  fontSize:16,
+                  borderRadius: designTokens.radius.md,
+                  border: `1px solid ${designTokens.colors.border.medium}`,
+                  background: designTokens.colors.background.primary,
+                  fontSize: designTokens.typography.h4.fontSize,
                   cursor:'pointer',
                   display:'flex',
                   alignItems:'center',
@@ -1201,11 +1215,11 @@ const ChatListScreen: React.FC = () => {
                     key={time}
                     onClick={() => setSearchTime(searchTime === time ? '' : time)}
                     style={{
-                      padding:'12px 22px',
-                      borderRadius:24,
-                      border:`2px solid ${searchTime === time ? '#0EA5E9' : '#e5e7eb'}`,
-                      background: searchTime === time ? '#E0F2FE' : '#fff',
-                      color: searchTime === time ? '#0284c7' : '#6b7280',
+                      padding: `${designTokens.spacing.md} 22px`,
+                      borderRadius: designTokens.radius.pill,
+                      border: `2px solid ${searchTime === time ? designTokens.colors.secondary.main : designTokens.colors.border.medium}`,
+                      background: searchTime === time ? designTokens.colors.primary.pale : designTokens.colors.background.primary,
+                      color: searchTime === time ? designTokens.colors.secondary.dark : designTokens.colors.text.secondary,
                       fontSize:15,
                       fontWeight: searchTime === time ? 600 : 400,
                       cursor:'pointer',
@@ -1221,32 +1235,20 @@ const ChatListScreen: React.FC = () => {
 
           {/* 下部ボタンエリア */}
           <div style={{
-            padding:'16px 20px 32px',
-            background:'#fff',
-            borderTop:'1px solid #e5e7eb',
+            padding: `${designTokens.spacing.md} ${designTokens.spacing.lg} ${designTokens.spacing.xl}`,
+            background: designTokens.colors.background.primary,
+            borderTop: `1px solid ${designTokens.colors.border.medium}`,
             flexShrink:0,
             animation:'fadeIn 0.3s ease 0.35s backwards'
           }}>
-            <button 
+            <Button
+              variant="primary"
+              size="lg"
+              fullWidth
               onClick={handleSearch}
-              style={{
-                width:'100%',
-                background:'#0EA5E9',
-                color:'#fff',
-                border:'none',
-                padding:'16px',
-                borderRadius:12,
-                fontSize:16,
-                fontWeight:600,
-                cursor:'pointer',
-                transition:'background .2s ease',
-                boxShadow:'0 4px 12px rgba(14, 165, 233, 0.3)'
-              }}
-              onMouseOver={e=>(e.currentTarget.style.background='#0284c7')}
-              onMouseOut={e=>(e.currentTarget.style.background='#0EA5E9')}
             >
               検索
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -1257,7 +1259,7 @@ const ChatListScreen: React.FC = () => {
           style={{ 
             position:'fixed', 
             inset:0, 
-            background:'#fff',
+            background: designTokens.colors.background.primary,
             zIndex:200,
             display:'flex',
             flexDirection:'column',
@@ -1268,12 +1270,12 @@ const ChatListScreen: React.FC = () => {
         >
           {/* ヘッダー */}
           <div style={{
-            padding:'16px 20px',
-            borderBottom:'1px solid #e5e7eb',
+            padding: `${designTokens.spacing.lg} ${designTokens.spacing.xl}`,
+            borderBottom: `1px solid ${designTokens.colors.border.medium}`,
             display:'flex',
             alignItems:'center',
             justifyContent:'center',
-            background:'#fff',
+            background: designTokens.colors.background.primary,
             flexShrink:0,
             position:'relative'
           }}>
@@ -1310,8 +1312,8 @@ const ChatListScreen: React.FC = () => {
           {/* タブ */}
           <div style={{
             display:'flex',
-            borderBottom:'1px solid #e5e7eb',
-            background:'#fff',
+            borderBottom: `1px solid ${designTokens.colors.border.medium}`,
+            background: designTokens.colors.background.primary,
             flexShrink:0
           }}>
             <button style={{
@@ -1368,11 +1370,11 @@ const ChatListScreen: React.FC = () => {
                     setShowPrefectureModal(false);
                   }}
                   style={{
-                    padding:'12px 20px',
-                    borderRadius:24,
-                    border:`2px solid ${searchRegion === prefecture ? '#0EA5E9' : '#e5e7eb'}`,
-                    background: searchRegion === prefecture ? '#E0F2FE' : '#fff',
-                    color: searchRegion === prefecture ? '#0284c7' : '#374151',
+                    padding: `${designTokens.spacing.md} ${designTokens.spacing.xl}`,
+                    borderRadius: designTokens.radius.pill,
+                    border: `2px solid ${searchRegion === prefecture ? designTokens.colors.secondary.main : designTokens.colors.border.medium}`,
+                    background: searchRegion === prefecture ? designTokens.colors.primary.pale : designTokens.colors.background.primary,
+                    color: searchRegion === prefecture ? designTokens.colors.secondary.dark : designTokens.colors.text.primary,
                     fontSize:15,
                     fontWeight: searchRegion === prefecture ? 600 : 400,
                     cursor:'pointer',
@@ -1477,9 +1479,9 @@ const ChatListScreen: React.FC = () => {
                     <div style={{ 
                       width:60, 
                       height:60, 
-                      borderRadius:'50%', 
-                      background:'#f5f5f5', 
-                      border:'2px solid var(--color-border)',
+                      borderRadius: designTokens.radius.circle, 
+                      background: designTokens.colors.background.secondary, 
+                      border: `2px solid ${designTokens.colors.border.light}`,
                       display:'flex', 
                       alignItems:'center', 
                       justifyContent:'center',
@@ -1587,7 +1589,7 @@ const ChatListScreen: React.FC = () => {
             display:'flex',
             alignItems:'center',
             justifyContent:'space-between',
-            background:'#fff',
+            background: designTokens.colors.background.primary,
             flexShrink:0,
             animation:'fadeIn 0.3s ease 0.1s backwards'
           }}>
@@ -1653,10 +1655,10 @@ const ChatListScreen: React.FC = () => {
                   width:'100%', 
                   padding:'14px 16px 14px 40px', 
                   border:'none', 
-                  borderRadius:12, 
-                  fontSize:16,
+                  borderRadius: designTokens.radius.md, 
+                  fontSize: designTokens.typography.h4.fontSize,
                   outline:'none',
-                  background:'#f3f4f6',
+                  background: designTokens.colors.background.secondary,
                   boxSizing:'border-box'
                 }}
               />
@@ -1789,9 +1791,9 @@ const ChatListScreen: React.FC = () => {
             style={{ 
               width:'100%',
               maxWidth:500,
-              background:'#fff',
-              borderRadius:20,
-              padding:'24px 20px',
+              background: designTokens.colors.background.primary,
+              borderRadius: designTokens.radius.xl,
+              padding: `${designTokens.spacing.xl} ${designTokens.spacing.xl}`,
               maxHeight:'80vh',
               overflowY:'auto'
             }}
@@ -1853,9 +1855,9 @@ const ChatListScreen: React.FC = () => {
                   <div style={{ 
                     width:70, 
                     height:70, 
-                    borderRadius:16, 
-                    background:'#f5f5f5',
-                    border:'1px solid #e5e5e5',
+                    borderRadius: designTokens.radius.lg, 
+                    background: designTokens.colors.background.secondary,
+                    border: `1px solid ${designTokens.colors.border.medium}`,
                     display:'flex', 
                     alignItems:'center', 
                     justifyContent:'center', 
@@ -1926,7 +1928,7 @@ const ChatListScreen: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div style={{ padding: '22px 24px', borderBottom: '1px solid rgba(15, 23, 42, 0.06)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <div style={{ padding: `${designTokens.spacing.lg} ${designTokens.spacing.xl}`, borderBottom: `1px solid ${designTokens.colors.border.light}`, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
               <button 
                 aria-label='閉じる' 
                 onClick={() => setShowCommunityDetail(false)} 
@@ -1952,9 +1954,9 @@ const ChatListScreen: React.FC = () => {
             </div>
 
             {/* Content */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '34px 28px' }}>
-              <div style={{ position: 'relative', marginBottom: 18 }}>
-                <div style={{ width: 136, height: 136, borderRadius: 20, padding: 8, background: 'linear-gradient(180deg,#ffffff,#fbfdff)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 30px rgba(2,6,23,0.08)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: `${designTokens.spacing.xl} ${designTokens.spacing.xl}` }}>
+              <div style={{ position: 'relative', marginBottom: designTokens.spacing.lg }}>
+                <div style={{ width: 136, height: 136, borderRadius: designTokens.radius.xl, padding: designTokens.spacing.sm, background: 'linear-gradient(180deg,#ffffff,#fbfdff)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: designTokens.shadow.xl }}>
                   <div style={{ width: '100%', height: '100%', borderRadius: 16, border: '2px solid rgba(14,165,233,0.12)', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', fontSize: 48 }}>
                     {selectedCommunity.icon}
                   </div>

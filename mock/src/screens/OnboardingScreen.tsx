@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useAppDispatch } from '../hooks';
 import { navigate, setOnboarded } from '../store/uiSlice';
 import Button from '../components/common/Button';
+import { designTokens } from '../styles/designTokens';
 
 // シンプルなスワイプ検出（横方向）閾値
 const SWIPE_THRESHOLD = 50;
@@ -73,24 +74,14 @@ const OnboardingScreen: React.FC = () => {
     <div
       style={{
         height: '100vh',
-        background: '#fff',
+        background: designTokens.colors.background.primary,
         display: 'flex',
         flexDirection: 'column',
         position: 'relative'
       }}
       aria-label='オンボーディング画面'
     >
-      {/* Skip */}
-      <button
-        onClick={skip}
-        aria-label='スキップ'
-        style={{
-          position: 'absolute', top: 16, right: 16, padding: '10px 14px',
-          background: 'rgba(0,160,233,0.08)', border: 'none', borderRadius: 24,
-          fontSize: 13, fontWeight: 600, color: '#00A0E9', cursor: 'pointer',
-          minWidth: 72
-        }}
-      >今はしない</button>
+
 
       {/* Slides wrapper */}
       <div
@@ -150,8 +141,8 @@ const OnboardingScreen: React.FC = () => {
                   color:'transparent'
                 }}>IMG</span>
               </div>
-              <h2 style={{ fontSize:22, fontWeight:700, margin:'40px 0 16px', color:'#0f172a' }}>{s.headline}</h2>
-              <p style={{ fontSize:14, lineHeight:1.7, color:'#475569', maxWidth:320 }}>{s.body}</p>
+              <h2 style={{ fontSize: designTokens.typography.h2.fontSize, fontWeight: designTokens.typography.h2.fontWeight as number, margin: `${designTokens.spacing.xxl} 0 ${designTokens.spacing.md}`, color: designTokens.colors.text.primary }}>{s.headline}</h2>
+              <p style={{ fontSize: designTokens.typography.body.fontSize, lineHeight:1.7, color: designTokens.colors.text.secondary, maxWidth:320 }}>{s.body}</p>
               {s.cta && (
                 <div style={{ marginTop:44 }}>
                   <button
@@ -273,7 +264,7 @@ const OnboardingScreen: React.FC = () => {
         {index < slides.length-1 && (
           <Button
             onClick={complete}
-            variant='outline'
+            variant='secondary'
             size='md'
             aria-label='スキップして開始'
             style={{ color:'#0095db', borderColor:'#00A0E9', background:'rgba(0,160,233,.06)', backdropFilter:'blur(4px)' }}

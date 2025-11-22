@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { setMe } from '../store/userSlice';
 import { navigate, openProfileModal } from '../store/uiSlice';
 import { IconX, IconUser, IconCalendar, IconMapPin, IconClock, IconFileText } from '../components/icons';
+import { designTokens } from '../styles/designTokens';
+import Button from '../components/common/Button';
 
 // 登録画面 UI を編集用に転用
 const EditProfileScreen: React.FC = () => {
@@ -68,72 +70,66 @@ const EditProfileScreen: React.FC = () => {
   };
 
   return (
-    <div style={{ background: '#f8f8f8', minHeight: '100vh', paddingBottom: 100 }}>
-      <div style={{ background: '#fff', padding: '60px 20px 20px', borderBottom: '1px solid #f0f0f0' }}>
-        <h1 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 700, textAlign: 'center', color: '#333' }}>プロフィールを編集</h1>
+    <div style={{ background: designTokens.colors.background.secondary, minHeight: '100vh', paddingBottom: 100 }}>
+      <div style={{ 
+        background: designTokens.colors.background.primary, 
+        padding: `${designTokens.spacing.xxxl} ${designTokens.spacing.lg} ${designTokens.spacing.lg}`, 
+        borderBottom: `1px solid ${designTokens.colors.border.medium}`,
+        boxShadow: designTokens.shadow.sm
+      }}>
+        <h1 style={{ 
+          margin: `0 0 ${designTokens.spacing.sm}`, 
+          fontSize: designTokens.typography.h2.fontSize, 
+          fontWeight: designTokens.typography.h2.fontWeight as number, 
+          textAlign: 'center', 
+          color: designTokens.colors.text.primary 
+        }}>プロフィールを編集</h1>
       </div>
       <div style={{ maxWidth: 480, margin: '0 auto', padding: '0' }}>
-        <div style={{ background: '#fff' }}>
+        <div style={{ background: designTokens.colors.background.primary }}>
           {profileItems.map((item, index) => (
             <div
               key={item.key}
               onClick={() => handleItemClick(item.key)}
               style={{
-                padding: '20px',
-                borderBottom: index < profileItems.length - 1 ? '1px solid #f0f0f0' : 'none',
+                padding: designTokens.spacing.lg,
+                borderBottom: index < profileItems.length - 1 ? `1px solid ${designTokens.colors.border.medium}` : 'none',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 cursor: 'pointer',
-                transition: 'background .2s ease'
+                transition: designTokens.transition.base,
+                background: designTokens.colors.background.primary
               }}
-              onMouseOver={e => (e.currentTarget.style.background = '#f8f8f8')}
-              onMouseOut={e => (e.currentTarget.style.background = '#fff')}
+              onMouseOver={e => (e.currentTarget.style.background = designTokens.colors.background.secondary)}
+              onMouseOut={e => (e.currentTarget.style.background = designTokens.colors.background.primary)}
             >
-              <span style={{ fontSize: 16, color: '#333', fontWeight: 500 }}>{item.label}</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: 16, color: '#999' }}>{item.value || '未設定'}</span>
-                <span style={{ fontSize: 20, color: '#ccc' }}>›</span>
+              <span style={{ fontSize: designTokens.typography.h4.fontSize, color: designTokens.colors.text.primary, fontWeight: 500 }}>{item.label}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: designTokens.spacing.sm }}>
+                <span style={{ fontSize: designTokens.typography.h4.fontSize, color: designTokens.colors.text.tertiary }}>{item.value || '未設定'}</span>
+                <span style={{ fontSize: designTokens.typography.h2.fontSize, color: designTokens.colors.border.dark }}>›</span>
               </div>
             </div>
           ))}
         </div>
-        <p style={{ margin: '20px', fontSize: 13, color: '#999', textAlign: 'center', lineHeight: 1.6 }}>※内容はあとから変更可能です</p>
-        <div style={{ padding: '0 20px', display:'flex', gap:16 }}>
-          <button
+        <p style={{ margin: designTokens.spacing.lg, fontSize: designTokens.typography.body.fontSize, color: designTokens.colors.text.tertiary, textAlign: 'center', lineHeight: 1.6 }}>※内容はあとから変更可能です</p>
+        <div style={{ padding: `0 ${designTokens.spacing.lg}`, display:'flex', gap: designTokens.spacing.md }}>
+          <Button
+            variant="tertiary"
+            size="lg"
             onClick={() => dispatch(navigate('mypage'))}
-            style={{
-              flex:1,
-              padding: '18px',
-              background: '#f1f5f9',
-              color: '#0f172a',
-              border: '2px solid #e2e8f0',
-              borderRadius: 12,
-              fontSize: 16,
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all .2s ease'
-            }}
-            onMouseOver={e => { e.currentTarget.style.background = '#e2e8f0'; }}
-            onMouseOut={e => { e.currentTarget.style.background = '#f1f5f9'; }}
-          >戻る</button>
-          <button
+            style={{ flex:1 }}
+          >
+            戻る
+          </Button>
+          <Button
+            variant="primary"
+            size="lg"
             onClick={complete}
-            style={{
-              flex:1,
-              padding: '18px',
-              background: '#0EA5E9',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 12,
-              fontSize: 16,
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all .2s ease'
-            }}
-            onMouseOver={e => { e.currentTarget.style.background = '#06B6D4'; }}
-            onMouseOut={e => { e.currentTarget.style.background = '#0EA5E9'; }}
-          >保存</button>
+            style={{ flex:1 }}
+          >
+            保存
+          </Button>
         </div>
       </div>
 
@@ -160,16 +156,16 @@ const EditProfileScreen: React.FC = () => {
             style={{
               width: '100%',
               maxHeight: '80vh',
-              background: '#fff',
-              borderRadius: '24px 24px 0 0',
-              padding: '24px',
+              background: designTokens.colors.background.primary,
+              borderRadius: `${designTokens.radius.xxl} ${designTokens.radius.xxl} 0 0`,
+              padding: designTokens.spacing.lg,
               animation: 'slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
               overflowY: 'auto'
             }}
             onClick={e => e.stopPropagation()}
           >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: '#333' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: designTokens.spacing.lg }}>
+              <h2 style={{ margin: 0, fontSize: designTokens.typography.h3.fontSize, fontWeight: designTokens.typography.h3.fontWeight as number, color: designTokens.colors.text.primary }}>
                 {modalType === 'name' && 'ユーザー名'}
                 {modalType === 'age' && '年代'}
                 {modalType === 'region' && '居住地'}
@@ -178,7 +174,7 @@ const EditProfileScreen: React.FC = () => {
                 {modalType === 'avatar' && 'ユーザーアイコン'}
                 {modalType === 'gallery' && 'ギャラリー'}
               </h2>
-              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', padding: 8, cursor: 'pointer' }}><IconX size={24} color="#666" /></button>
+              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', padding: designTokens.spacing.sm, cursor: 'pointer' }}><IconX size={24} color={designTokens.colors.text.secondary} /></button>
             </div>
 
             {modalType === 'name' && (
@@ -188,10 +184,10 @@ const EditProfileScreen: React.FC = () => {
                   value={name}
                   onChange={e => setName(e.target.value)}
                   placeholder="ユーザー名を入力"
-                  style={{ width: '100%', padding: '14px 16px', border: '2px solid #e5e7eb', borderRadius: 12, fontSize: 16, outline: 'none', marginBottom: 16 }}
+                  style={{ width: '100%', padding: `${designTokens.spacing.md} ${designTokens.spacing.md}`, border: `2px solid ${designTokens.colors.border.medium}`, borderRadius: designTokens.radius.lg, fontSize: designTokens.typography.h4.fontSize, outline: 'none', marginBottom: designTokens.spacing.md }}
                   autoFocus
                 />
-                <button onClick={handleSaveModal} style={{ width: '100%', padding: '16px', background: '#0EA5E9', color: '#fff', border: 'none', borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>保存</button>
+                <Button variant="primary" size="lg" fullWidth onClick={handleSaveModal}>保存</Button>
               </div>
             )}
             {modalType === 'age' && (
@@ -200,9 +196,9 @@ const EditProfileScreen: React.FC = () => {
                   <div
                     key={option}
                     onClick={() => { setAge(option); handleSaveModal(); }}
-                    style={{ padding: '16px', borderBottom: '1px solid #f0f0f0', cursor: 'pointer', background: age === option ? '#f0f9ff' : '#fff' }}
+                    style={{ padding: designTokens.spacing.md, borderBottom: `1px solid ${designTokens.colors.border.light}`, cursor: 'pointer', background: age === option ? designTokens.colors.primary.pale : designTokens.colors.background.primary }}
                   >
-                    <span style={{ fontSize: 16, color: age === option ? '#0EA5E9' : '#333', fontWeight: age === option ? 600 : 400 }}>{option}</span>
+                    <span style={{ fontSize: designTokens.typography.h4.fontSize, color: age === option ? designTokens.colors.primary.main : designTokens.colors.text.primary, fontWeight: age === option ? 600 : 400 }}>{option}</span>
                   </div>
                 ))}
               </div>
@@ -213,9 +209,9 @@ const EditProfileScreen: React.FC = () => {
                   <div
                     key={option}
                     onClick={() => { setRegion(option); handleSaveModal(); }}
-                    style={{ padding: '16px', borderBottom: '1px solid #f0f0f0', cursor: 'pointer', background: region === option ? '#f0f9ff' : '#fff' }}
+                    style={{ padding: designTokens.spacing.md, borderBottom: `1px solid ${designTokens.colors.border.light}`, cursor: 'pointer', background: region === option ? designTokens.colors.primary.pale : designTokens.colors.background.primary }}
                   >
-                    <span style={{ fontSize: 16, color: region === option ? '#0EA5E9' : '#333', fontWeight: region === option ? 600 : 400 }}>{option}</span>
+                    <span style={{ fontSize: designTokens.typography.h4.fontSize, color: region === option ? designTokens.colors.primary.main : designTokens.colors.text.primary, fontWeight: region === option ? 600 : 400 }}>{option}</span>
                   </div>
                 ))}
               </div>

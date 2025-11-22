@@ -2,6 +2,8 @@ import React from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { closeProfileModal, navigate } from '../../store/uiSlice';
 import { IconX, IconAvatar } from '../icons';
+import { designTokens } from '../../styles/designTokens';
+import Button from '../common/Button';
 
 const MyProfileModal: React.FC = () => {
   const open = useAppSelector((s:any)=> s.ui.profileModalOpen);
@@ -24,9 +26,37 @@ const MyProfileModal: React.FC = () => {
       `}</style>
       <div style={{ background: '#fff', width: '100%', maxWidth: 560, borderRadius: '32px 32px 0 0', padding: 0, position: 'relative', boxShadow: '0 -4px 30px rgba(6,12,34,0.25)', maxHeight: '92vh', overflowY: 'auto', animation: 'fadeInProfile .25s ease, slideUpProfile .4s cubic-bezier(0.16, 1, 0.3, 1)' }}>
         {/* Header */}
-        <div style={{ padding: '22px 24px', borderBottom: '1px solid rgba(15, 23, 42, 0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: '#0f172a' }}>マイプロフィール</h2>
-          <button aria-label='閉じる' onClick={() => dispatch(closeProfileModal())} style={{ background: 'rgba(15, 23, 42, 0.04)', border: 'none', cursor: 'pointer', width: 40, height: 40, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background .15s ease', zIndex: 10 }} onMouseOver={e => (e.currentTarget.style.background = 'rgba(15,23,42,0.08)')} onMouseOut={e => (e.currentTarget.style.background = 'rgba(15,23,42,0.04)')}>
+        <div style={{ 
+          padding: `${designTokens.spacing.lg} ${designTokens.spacing.lg}`, 
+          borderBottom: `1px solid ${designTokens.colors.border.light}`, 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between' 
+        }}>
+          <h2 style={{ 
+            margin: 0, 
+            fontSize: designTokens.typography.h2.fontSize, 
+            fontWeight: designTokens.typography.h2.fontWeight as number, 
+            color: designTokens.colors.text.primary 
+          }}>マイプロフィール</h2>
+          <button 
+            aria-label='閉じる' 
+            onClick={() => dispatch(closeProfileModal())} 
+            style={{ 
+              background: `${designTokens.colors.neutral[100]}`, 
+              border: 'none', 
+              cursor: 'pointer', 
+              width: 40, 
+              height: 40, 
+              borderRadius: designTokens.radius.circle, 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              transition: designTokens.transition.fast, 
+              zIndex: 10 
+            }} 
+            onMouseOver={e => (e.currentTarget.style.background = designTokens.colors.neutral[200])} 
+            onMouseOut={e => (e.currentTarget.style.background = designTokens.colors.neutral[100])}>
             <IconX size={18} />
           </button>
         </div>
@@ -45,7 +75,16 @@ const MyProfileModal: React.FC = () => {
           <h3 style={{ margin: '0 0 6px', fontSize: 24, fontWeight: 800, color: '#0b1220' }}>{me.name || '未設定'}</h3>
           <p style={{ margin: '0 0 20px', fontSize: 13, color: '#6b7280' }}>ID: {me.id || 'guest_001'}</p>
 
-          <button onClick={() => { dispatch(closeProfileModal()); dispatch(navigate('editProfile')); }} style={{ background: 'linear-gradient(135deg,#0EA5E9 0%, #06B6D4 100%)', color: '#fff', border: 'none', width: '100%', maxWidth: 420, padding: '15px 20px', fontSize: 16, borderRadius: 18, cursor: 'pointer', fontWeight: 700, letterSpacing: '.5px', transition: 'transform .15s ease, box-shadow .15s ease, filter .15s ease', boxShadow: '0 10px 30px rgba(14,165,233,0.35)' }} onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.filter = 'brightness(1.08)'; }} onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.filter = 'brightness(1)'; }}>プロフィールを編集</button>
+          <div style={{ width: '100%', maxWidth: 420 }}>
+            <Button
+              variant="primary"
+              size="lg"
+              fullWidth
+              onClick={() => { dispatch(closeProfileModal()); dispatch(navigate('editProfile')); }}
+            >
+              プロフィールを編集
+            </Button>
+          </div>
         </div>
 
         {/* Info card */}

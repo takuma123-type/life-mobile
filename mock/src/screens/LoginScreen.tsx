@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { setRegistered, setAuthenticated, navigate, openSmsModal } from '../store/uiSlice';
 import { setMe } from '../store/userSlice';
+import { designTokens } from '../styles/designTokens';
+import Button from '../components/common/Button';
 
 const LoginScreen: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -49,17 +51,17 @@ const LoginScreen: React.FC = () => {
       display:'flex', 
       alignItems:'center', 
       justifyContent:'center', 
-      padding:'20px',
-      background:'var(--color-bg)'
+      padding: designTokens.spacing.lg,
+      background: designTokens.colors.background.secondary
     }}>
       <div style={{ 
         width:'100%', 
         maxWidth:420,
-        background:'#fff',
-        borderRadius:24,
-        padding:'48px 36px',
-        border:'1px solid #e5e5e5',
-        boxShadow:'0 4px 24px rgba(0,0,0,.06)'
+        background: designTokens.colors.background.primary,
+        borderRadius: designTokens.radius.xxl,
+        padding: `${designTokens.spacing.xxxl} ${designTokens.spacing.xl}`,
+        border: `1px solid ${designTokens.colors.border.medium}`,
+        boxShadow: designTokens.shadow.lg
       }}>
         <h1 style={{ 
           margin:'0 0 8px', 
@@ -128,28 +130,18 @@ const LoginScreen: React.FC = () => {
           />
         </div>
 
-        <button
-          onClick={doLogin}
-          disabled={loading}
-          style={{
-            width:'100%',
-            padding:'16px',
-            background:'#000',
-            color:'#fff',
-            border:'none',
-            borderRadius:12,
-            fontSize:15,
-            fontWeight:600,
-            cursor: loading ? 'not-allowed' : 'pointer',
-            marginBottom:16,
-            opacity: loading ? 0.7 : 1,
-            transition:'opacity .2s ease'
-          }}
-          onMouseOver={e=>!loading && (e.currentTarget.style.opacity='0.85')}
-          onMouseOut={e=>!loading && (e.currentTarget.style.opacity='1')}
-        >
-          {loading ? 'ログイン中...' : 'ログイン'}
-        </button>
+        <div style={{ marginBottom: designTokens.spacing.md }}>
+          <Button
+            variant="primary"
+            size="lg"
+            fullWidth
+            onClick={doLogin}
+            disabled={loading}
+            loading={loading}
+          >
+            ログイン
+          </Button>
+        </div>
 
         <div style={{ 
           textAlign:'center', 

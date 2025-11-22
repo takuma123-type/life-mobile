@@ -1,4 +1,5 @@
 import React from 'react';
+import { designTokens } from '../../styles/designTokens';
 
 interface WalletCardProps {
   title: string;
@@ -15,11 +16,28 @@ const WalletCard: React.FC<WalletCardProps> = ({ title, subText, rightText, icon
     <button
       type="button"
       onClick={onClick}
-      className={[
-        'group relative text-left bg-white rounded-xl border border-slate-200 shadow-sm',
-        'transition focus:outline-none focus:ring-2 focus:ring-sky-400 hover:shadow-md',
-        full ? 'col-span-2 px-5 py-4 flex items-center' : 'p-4 flex flex-col justify-between min-h-[104px]'
-      ].join(' ')}
+      style={{
+        position: 'relative',
+        textAlign: 'left',
+        background: designTokens.colors.background.primary,
+        borderRadius: designTokens.radius.xl,
+        border: `1px solid ${designTokens.colors.border.medium}`,
+        boxShadow: designTokens.shadow.sm,
+        transition: designTokens.transition.base,
+        cursor: 'pointer',
+        ...(full ? {
+          gridColumn: 'span 2',
+          padding: `${designTokens.spacing.md} ${designTokens.spacing.lg}`,
+          display: 'flex',
+          alignItems: 'center'
+        } : {
+          padding: designTokens.spacing.md,
+          display: 'flex',
+          flexDirection: 'column' as const,
+          justifyContent: 'space-between',
+          minHeight: '104px'
+        })
+      }}
       aria-label={title}
     >
       <div className={full ? 'flex items-center gap-4 flex-1' : 'flex items-center gap-3 mb-2'}>
