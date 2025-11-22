@@ -1899,100 +1899,77 @@ const ChatListScreen: React.FC = () => {
 
       {/* コミュニティ詳細モーダル */}
       {showCommunityDetail && selectedCommunity && (
-        <div style={{
-          position:'fixed',
-          top:0,
-          left:0,
-          right:0,
-          bottom:0,
-          background:'rgba(0,0,0,0.5)',
-          zIndex:9999,
-          display:'flex',
-          alignItems:'flex-end',
-          animation:'fadeIn 0.2s ease-out'
-        }}
-        onClick={()=>setShowCommunityDetail(false)}
-        >
-          <div style={{
-            width:'100%',
-            maxHeight:'85vh',
-            background:'#fff',
-            borderRadius:'20px 20px 0 0',
-            overflow:'auto',
-            animation:'slideUp 0.3s ease-out'
-          }}
-          onClick={e=>e.stopPropagation()}
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(6px)', zIndex: 9999, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', overflow: 'hidden' }}>
+          <style>{`
+            @keyframes fadeInProfile {
+              from { opacity:0; }
+              to { opacity:1; }
+            }
+            @keyframes slideUpProfile {
+              from { transform: translateY(100%); }
+              to { transform: translateY(0); }
+            }
+          `}</style>
+          <div 
+            style={{ 
+              background: '#fff', 
+              width: '100%', 
+              maxWidth: 560, 
+              borderRadius: '32px 32px 0 0', 
+              padding: 0, 
+              position: 'relative', 
+              boxShadow: '0 -4px 30px rgba(6,12,34,0.25)', 
+              maxHeight: '92vh', 
+              overflowY: 'auto', 
+              animation: 'fadeInProfile .25s ease, slideUpProfile .4s cubic-bezier(0.16, 1, 0.3, 1)' 
+            }}
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* ヘッダー */}
-            <div style={{
-              height:180,
-              background:'linear-gradient(180deg, #0EA5E9 0%, #38BDF8 100%)',
-              position:'relative',
-              display:'flex',
-              flexDirection:'column',
-              alignItems:'center',
-              justifyContent:'center',
-              padding:20
-            }}>
-              <button style={{
-                position:'absolute',
-                top:16,
-                right:16,
-                width:32,
-                height:32,
-                borderRadius:'50%',
-                border:'none',
-                background:'rgba(255,255,255,0.2)',
-                color:'#fff',
-                fontSize:20,
-                cursor:'pointer',
-                display:'flex',
-                alignItems:'center',
-                justifyContent:'center'
-              }}
-              onClick={()=>setShowCommunityDetail(false)}
+            {/* Header */}
+            <div style={{ padding: '22px 24px', borderBottom: '1px solid rgba(15, 23, 42, 0.06)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+              <button 
+                aria-label='閉じる' 
+                onClick={() => setShowCommunityDetail(false)} 
+                style={{ 
+                  background: 'rgba(15, 23, 42, 0.04)', 
+                  border: 'none', 
+                  cursor: 'pointer', 
+                  width: 40, 
+                  height: 40, 
+                  borderRadius: '50%', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  transition: 'background .15s ease', 
+                  zIndex: 10,
+                  fontSize: 18
+                }} 
+                onMouseOver={e => (e.currentTarget.style.background = 'rgba(15,23,42,0.08)')} 
+                onMouseOut={e => (e.currentTarget.style.background = 'rgba(15,23,42,0.04)')}
               >
                 ×
               </button>
-              
-              <div style={{
-                width:120,
-                height:120,
-                borderRadius:20,
-                background:'#fff',
-                display:'flex',
-                alignItems:'center',
-                justifyContent:'center',
-                fontSize:48,
-                boxShadow:'0 4px 12px rgba(0,0,0,0.1)'
-              }}>
-                {selectedCommunity.icon}
-              </div>
             </div>
 
-            {/* コンテンツ */}
-            <div style={{padding:20}}>
-              <div style={{
-                display:'flex',
-                alignItems:'center',
-                gap:8,
-                marginBottom:12
-              }}>
-                <h2 style={{
-                  fontSize:24,
-                  fontWeight:'bold',
-                  margin:0,
-                  color:'#1f2937'
-                }}>
-                  {selectedCommunity.name}
-                </h2>
+            {/* Content */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '34px 28px' }}>
+              <div style={{ position: 'relative', marginBottom: 18 }}>
+                <div style={{ width: 136, height: 136, borderRadius: 20, padding: 8, background: 'linear-gradient(180deg,#ffffff,#fbfdff)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 30px rgba(2,6,23,0.08)' }}>
+                  <div style={{ width: '100%', height: '100%', borderRadius: 16, border: '2px solid rgba(14,165,233,0.12)', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', fontSize: 48 }}>
+                    {selectedCommunity.icon}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                <h3 style={{ margin: 0, fontSize: 24, fontWeight: 800, color: '#0b1220' }}>{selectedCommunity.name}</h3>
                 <span style={{
-                  padding:'4px 12px',
-                  borderRadius:12,
-                  fontSize:12,
-                  fontWeight:'600',
-                  background:'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
-                  color:'#0284c7'
+                  padding: '4px 12px',
+                  borderRadius: 12,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  background: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
+                  color: '#0284c7'
                 }}>
                   {selectedCommunity.category}
                 </span>
@@ -2000,131 +1977,102 @@ const ChatListScreen: React.FC = () => {
 
               {/* 統計情報 */}
               <div style={{
-                display:'flex',
-                gap:12,
-                marginBottom:20,
-                padding:16,
-                background:'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)',
-                borderRadius:12
+                display: 'flex',
+                gap: 12,
+                width: '100%',
+                maxWidth: 420,
+                marginTop: 20,
+                padding: 16,
+                background: 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)',
+                borderRadius: 12
               }}>
-                <div style={{flex:1,textAlign:'center'}}>
+                <div style={{ flex: 1, textAlign: 'center' }}>
                   <div style={{
-                    fontSize:24,
-                    fontWeight:'bold',
-                    color:'#0EA5E9',
-                    marginBottom:4
+                    fontSize: 24,
+                    fontWeight: 'bold',
+                    color: '#0EA5E9',
+                    marginBottom: 4
                   }}>
                     {selectedCommunity.members}
                   </div>
                   <div style={{
-                    fontSize:12,
-                    color:'#64748b'
+                    fontSize: 12,
+                    color: '#64748b',
+                    fontWeight: 600
                   }}>
                     メンバー
                   </div>
                 </div>
                 <div style={{
-                  width:1,
-                  background:'#cbd5e1'
+                  width: 1,
+                  background: '#cbd5e1'
                 }}></div>
-                <div style={{flex:1,textAlign:'center'}}>
+                <div style={{ flex: 1, textAlign: 'center' }}>
                   <div style={{
-                    fontSize:24,
-                    fontWeight:'bold',
-                    color:'#0EA5E9',
-                    marginBottom:4
+                    fontSize: 24,
+                    fontWeight: 'bold',
+                    color: '#0EA5E9',
+                    marginBottom: 4
                   }}>
                     {selectedCommunity.posts}
                   </div>
                   <div style={{
-                    fontSize:12,
-                    color:'#64748b'
+                    fontSize: 12,
+                    color: '#64748b',
+                    fontWeight: 600
                   }}>
                     投稿
                   </div>
                 </div>
               </div>
 
-              {/* 説明 */}
-              <div style={{
-                marginBottom:20
-              }}>
-                <h3 style={{
-                  fontSize:16,
-                  fontWeight:'600',
-                  color:'#1f2937',
-                  marginBottom:8
-                }}>
-                  コミュニティについて
-                </h3>
-                <p style={{
-                  fontSize:14,
-                  lineHeight:1.6,
-                  color:'#64748b',
-                  margin:0
-                }}>
-                  {selectedCommunity.description || 'このコミュニティでは、メンバー同士が交流し、情報を共有しています。'}
-                </p>
-              </div>
-
-              {/* アクションボタン */}
-              <div style={{
-                display:'flex',
-                gap:12
-              }}>
-                <button style={{
-                  flex:1,
-                  padding:'14px 24px',
-                  borderRadius:12,
-                  border:'1px solid #e5e7eb',
-                  background:'#fff',
-                  color:'#64748b',
-                  fontSize:16,
-                  fontWeight:'600',
-                  cursor:'pointer',
-                  transition:'all 0.2s'
-                }}
-                onClick={()=>setShowCommunityDetail(false)}
-                onMouseOver={e=>{
-                  e.currentTarget.style.background='#f9fafb';
-                }}
-                onMouseOut={e=>{
-                  e.currentTarget.style.background='#fff';
-                }}
-                >
-                  閉じる
-                </button>
-                <button style={{
-                  flex:2,
-                  padding:'14px 24px',
-                  borderRadius:12,
-                  border:'none',
-                  background:'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)',
-                  color:'#fff',
-                  fontSize:16,
-                  fontWeight:'600',
-                  cursor:'pointer',
-                  boxShadow:'0 2px 8px rgba(14,165,233,0.3)',
-                  transition:'all 0.2s'
-                }}
-                onClick={()=>{
+              <button 
+                style={{ 
+                  background: 'linear-gradient(135deg,#0EA5E9 0%, #06B6D4 100%)', 
+                  color: '#fff', 
+                  border: 'none', 
+                  width: '100%', 
+                  maxWidth: 420, 
+                  padding: '15px 20px', 
+                  fontSize: 16, 
+                  borderRadius: 18, 
+                  cursor: 'pointer', 
+                  fontWeight: 700, 
+                  letterSpacing: '.5px', 
+                  transition: 'transform .15s ease, box-shadow .15s ease, filter .15s ease', 
+                  boxShadow: '0 10px 30px rgba(14,165,233,0.35)',
+                  marginTop: 20
+                }} 
+                onClick={() => {
                   dispatch(setActiveCommunity(selectedCommunity.id));
                   dispatch(navigate('groupChat'));
                   setShowCommunityDetail(false);
                 }}
-                onMouseOver={e=>{
-                  e.currentTarget.style.transform='translateY(-2px)';
-                  e.currentTarget.style.boxShadow='0 4px 12px rgba(14,165,233,0.4)';
+                onMouseOver={e => { 
+                  e.currentTarget.style.transform = 'translateY(-2px)'; 
+                  e.currentTarget.style.filter = 'brightness(1.08)'; 
+                }} 
+                onMouseOut={e => { 
+                  e.currentTarget.style.transform = 'translateY(0)'; 
+                  e.currentTarget.style.filter = 'brightness(1)'; 
                 }}
-                onMouseOut={e=>{
-                  e.currentTarget.style.transform='translateY(0)';
-                  e.currentTarget.style.boxShadow='0 2px 8px rgba(14,165,233,0.3)';
-                }}
-                >
-                  チャットに参加
-                </button>
-              </div>
+              >
+                チャットに参加
+              </button>
             </div>
+
+            {/* Info card */}
+            <section style={{ border: '1px solid rgba(15,23,42,0.06)', borderRadius: 16, padding: 24, margin: '0 20px 40px', background: '#fff' }}>
+              <h4 style={{ margin: '0 0 12px', fontSize: 16, fontWeight: 800, color: '#0b1220' }}>コミュニティについて</h4>
+              <p style={{
+                fontSize: 14,
+                lineHeight: 1.8,
+                color: '#64748b',
+                margin: 0
+              }}>
+                {selectedCommunity.description || 'このコミュニティでは、メンバー同士が交流し、情報を共有しています。'}
+              </p>
+            </section>
           </div>
         </div>
       )}
