@@ -211,7 +211,7 @@ const SmsVerificationModal: React.FC = () => {
                     }}></span>
                     送信中...
                   </span>
-                ) : '認証コードを送信'}
+                ) : '送信'}
               </button>
               <style>{`
                 @keyframes spin {

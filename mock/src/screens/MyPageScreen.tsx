@@ -87,7 +87,7 @@ const MyPageScreen: React.FC = () => {
               className="w-full flex items-center justify-between px-6 py-4 text-left focus:outline-none focus:bg-slate-50"
               aria-label="言語設定"
             >
-              <span className="text-[16px] font-medium text-slate-800">言語設定</span>
+              <span className="text-[16px] font-medium text-slate-800">言語設定 / Language</span>
               <span aria-hidden className="text-slate-400 text-xl">›</span>
             </button>
           </li>

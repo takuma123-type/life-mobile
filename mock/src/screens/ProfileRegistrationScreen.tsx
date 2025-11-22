@@ -83,7 +83,7 @@ const ProfileRegistrationScreen: React.FC = () => {
     <div style={{ background: '#f8f8f8', minHeight: '100vh', paddingBottom: 100 }}>
       <div style={{ background: '#fff', padding: '60px 20px 20px', borderBottom: '1px solid #f0f0f0' }}>
         <h1 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 700, textAlign: 'center', color: '#333' }}>
-          あなたのプロフィールを教えて下さい
+          プロフィールを登録してください
         </h1>
       </div>
       <div style={{ maxWidth: 480, margin: '0 auto', padding: '0' }}>
