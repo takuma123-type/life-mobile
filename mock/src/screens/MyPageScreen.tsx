@@ -25,6 +25,19 @@ const MyPageScreen: React.FC = () => {
       </header>
       <nav aria-label="マイページメニュー" className="mt-2">
         <ul className="divide-y divide-slate-200 border-t border-b border-slate-200">
+          {!isAuthenticated && (
+            <li>
+              <button
+                type="button"
+                onClick={() => dispatch(navigate('login'))}
+                className="w-full flex items-center justify-between px-6 py-4 text-left focus:outline-none focus:bg-slate-50"
+                aria-label="新規登録 / ログイン"
+              >
+                <span className="text-[16px] font-medium text-slate-800">新規登録 / ログイン</span>
+                <span aria-hidden className="text-slate-400 text-xl">›</span>
+              </button>
+            </li>
+          )}
           {isAuthenticated && (
             <li>
               <button

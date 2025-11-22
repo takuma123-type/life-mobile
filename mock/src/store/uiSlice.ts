@@ -4,6 +4,7 @@ interface UIState {
   appTitle: string;
   theme: 'dark' | 'light';
   showSplash: boolean;
+  isOnboarded: boolean; // 追加: オンボーディング完了フラグ
   currentScreen: string;
   authModalOpen: boolean;
   profileModalOpen: boolean;
@@ -25,6 +26,7 @@ const initialState: UIState = {
   appTitle: 'LIFE',
   theme: 'dark',
   showSplash: true,
+  isOnboarded: false,
   currentScreen: 'chat',
   authModalOpen: false,
   profileModalOpen: false,
@@ -47,6 +49,7 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     hideSplash(state) { state.showSplash = false; },
+    setOnboarded(state, action: PayloadAction<boolean>) { state.isOnboarded = action.payload; },
     setTheme(state, action: PayloadAction<'dark' | 'light'>) { state.theme = action.payload; },
     navigate(state, action: PayloadAction<string>) { state.currentScreen = action.payload; },
     openAuthModal(state) { state.authModalOpen = true; },
@@ -78,5 +81,5 @@ const uiSlice = createSlice({
   }
 });
 
-export const { hideSplash, setTheme, navigate, openAuthModal, closeAuthModal, openProfileModal, closeProfileModal, openGuestProfileModal, closeGuestProfileModal, openSmsModal, closeSmsModal, setSmsPhone, setSmsStep, setSmsSentCode, setSmsVerified, setAuthCallback, setAuthenticated, setRegistered, runAuthCallback, openLanguageModal, closeLanguageModal, setLanguage, openLoginModal, closeLoginModal } = uiSlice.actions;
+export const { hideSplash, setOnboarded, setTheme, navigate, openAuthModal, closeAuthModal, openProfileModal, closeProfileModal, openGuestProfileModal, closeGuestProfileModal, openSmsModal, closeSmsModal, setSmsPhone, setSmsStep, setSmsSentCode, setSmsVerified, setAuthCallback, setAuthenticated, setRegistered, runAuthCallback, openLanguageModal, closeLanguageModal, setLanguage, openLoginModal, closeLoginModal } = uiSlice.actions;
 export default uiSlice.reducer;
