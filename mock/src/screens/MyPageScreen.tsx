@@ -18,6 +18,10 @@ const MyPageScreen: React.FC = () => {
       clearSession();
       // 以前は login 画面へ遷移していたが、マイページ上で未ログイン状態の UI を表示したい要件のため遷移を削除
       // dispatch(navigate('mypage')); // 現在も mypage のため不要
+      // 要望: ログアウト後にページをリロードして初期状態を明確化
+      setTimeout(() => {
+        window.location.reload();
+      }, 50);
     }
   };
 

@@ -95,7 +95,9 @@ const SmsVerificationModal: React.FC = () => {
             閉じる
           </button>
           <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-            <h2 style={{ margin:0, fontSize:18, fontWeight:700, color:'#1a1a1a' }}>新規登録</h2>
+            <h2 style={{ margin:0, fontSize:18, fontWeight:700, color:'#1a1a1a' }}>
+              {step === 'phone' ? '新規登録' : '認証コードを入力'}
+            </h2>
           </div>
           <div style={{ width:80 }}></div>
         </div>
@@ -283,26 +285,21 @@ const SmsVerificationModal: React.FC = () => {
 
           {step === 'code' && (
             <div>
-              {/* 説明文 */}
-              <div style={{ 
-                background:'linear-gradient(135deg, #0EA5E9 0%, #06B6D4 100%)', 
-                borderRadius:16, 
-                padding:'16px 18px', 
-                marginBottom:24,
-                boxShadow:'0 3px 12px rgba(14, 165, 233, 0.18)',
+              {/* シンプル説明 */}
+              <div style={{
                 display:'flex',
                 alignItems:'center',
-                gap:12
+                gap:10,
+                padding:'12px 14px',
+                background:'#f1f5f9',
+                border:'1px solid #e2e8f0',
+                borderRadius:12,
+                marginBottom:20
               }}>
-                <IconShield size={24} color='#fff' />
-                <div>
-                  <p style={{ margin:0, fontSize:15, color:'#fff', fontWeight:600, lineHeight:1.5 }}>
-                    SMSを送信しました
-                  </p>
-                  <p style={{ margin:'3px 0 0', fontSize:13, color:'rgba(255,255,255,0.9)' }}>
-                    {maskPhone(phone)}
-                  </p>
-                </div>
+                <IconShield size={20} color='#0EA5E9' />
+                <p style={{ margin:0, fontSize:13, lineHeight:1.5, color:'#334155' }}>
+                  {maskPhone(phone)} に送信された6桁のコードを入力してください
+                </p>
               </div>
 
               <label style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:15, marginBottom:12, color:'#1a1a1a' }}>
@@ -358,7 +355,7 @@ const SmsVerificationModal: React.FC = () => {
                 onMouseOver={e=>{e.currentTarget.style.transform='scale(1.02)';}} 
                 onMouseOut={e=>{e.currentTarget.style.transform='scale(1)';}}
               >
-                確認して次へ
+                送信
               </button>
 
               {/* 戻る・再送信 */}
