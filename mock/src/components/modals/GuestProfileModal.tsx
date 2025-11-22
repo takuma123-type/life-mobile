@@ -30,257 +30,230 @@ const GuestProfileModal: React.FC = () => {
   };
 
   return (
-    <div 
-      style={{ 
-        position:'fixed', 
-        inset:0, 
-        background:'rgba(0,0,0,.5)', 
-        backdropFilter:'blur(6px)', 
-        zIndex:200, 
-        display:'flex', 
-        alignItems:'center', 
-        justifyContent:'center', 
-        overflowY:'auto', 
-        padding:'20px',
-        animation: 'fadeIn 0.2s ease-out'
-      }}
-      onClick={()=>dispatch(closeGuestProfileModal())}
-    >
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(6px)', zIndex: 200, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', overflow: 'hidden' }}>
+      <style>{`
+        @keyframes fadeInProfile {
+          from { opacity:0; }
+          to { opacity:1; }
+        }
+        @keyframes slideUpProfile {
+          from { transform: translateY(100%); }
+          to { transform: translateY(0); }
+        }
+      `}</style>
       <div 
         style={{ 
-          background:'#fff', 
-          width:'100%', 
-          maxWidth:480, 
-          borderRadius:24, 
-          padding:'0', 
-          position:'relative', 
-          boxShadow:'0 20px 60px rgba(0,0,0,.15)', 
-          maxHeight:'90vh', 
-          overflowY:'auto',
-          animation: 'slideUp 0.3s ease-out'
+          background: '#fff', 
+          width: '100%', 
+          maxWidth: 560, 
+          borderRadius: '32px 32px 0 0', 
+          padding: 0, 
+          position: 'relative', 
+          boxShadow: '0 -4px 30px rgba(6,12,34,0.25)', 
+          maxHeight: '92vh', 
+          overflowY: 'auto', 
+          animation: 'fadeInProfile .25s ease, slideUpProfile .4s cubic-bezier(0.16, 1, 0.3, 1)' 
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button 
-          aria-label='閉じる' 
-          onClick={()=>dispatch(closeGuestProfileModal())} 
-          style={{ 
-            position:'absolute', 
-            top:16, 
-            right:16, 
-            background:'rgba(0,0,0,.05)', 
-            border:'none', 
-            cursor:'pointer', 
-            width:36, 
-            height:36, 
-            borderRadius:'50%', 
-            display:'flex', 
-            alignItems:'center', 
-            justifyContent:'center', 
-            transition:'background .2s ease', 
-            zIndex:10 
-          }} 
-          onMouseOver={e=>(e.currentTarget.style.background='rgba(0,0,0,.1)')} 
-          onMouseOut={e=>(e.currentTarget.style.background='rgba(0,0,0,.05)')}
-        >
-          <IconX size={20} />
-        </button>
-        
+        {/* Header */}
+        <div style={{ padding: '22px 24px', borderBottom: '1px solid rgba(15, 23, 42, 0.06)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          <button 
+            aria-label='閉じる' 
+            onClick={() => dispatch(closeGuestProfileModal())} 
+            style={{ 
+              background: 'rgba(15, 23, 42, 0.04)', 
+              border: 'none', 
+              cursor: 'pointer', 
+              width: 40, 
+              height: 40, 
+              borderRadius: '50%', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              transition: 'background .15s ease', 
+              zIndex: 10 
+            }} 
+            onMouseOver={e => (e.currentTarget.style.background = 'rgba(15,23,42,0.08)')} 
+            onMouseOut={e => (e.currentTarget.style.background = 'rgba(15,23,42,0.04)')}
+          >
+            <IconX size={18} />
+          </button>
+        </div>
+
         {user ? (
           <>
-            {/* ユーザープロフィール表示 */}
-            <div style={{ 
-              background: 'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)',
-              padding: '40px 24px 80px',
-              position: 'relative',
-              borderRadius: '24px 24px 0 0'
-            }}>
-              <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
-                <div style={{ position:'relative', marginBottom:16 }}>
-                  <div style={{ 
-                    width:120, 
-                    height:120, 
-                    borderRadius:'50%', 
-                    border:'4px solid rgba(255,255,255,0.3)', 
-                    background:'#fff', 
-                    display:'flex', 
-                    alignItems:'center', 
-                    justifyContent:'center', 
-                    boxShadow:'0 8px 24px rgba(0,0,0,.15)',
-                    overflow: 'hidden'
-                  }}>
+            {/* Content */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '34px 28px' }}>
+              <div style={{ position: 'relative', marginBottom: 18 }}>
+                <div style={{ width: 136, height: 136, borderRadius: '50%', padding: 8, background: 'linear-gradient(180deg,#ffffff,#fbfdff)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 30px rgba(2,6,23,0.08)' }}>
+                  <div style={{ width: '100%', height: '100%', borderRadius: '50%', border: '2px solid rgba(14,165,233,0.12)', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
                     {user.avatar ? (
-                      <img 
-                        src={user.avatar} 
-                        alt={user.name} 
-                        style={{ width:'100%', height:'100%', objectFit:'cover' }} 
-                      />
+                      <img src={user.avatar} alt={user.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
                     ) : (
-                      <div style={{
-                        width: '100%',
-                        height: '100%',
-                        background: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 40,
-                        fontWeight: 700,
-                        color: '#0284c7'
-                      }}>
-                        {user.name.charAt(0)}
-                      </div>
+                      <IconAvatar size={72} color='#9ca3af' />
                     )}
                   </div>
-                  {user.online && (
-                    <span style={{ 
-                      position:'absolute', 
-                      bottom:4, 
-                      right:4, 
-                      width:28, 
-                      height:28, 
-                      background:'#10b981', 
-                      border:'4px solid #fff', 
-                      borderRadius:'50%', 
-                      boxShadow:'0 2px 8px rgba(0,0,0,.2)' 
-                    }} />
-                  )}
                 </div>
-                
-                <h3 style={{ 
-                  margin:'0 0 8px', 
-                  fontSize:24, 
-                  fontWeight:700, 
-                  color: '#fff',
-                  textShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                }}>
-                  {user.name}
-                </h3>
-                
-                {user.age && (
-                  <span style={{ 
-                    fontSize:13, 
-                    background:'rgba(255,255,255,0.25)', 
-                    color:'#fff',
-                    padding:'6px 16px', 
-                    borderRadius:16,
-                    fontWeight:600,
-                    backdropFilter: 'blur(10px)'
-                  }}>
-                    {user.age}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            <div style={{ padding:'24px', marginTop: '-60px', position: 'relative' }}>
-              {/* ステータスメッセージ */}
-              {user.message && (
-                <div style={{
-                  background: '#fff',
-                  padding: '20px',
-                  borderRadius: 16,
-                  marginBottom: 20,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
-                }}>
-                  <p style={{ 
-                    margin:0, 
-                    fontSize:15, 
-                    color:'#1f2937', 
-                    lineHeight:1.6,
-                    textAlign: 'center'
-                  }}>
-                    {user.message}
-                  </p>
-                </div>
-              )}
-
-              {/* プロフィール情報 */}
-              <div style={{
-                background: 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)',
-                padding: '20px',
-                borderRadius: 16,
-                marginBottom: 20
-              }}>
-                {user.region && (
-                  <div style={{ marginBottom: 12 }}>
-                    <span style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>地域</span>
-                    <p style={{ margin: '4px 0 0', fontSize: 15, color: '#1f2937', fontWeight: 600 }}>
-                      {user.region}{user.city ? ` / ${user.city}` : ''}
-                    </p>
-                  </div>
-                )}
-                {user.country && user.country !== '日本' && (
-                  <div>
-                    <span style={{ fontSize: 12, color: '#64748b', fontWeight: 600 }}>国</span>
-                    <p style={{ margin: '4px 0 0', fontSize: 15, color: '#1f2937', fontWeight: 600 }}>
-                      {user.country}
-                    </p>
-                  </div>
+                {user.online && (
+                  <span style={{ position: 'absolute', bottom: 6, right: 6, width: 18, height: 18, background: '#10b981', border: '3px solid #fff', borderRadius: '50%', boxShadow: '0 6px 18px rgba(16,185,129,0.18)' }} />
                 )}
               </div>
 
-              {/* アクションボタン */}
+              <h3 style={{ margin: '0 0 6px', fontSize: 24, fontWeight: 800, color: '#0b1220' }}>{user.name || '未設定'}</h3>
+              <p style={{ margin: '0 0 20px', fontSize: 13, color: '#6b7280' }}>ID: {user.id || 'guest_001'}</p>
+
               <button 
                 onClick={handleStartChat}
                 style={{ 
-                  background:'linear-gradient(135deg, #0EA5E9 0%, #38BDF8 100%)', 
-                  color:'#fff', 
-                  border:'none', 
-                  width:'100%', 
-                  padding:'16px 24px', 
-                  fontSize:16, 
-                  borderRadius:16, 
-                  cursor:'pointer', 
-                  fontWeight:700, 
-                  transition:'all .2s ease',
-                  boxShadow: '0 4px 12px rgba(14, 165, 233, 0.3)'
+                  background: 'linear-gradient(135deg,#0EA5E9 0%, #06B6D4 100%)', 
+                  color: '#fff', 
+                  border: 'none', 
+                  width: '100%', 
+                  maxWidth: 420, 
+                  padding: '15px 20px', 
+                  fontSize: 16, 
+                  borderRadius: 18, 
+                  cursor: 'pointer', 
+                  fontWeight: 700, 
+                  letterSpacing: '.5px', 
+                  transition: 'transform .15s ease, box-shadow .15s ease, filter .15s ease', 
+                  boxShadow: '0 10px 30px rgba(14,165,233,0.35)' 
                 }} 
-                onMouseOver={e=>{
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(14, 165, 233, 0.4)';
+                onMouseOver={e => { 
+                  e.currentTarget.style.transform = 'translateY(-2px)'; 
+                  e.currentTarget.style.filter = 'brightness(1.08)'; 
                 }} 
-                onMouseOut={e=>{
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(14, 165, 233, 0.3)';
+                onMouseOut={e => { 
+                  e.currentTarget.style.transform = 'translateY(0)'; 
+                  e.currentTarget.style.filter = 'brightness(1)'; 
                 }}
               >
-                {isAuthenticated ? 'チャットを開始' : 'ログインしてチャット'}
+                {isAuthenticated ? 'フレンド申請する' : 'ログインしてフレンド申請'}
               </button>
             </div>
+
+            {/* Info card */}
+            <section style={{ border: '1px solid rgba(15,23,42,0.06)', borderRadius: 16, padding: 24, margin: '0 20px 28px', background: '#fff' }}>
+              <h4 style={{ margin: '0 0 18px', fontSize: 16, fontWeight: 800, color: '#0b1220' }}>基本情報</h4>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>
+                <div>
+                  <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 8, fontWeight: 600 }}>年代</div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: '#0b1220' }}>{user.age || '未設定'}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 8, fontWeight: 600 }}>地域</div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: '#0b1220' }}>{user.region || '未設定'}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 8, fontWeight: 600 }}>よく使う時間帯</div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: '#0b1220' }}>{user.activeTime || '未設定'}</div>
+                </div>
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 8, fontWeight: 600 }}>自己紹介</div>
+                  <div style={{ fontSize: 15, lineHeight: 1.8, color: '#0b1220' }}>{user.message || user.bio || 'よろしくお願いします！'}</div>
+                </div>
+              </div>
+            </section>
+
+            {/* Gallery card */}
+            <section style={{ border: '1px solid rgba(15,23,42,0.06)', borderRadius: 16, padding: 24, margin: '0 20px 40px', background: '#fff' }}>
+              <h4 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 800, color: '#0b1220' }}>ギャラリー</h4>
+              {user.gallery && user.gallery.length > 0 ? (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(92px,1fr))', gap: 12 }}>
+                  {user.gallery.map((url: string, idx: number) => (
+                    <div key={idx} style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', background: '#f1f5f9', border: '1px solid #e2e8f0', aspectRatio: '1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <img src={url} alt={`gallery-${idx}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '28px 12px', border: '1px dashed #cbd5e1', borderRadius: 12, background: '#f8fafc' }}>
+                  <p style={{ margin: '0 0 10px', fontSize: 14, color: '#64748b', fontWeight: 600 }}>まだ画像がありません</p>
+                </div>
+              )}
+            </section>
           </>
         ) : (
           <>
-            {/* ゲストユーザー表示（activeUserIdがない場合） */}
-            <div style={{ padding:'28px 24px 32px', borderBottom:'1px solid var(--color-border)' }}>
-              <h2 style={{ margin:'0', fontSize:20, fontWeight:700 }}>マイプロフィール</h2>
-            </div>
-            
-            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', padding:'32px 24px' }}>
-              <div style={{ position:'relative', marginBottom:20 }}>
-                <div style={{ width:120, height:120, borderRadius:'50%', border:'2px solid var(--color-border)', background:'#f5f5f5', display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 4px 12px rgba(0,0,0,.08)' }}>
-                  <IconAvatar size={60} color='#999' />
+            {/* Content */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '34px 28px' }}>
+              <div style={{ position: 'relative', marginBottom: 18 }}>
+                <div style={{ width: 136, height: 136, borderRadius: '50%', padding: 8, background: 'linear-gradient(180deg,#ffffff,#fbfdff)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 30px rgba(2,6,23,0.08)' }}>
+                  <div style={{ width: '100%', height: '100%', borderRadius: '50%', border: '2px solid rgba(14,165,233,0.12)', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                    <IconAvatar size={72} color='#9ca3af' />
+                  </div>
                 </div>
-                <span style={{ position:'absolute', bottom:8, right:8, width:24, height:24, background:'#10b981', border:'3px solid #fff', borderRadius:'50%', boxShadow:'0 2px 4px rgba(0,0,0,.1)' }} />
+                <span style={{ position: 'absolute', bottom: 6, right: 6, width: 18, height: 18, background: '#10b981', border: '3px solid #fff', borderRadius: '50%', boxShadow: '0 6px 18px rgba(16,185,129,0.18)' }} />
               </div>
-              
-              <h3 style={{ margin:'0 0 24px', fontSize:22, fontWeight:700 }}>ゲストユーザー</h3>
-              
+
+              <h3 style={{ margin: '0 0 6px', fontSize: 24, fontWeight: 800, color: '#0b1220' }}>ゲストユーザー</h3>
+              <p style={{ margin: '0 0 20px', fontSize: 13, color: '#6b7280' }}>ID: me</p>
+
               <button 
-                onClick={()=> {
+                onClick={() => {
                   dispatch(closeGuestProfileModal());
                   dispatch(openSmsModal());
+                }}
+                style={{ 
+                  background: 'linear-gradient(135deg,#0EA5E9 0%, #06B6D4 100%)', 
+                  color: '#fff', 
+                  border: 'none', 
+                  width: '100%', 
+                  maxWidth: 420, 
+                  padding: '15px 20px', 
+                  fontSize: 16, 
+                  borderRadius: 18, 
+                  cursor: 'pointer', 
+                  fontWeight: 700, 
+                  letterSpacing: '.5px', 
+                  transition: 'transform .15s ease, box-shadow .15s ease, filter .15s ease', 
+                  boxShadow: '0 10px 30px rgba(14,165,233,0.35)' 
                 }} 
-                style={{ background:'#000', color:'#fff', border:'none', width:'100%', padding:'14px 20px', fontSize:15, borderRadius:12, cursor:'pointer', fontWeight:600, transition:'opacity .2s ease', marginBottom:20 }} 
-                onMouseOver={e=>(e.currentTarget.style.opacity='0.85')} 
-                onMouseOut={e=>(e.currentTarget.style.opacity='1')}
+                onMouseOver={e => { 
+                  e.currentTarget.style.transform = 'translateY(-2px)'; 
+                  e.currentTarget.style.filter = 'brightness(1.08)'; 
+                }} 
+                onMouseOut={e => { 
+                  e.currentTarget.style.transform = 'translateY(0)'; 
+                  e.currentTarget.style.filter = 'brightness(1)'; 
+                }}
               >
                 新規登録
               </button>
-              
-              <p style={{ fontSize:13, color:'#666', lineHeight:1.6, margin:0, textAlign:'center' }}>
-                プロフィールを作成すると、コミュニティやチャット機能を利用できます
-              </p>
             </div>
+
+            {/* Info card */}
+            <section style={{ border: '1px solid rgba(15,23,42,0.06)', borderRadius: 16, padding: 24, margin: '0 20px 28px', background: '#fff' }}>
+              <h4 style={{ margin: '0 0 18px', fontSize: 16, fontWeight: 800, color: '#0b1220' }}>基本情報</h4>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>
+                <div>
+                  <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 8, fontWeight: 600 }}>年代</div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: '#0b1220' }}>未設定</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 8, fontWeight: 600 }}>地域</div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: '#0b1220' }}>未設定</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 8, fontWeight: 600 }}>よく使う時間帯</div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: '#0b1220' }}>未設定</div>
+                </div>
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 8, fontWeight: 600 }}>自己紹介</div>
+                  <div style={{ fontSize: 15, lineHeight: 1.8, color: '#0b1220' }}>よろしくお願いします！</div>
+                </div>
+              </div>
+            </section>
+
+            {/* Gallery card */}
+            <section style={{ border: '1px solid rgba(15,23,42,0.06)', borderRadius: 16, padding: 24, margin: '0 20px 40px', background: '#fff' }}>
+              <h4 style={{ margin: '0 0 16px', fontSize: 16, fontWeight: 800, color: '#0b1220' }}>ギャラリー</h4>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '28px 12px', border: '1px dashed #cbd5e1', borderRadius: 12, background: '#f8fafc' }}>
+                <p style={{ margin: '0 0 10px', fontSize: 14, color: '#64748b', fontWeight: 600 }}>まだ画像がありません</p>
+                <p style={{ margin: 0, fontSize: 12, color: '#94a3b8' }}>プロフィール編集から追加してください</p>
+              </div>
+            </section>
           </>
         )}
       </div>
