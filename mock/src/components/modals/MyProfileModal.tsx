@@ -70,6 +70,25 @@ const MyProfileModal: React.FC = () => {
             </div>
           </div>
         </section>
+
+        {/* Gallery card */}
+        <section style={{ border: '1px solid rgba(15,23,42,0.06)', borderRadius:16, padding:24, margin:'0 20px 40px', background:'#fff' }}>
+          <h4 style={{ margin:'0 0 16px', fontSize:16, fontWeight:800, color:'#0b1220' }}>ギャラリー</h4>
+          {me.gallery && me.gallery.length > 0 ? (
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(92px,1fr))', gap:12 }}>
+              {me.gallery.map((url:string, idx:number) => (
+                <div key={idx} style={{ position:'relative', borderRadius:12, overflow:'hidden', background:'#f1f5f9', border:'1px solid #e2e8f0', aspectRatio:'1', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                  <img src={url} alt={`gallery-${idx}`} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'28px 12px', border:'1px dashed #cbd5e1', borderRadius:12, background:'#f8fafc' }}>
+              <p style={{ margin:'0 0 10px', fontSize:14, color:'#64748b', fontWeight:600 }}>まだ画像がありません</p>
+              <p style={{ margin:0, fontSize:12, color:'#94a3b8' }}>プロフィール編集から追加してください</p>
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );
