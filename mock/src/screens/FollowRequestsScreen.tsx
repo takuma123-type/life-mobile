@@ -29,134 +29,64 @@ const FollowRequestsScreen: React.FC = () => {
   };
 
   return (
-    <div style={{ minHeight:'100vh', paddingBottom:80, background:'var(--color-bg)' }}>
+    <div className="min-h-screen pb-20 bg-white">
       {/* Header */}
-      <div style={{ 
-        position:'sticky', 
-        top:0, 
-        zIndex:100, 
-        background:'#fff', 
-        borderBottom:'1px solid var(--color-border)', 
-        padding:'14px 20px', 
-        display:'flex', 
-        alignItems:'center', 
-        gap:12
-      }}>
-        <button 
-          onClick={()=>dispatch(navigate('mypage'))} 
-          aria-label='戻る' 
-          style={{ 
-            background:'none', 
-            border:'none', 
-            cursor:'pointer', 
-            display:'flex',
-            padding:8,
-            transition:'opacity .2s ease',
-            opacity:1
-          }}
-          onMouseOver={e=>(e.currentTarget.style.opacity='0.6')}
-          onMouseOut={e=>(e.currentTarget.style.opacity='1')}
+      <div className="sticky top-0 z-50 flex items-center gap-3 border-b border-slate-200 bg-white px-5 py-3 shadow-sm">
+        <button
+          onClick={() => dispatch(navigate('mypage'))}
+          aria-label="戻る"
+          className="inline-flex items-center rounded-full p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-800"
         >
           <IconBack size={24} />
         </button>
-        <h1 style={{ margin:0, fontSize:18, fontWeight:600 }}>フレンド申請</h1>
+        <h1 className="m-0 text-[18px] font-semibold tracking-wide text-slate-900">フレンド申請</h1>
+        <div className="ml-auto" />
       </div>
 
-      <div style={{ padding:'18px 20px' }}>
-        <p style={{ margin:'0 0 18px', fontSize:13, color:'var(--color-muted)' }}>{requests.length}件の申請</p>
+      <div className="px-5 py-5">
+        <div className="mb-5 flex items-center justify-between">
+          <p className="m-0 text-sm font-medium text-slate-500">
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 shadow-sm">
+              {requests.length}件の申請
+            </span>
+          </p>
+        </div>
 
-        {requests.map((req, index) => (
-          <div 
-            key={req.id} 
-            style={{ 
-              background:'#fff',
-              border:'1px solid var(--color-border)',
-              borderRadius:16, 
-              padding:'20px', 
-              marginBottom:16, 
-              boxShadow:'0 2px 8px rgba(0,0,0,.08)',
-              transition:'all .2s ease'
-            }}
+        {requests.map((req) => (
+          <div
+            key={req.id}
+            className="group mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.06)] transition hover:shadow-[0_8px_28px_-6px_rgba(0,0,0,0.1)]"
           >
-            <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:16 }}>
-              {/* Avatar */}
-              <div style={{ position:'relative', flexShrink:0 }}>
-                <div style={{ 
-                  width:60, 
-                  height:60, 
-                  borderRadius:'50%',
-                  border:'2px solid var(--color-border)',
-                  background:'var(--color-surface-alt)', 
-                  display:'flex', 
-                  alignItems:'center', 
-                  justifyContent:'center',
-                  overflow:'hidden'
-                }}>
-                  {req.avatar ? (
-                    <img src={req.avatar} alt={req.name} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
-                  ) : (
-                    <IconAvatar size={32} color='var(--color-muted)' />
-                  )}
-                </div>
+            <div className="mb-5 flex items-center gap-4">
+              <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-slate-200 bg-slate-50">
+                {req.avatar ? (
+                  <img src={req.avatar} alt={req.name} className="h-full w-full object-cover" />
+                ) : (
+                  <IconAvatar size={32} color="#94a3b8" />
+                )}
               </div>
-
-              <div style={{ flex:1, minWidth:0 }}>
-                <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6, flexWrap:'wrap' }}>
-                  <span style={{ fontWeight:600, fontSize:16 }}>{req.name}</span>
+              <div className="flex-1 min-w-0">
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                  <span className="text-[16px] font-semibold text-slate-900">{req.name}</span>
                   {req.age && (
-                    <span className='badge badge-neutral' style={{ fontSize:12 }}>
+                    <span className="inline-flex items-center rounded-full bg-sky-50 px-2.5 py-1 text-[11px] font-semibold text-sky-700 ring-1 ring-inset ring-sky-100">
                       {req.age}
                     </span>
                   )}
                 </div>
-                <p style={{ 
-                  margin:0, 
-                  fontSize:14, 
-                  color:'var(--color-text-soft)', 
-                  lineHeight:1.5
-                }}>
-                  {req.message}
-                </p>
+                <p className="m-0 text-[14px] leading-relaxed text-slate-600 break-words">{req.message}</p>
               </div>
             </div>
-
-            {/* Action Buttons */}
-            <div style={{ display:'flex', gap:12 }}>
-              <button 
-                onClick={()=>handleAccept(req)} 
-                style={{ 
-                  flex:1,
-                  background:'#000',
-                  color:'#fff',
-                  border:'none',
-                  padding:'14px',
-                  fontSize:15,
-                  fontWeight:600,
-                  borderRadius:12,
-                  cursor:'pointer',
-                  transition:'all .2s ease'
-                }}
-                onMouseOver={e=>(e.currentTarget.style.opacity='0.85')}
-                onMouseOut={e=>(e.currentTarget.style.opacity='1')}
+            <div className="flex gap-3">
+              <button
+                onClick={() => handleAccept(req)}
+                className="flex-1 rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 px-4 py-3 text-[15px] font-semibold text-white shadow-sm transition active:scale-[0.97] hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
               >
                 承認
               </button>
-              <button 
-                onClick={()=>handleReject(req)} 
-                style={{ 
-                  flex:1,
-                  background:'#fff',
-                  color:'#000',
-                  border:'1px solid var(--color-border)',
-                  padding:'14px',
-                  fontSize:15,
-                  fontWeight:600,
-                  borderRadius:12,
-                  cursor:'pointer',
-                  transition:'all .2s ease'
-                }}
-                onMouseOver={e=>(e.currentTarget.style.background='var(--color-surface-alt)')}
-                onMouseOut={e=>(e.currentTarget.style.background='#fff')}
+              <button
+                onClick={() => handleReject(req)}
+                className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-[15px] font-semibold text-slate-800 transition active:scale-[0.97] hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2"
               >
                 拒否
               </button>
@@ -165,108 +95,55 @@ const FollowRequestsScreen: React.FC = () => {
         ))}
 
         {requests.length === 0 && (
-          <div style={{ 
-            textAlign:'center', 
-            padding:'60px 20px',
-            background:'var(--color-surface)',
-            border:'1px solid var(--color-border)',
-            borderRadius:14
-          }}>
-            <p style={{ margin:0, fontSize:14, color:'var(--color-muted)' }}>
-              フレンド申請はありません
-            </p>
+          <div className="rounded-xl border border-slate-200 bg-slate-50 px-5 py-16 text-center">
+            <p className="m-0 text-sm text-slate-500">フレンド申請はありません</p>
           </div>
         )}
       </div>
 
       {/* Confirmation Modal */}
       {confirmModal && (
-        <div 
-          style={{ 
-            position:'fixed', 
-            inset:0, 
-            background:'rgba(0,0,0,.5)', 
-            backdropFilter:'blur(6px)', 
-            display:'flex', 
-            alignItems:'center', 
-            justifyContent:'center', 
-            zIndex:300, 
-            animation:'fadeIn .3s ease',
-            padding:'20px'
-          }} 
-          onClick={()=>setConfirmModal(null)}
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-5 animate-fade"
+          onClick={() => setConfirmModal(null)}
         >
-          <div 
-            style={{ 
-              background:'#fff', 
-              width:'100%', 
-              maxWidth:400, 
-              borderRadius:20, 
-              padding:'32px 28px', 
-              boxShadow:'0 20px 60px rgba(0,0,0,.2)', 
-              animation:'modalScale .35s cubic-bezier(.34,1.56,.64,1)'
-            }} 
-            onClick={e=>e.stopPropagation()}
+          <div
+            className="w-full max-w-[420px] rounded-2xl bg-white px-8 py-10 shadow-2xl ring-1 ring-black/10 animate-scale"
+            onClick={(e) => e.stopPropagation()}
           >
-            <h2 style={{ 
-              margin:'0 0 12px', 
-              textAlign:'center', 
-              fontSize:20, 
-              fontWeight:700
-            }}>
-              フレンド申請の{confirmModal.type==='accept'?'承認':'拒否'}
+            <h2 className="mb-3 text-center text-[20px] font-bold text-slate-900">
+              フレンド申請の{confirmModal.type === 'accept' ? '承認' : '拒否'}
             </h2>
-            <p style={{ 
-              margin:'0 0 28px', 
-              fontSize:15, 
-              textAlign:'center', 
-              color:'var(--color-text-soft)', 
-              lineHeight:1.6
-            }}>
-              {confirmModal.request.name}さんのフレンド申請を<br/>
-              {confirmModal.type==='accept'?'承認':'拒否'}してもよろしいですか?
+            <p className="mb-8 text-center text-[15px] leading-relaxed text-slate-600">
+              {confirmModal.request.name}さんのフレンド申請を<br />
+              {confirmModal.type === 'accept' ? '承認' : '拒否'}してもよろしいですか?
             </p>
-            <div style={{ display:'flex', gap:12 }}>
-              <button 
-                onClick={()=>setConfirmModal(null)} 
-                style={{ 
-                  flex:1,
-                  background:'#fff',
-                  color:'#000',
-                  border:'1px solid var(--color-border)',
-                  padding:'16px',
-                  fontSize:15,
-                  fontWeight:600,
-                  borderRadius:12,
-                  cursor:'pointer',
-                  transition:'all .2s ease'
-                }}
-                onMouseOver={e=>(e.currentTarget.style.background='var(--color-surface-alt)')}
-                onMouseOut={e=>(e.currentTarget.style.background='#fff')}
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmModal(null)}
+                className="flex-1 rounded-xl border border-slate-300 bg-white px-5 py-4 text-[15px] font-semibold text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2 active:scale-[0.97]"
               >
                 キャンセル
               </button>
-              <button 
-                onClick={confirmAction} 
-                style={{ 
-                  flex:1,
-                  background:confirmModal.type==='reject' ? '#ef4444' : '#000',
-                  color:'#fff',
-                  border:'none',
-                  padding:'16px',
-                  fontSize:15,
-                  fontWeight:600,
-                  borderRadius:12,
-                  cursor:'pointer',
-                  transition:'all .2s ease'
-                }}
-                onMouseOver={e=>(e.currentTarget.style.opacity='0.85')}
-                onMouseOut={e=>(e.currentTarget.style.opacity='1')}
+              <button
+                onClick={confirmAction}
+                className={
+                  `flex-1 rounded-xl px-5 py-4 text-[15px] font-semibold text-white shadow-sm transition active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-offset-2 ` +
+                  (confirmModal.type === 'reject'
+                    ? 'bg-rose-500 hover:bg-rose-600 focus:ring-rose-400'
+                    : 'bg-slate-900 hover:bg-slate-800 focus:ring-slate-500')
+                }
               >
-                {confirmModal.type==='accept'?'承認する':'拒否する'}
+                {confirmModal.type === 'accept' ? '承認する' : '拒否する'}
               </button>
             </div>
           </div>
+          <style>{`
+            @keyframes fade {from{opacity:0}to{opacity:1}}
+            @keyframes scale {from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+            .animate-fade{animation:fade .25s ease}
+            .animate-scale{animation:scale .35s cubic-bezier(.34,1.56,.64,1)}
+          `}</style>
         </div>
       )}
     </div>
