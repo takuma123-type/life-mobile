@@ -19,7 +19,8 @@ import LoginModal from './components/modals/LoginModal';
 import FollowRequestsModal from './components/modals/FollowRequestsModal';
 import { setUsers, setFollowRequests, setMe } from './store/userSlice';
 import { setCommunities } from './store/communitySlice';
-import { setAuthenticated, setRegistered, setLanguage } from './store/uiSlice';
+import { setAuthenticated, setRegistered, setLanguage, setOnboarded } from './store/uiSlice';
+import OnboardingScreen from './screens/OnboardingScreen';
 import { loadSession } from './utils/session';
 import { seedMessages } from './store/chatSlice';
 import { mockUsers, mockCommunities, seedChat, mockFollowRequests } from './data/mockData';
@@ -31,6 +32,7 @@ const App: React.FC = () => {
   const showSplash = useAppSelector((s: any) => s.ui.showSplash);
   const usersLen = useAppSelector((s:any)=> s.user.users.length);
   const communitiesLen = useAppSelector((s:any)=> s.communities.list.length);
+  const isOnboarded = useAppSelector((s:any)=> s.ui.isOnboarded);
   const dispatch = useAppDispatch();
 
   // 初期データシード
@@ -46,6 +48,17 @@ const App: React.FC = () => {
       dispatch(setLanguage(language));
     }
 
+    // オンボーディング完了フラグ読込（初回）
+    try {
+      const onboardFlag = localStorage.getItem('onboarding_completed');
+      if (onboardFlag === '1') {
+        dispatch(setOnboarded(true));
+      }
+    } catch (e) {
+      // localStorage 未対応環境でも致命的にはしない
+      console.warn('onboarding flag read failed', e);
+    }
+
     if (usersLen === 0) {
       dispatch(setUsers(mockUsers));
       dispatch(setFollowRequests(mockFollowRequests));
@@ -58,6 +71,8 @@ const App: React.FC = () => {
   }, [usersLen, communitiesLen, dispatch]);
 
   if (showSplash) return <SplashScreen />;
+  // オンボーディング未完了なら最優先表示
+  if (!isOnboarded) return <OnboardingScreen />;
 
   let screen: React.ReactNode = null;
   switch (current) {
