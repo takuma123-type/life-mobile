@@ -25,7 +25,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 }) => {
   const displayName = name || '未設定';
   return (
-    <section className="mx-6 mt-6 bg-white rounded-2xl border border-slate-200 shadow-sm px-8 pt-10 pb-8 relative overflow-hidden">
+    <section className="mx-6 mt-6 bg-white rounded-[3px] border border-slate-200 px-8 pt-10 pb-8 relative overflow-hidden">
       {/* アバター */}
       <div className="w-28 md:w-32 h-28 md:h-32 rounded-full border-2 border-slate-100 bg-sky-50/60 mx-auto mb-6 overflow-hidden flex items-center justify-center shadow-[0_6px_18px_rgba(14,165,233,0.06)]">
         {avatar ? (

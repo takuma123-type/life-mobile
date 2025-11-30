@@ -238,7 +238,7 @@ const ChatListScreen: React.FC = () => {
                 height:3,
                 background: `linear-gradient(90deg, ${designTokens.colors.primary.dark} 0%, ${designTokens.colors.primary.main} 100%)`,
                 borderRadius: `${designTokens.radius.xs} ${designTokens.radius.xs} 0 0`,
-                boxShadow: designTokens.shadow.primary
+                /* boxShadow removed */
               }} />
             )}
           </button>
@@ -266,7 +266,7 @@ const ChatListScreen: React.FC = () => {
                 height:3,
                 background: `linear-gradient(90deg, ${designTokens.colors.primary.dark} 0%, ${designTokens.colors.primary.main} 100%)`,
                 borderRadius: `${designTokens.radius.xs} ${designTokens.radius.xs} 0 0`,
-                boxShadow: designTokens.shadow.primary
+                /* boxShadow removed */
               }} />
             )}
           </button>
@@ -376,8 +376,7 @@ const ChatListScreen: React.FC = () => {
                       cursor:'pointer',
                       transition: `all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)`,
                       background: designTokens.colors.background.primary,
-                      borderRadius: designTokens.radius.lg,
-                      boxShadow: designTokens.shadow.card,
+                      borderRadius: 3,
                       border: `1px solid ${designTokens.colors.border.light}`
                     }}
                     onMouseOver={e => {
@@ -403,7 +402,7 @@ const ChatListScreen: React.FC = () => {
                         alignItems:'center',
                         justifyContent:'center',
                         border: `2px solid ${designTokens.colors.background.primary}`,
-                        boxShadow: designTokens.shadow.sm
+                        /* boxShadow removed */
                       }}>
                         <img 
                           src={u.avatar || 'https://image.p-c2-x.abema-tv.com/image/series/19-15/thumb.png?height=720&quality=75&version=1741061716&width=1280'} 
@@ -421,7 +420,7 @@ const ChatListScreen: React.FC = () => {
                           background: designTokens.colors.success.main,
                           border: `3px solid ${designTokens.colors.background.primary}`,
                           borderRadius: designTokens.radius.circle,
-                          boxShadow: '0 2px 4px rgba(16, 185, 129, 0.3)'
+                          /* boxShadow removed */
                         }} />
                       )}
                     </div>
@@ -463,10 +462,10 @@ const ChatListScreen: React.FC = () => {
                 key={u.id} 
                 style={{ 
                   cursor:'pointer',
-                  borderRadius: designTokens.radius.lg,
+                  borderRadius: 10,
                   overflow:'hidden',
                   background: designTokens.colors.background.primary,
-                  boxShadow: designTokens.shadow.md,
+                  /* boxShadow removed */
                   transition: designTokens.transition.base,
                   border: `1px solid ${designTokens.colors.border.light}`
                 }} 
@@ -727,8 +726,8 @@ const ChatListScreen: React.FC = () => {
                       cursor:'pointer',
                       transition: `all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)`,
                       background: designTokens.colors.background.primary,
-                      borderRadius: designTokens.radius.lg,
-                      boxShadow: designTokens.shadow.card,
+                      borderRadius: 10,
+
                       border: `1px solid ${designTokens.colors.border.light}`
                     }}
                     onMouseOver={e => {
@@ -756,7 +755,7 @@ const ChatListScreen: React.FC = () => {
                         fontSize: designTokens.typography.caption.fontSize,
                         fontWeight:700,
                         color: designTokens.colors.secondary.main,
-                        boxShadow: designTokens.shadow.sm
+                        /* boxShadow removed */
                       }}>
                         IMG
                       </div>
@@ -785,7 +784,7 @@ const ChatListScreen: React.FC = () => {
                               borderRadius: designTokens.radius.md,
                               fontWeight:700,
                               flexShrink:0,
-                              boxShadow: designTokens.shadow.sm
+                              /* boxShadow removed */
                             }}>
                               {c.category}
                             </span>
@@ -831,10 +830,10 @@ const ChatListScreen: React.FC = () => {
                 key={c.id} 
                 style={{ 
                   cursor:'pointer',
-                  borderRadius: designTokens.radius.lg,
+                  borderRadius: 10,
                   overflow:'hidden',
                   background: designTokens.colors.background.primary,
-                  boxShadow: designTokens.shadow.md,
+                  /* boxShadow removed */
                   transition: designTokens.transition.base,
                   border: `1px solid ${designTokens.colors.border.light}`
                 }} 
@@ -1415,7 +1414,7 @@ const ChatListScreen: React.FC = () => {
               padding:'24px 20px',
               maxHeight:'80vh', 
               overflowY:'auto',
-              boxShadow:'0 20px 60px rgba(0,0,0,.15)'
+              /* boxShadow removed */
             }} 
             onClick={e=>e.stopPropagation()}
           >
@@ -1712,7 +1711,7 @@ const ChatListScreen: React.FC = () => {
                       justifyContent:'center',
                       padding:0,
                       transition:'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease',
-                      boxShadow:'0 2px 8px rgba(0,0,0,0.08)',
+                      /* boxShadow removed */
                       animation:`scaleIn 0.3s ease ${0.25 + index * 0.05}s backwards`
                     }}
                     onMouseOver={e=>{
@@ -1855,7 +1854,7 @@ const ChatListScreen: React.FC = () => {
                   <div style={{ 
                     width:70, 
                     height:70, 
-                    borderRadius: designTokens.radius.lg, 
+                    borderRadius: 10, 
                     background: designTokens.colors.background.secondary,
                     border: `1px solid ${designTokens.colors.border.medium}`,
                     display:'flex', 
@@ -1920,7 +1919,7 @@ const ChatListScreen: React.FC = () => {
               borderRadius: '32px 32px 0 0', 
               padding: 0, 
               position: 'relative', 
-              boxShadow: '0 -4px 30px rgba(6,12,34,0.25)', 
+              /* boxShadow removed */
               maxHeight: '92vh', 
               overflowY: 'auto', 
               animation: 'fadeInProfile .25s ease, slideUpProfile .4s cubic-bezier(0.16, 1, 0.3, 1)' 
@@ -1956,8 +1955,8 @@ const ChatListScreen: React.FC = () => {
             {/* Content */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: `${designTokens.spacing.xl} ${designTokens.spacing.xl}` }}>
               <div style={{ position: 'relative', marginBottom: designTokens.spacing.lg }}>
-                <div style={{ width: 136, height: 136, borderRadius: designTokens.radius.xl, padding: designTokens.spacing.sm, background: 'linear-gradient(180deg,#ffffff,#fbfdff)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: designTokens.shadow.xl }}>
-                  <div style={{ width: '100%', height: '100%', borderRadius: 16, border: '2px solid rgba(14,165,233,0.12)', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', fontSize: 48 }}>
+                <div style={{ width: 136, height: 136, borderRadius: designTokens.radius.xl, padding: designTokens.spacing.sm, background: 'linear-gradient(180deg,#ffffff,#fbfdff)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '100%', height: '100%', borderRadius: 10, border: '2px solid rgba(14,165,233,0.12)', background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', fontSize: 48 }}>
                     {selectedCommunity.icon}
                   </div>
                 </div>
@@ -2042,7 +2041,7 @@ const ChatListScreen: React.FC = () => {
                   fontWeight: 700, 
                   letterSpacing: '.5px', 
                   transition: 'transform .15s ease, box-shadow .15s ease, filter .15s ease', 
-                  boxShadow: '0 10px 30px rgba(14,165,233,0.35)',
+                  /* boxShadow removed */
                   marginTop: 20
                 }} 
                 onClick={() => {
@@ -2064,7 +2063,7 @@ const ChatListScreen: React.FC = () => {
             </div>
 
             {/* Info card */}
-            <section style={{ border: '1px solid rgba(15,23,42,0.06)', borderRadius: 16, padding: 24, margin: '0 20px 40px', background: '#fff' }}>
+            <section style={{ border: '1px solid rgba(15,23,42,0.06)', borderRadius: 10, padding: 24, margin: '0 20px 40px', background: '#fff' }}>
               <h4 style={{ margin: '0 0 12px', fontSize: 16, fontWeight: 800, color: '#0b1220' }}>コミュニティについて</h4>
               <p style={{
                 fontSize: 14,
