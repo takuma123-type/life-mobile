@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { setActiveChat } from '../store/chatSlice';
 import { navigate, openSmsModal, openGuestProfileModal } from '../store/uiSlice';
 import { toggleFollow, setActiveUserId } from '../store/userSlice';
-import { setActiveCommunity } from '../store/communitySlice';
+import { setActiveCommunity, setCommunities } from '../store/communitySlice';
 import BottomNav from '../components/common/BottomNav';
 import { IconSearch, IconAvatar, IconCalendar, IconMapPin, IconClock } from '../components/icons';
 import Button from '../components/common/Button';
@@ -17,7 +17,7 @@ const ChatListScreen: React.FC = () => {
   const communities = useAppSelector((s:any)=> s.communities.list);
   const isAuthenticated = useAppSelector((s:any)=> s.ui.isAuthenticated);
   const me = useAppSelector((s:any)=> s.user.me);
-  const [tab, setTab] = useState<'following'|'open'>('following');
+  const [tab, setTab] = useState<'following'|'open'>('open');
   const [searchOpen, setSearchOpen] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [searchAge, setSearchAge] = useState('');
@@ -37,25 +37,31 @@ const ChatListScreen: React.FC = () => {
   const [communityShowResults, setCommunityShowResults] = useState(false);
   const [communitySearchResults, setCommunitySearchResults] = useState<any[]>([]);
   
-  // ユーザー表示モード（フレンドか全てのユーザーか）
+  // ユーザー表示モード
   const [userMode, setUserMode] = useState<'friends' | 'all'>('all');
   
   // コミュニティ表示モード
   const [communityMode, setCommunityMode] = useState<'all' | 'joined' | 'popular'>('all');
   
+  // コミュニティ作成モーダル
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newCommunityName, setNewCommunityName] = useState('');
+  const [newCommunityCategory, setNewCommunityCategory] = useState('');
+  const [newCommunityImage, setNewCommunityImage] = useState('');
+  const [newCommunityDesc, setNewCommunityDesc] = useState('');
+
+  // フレンド・参加中のダイジェスト
+  const friendsList = isAuthenticated && me ? users.slice(0, 5) : [];
+  const joinedCommunities = isAuthenticated && me ? communities.slice(0, 2) : [];
+
   // コミュニティ詳細モーダル
   const [selectedCommunity, setSelectedCommunity] = useState<any>(null);
   const [showCommunityDetail, setShowCommunityDetail] = useState(false);
-  
-  // 都道府県選択画面
-  const [showPrefectureModal, setShowPrefectureModal] = useState(false);
-  
-  // フレンド一覧（ログイン後のみ表示、デモ用に最初の5人）
-  const friendsList = isAuthenticated && me ? users.slice(0, 5) : [];
-  
-  // 参加中のコミュニティ一覧（ログイン後のみ表示、デモ用に最初の2つ）
-  const joinedCommunities = isAuthenticated && me ? communities.slice(0, 2) : [];
 
+  // 都道府県選択
+  const [showPrefectureModal, setShowPrefectureModal] = useState(false);
+
+  // ユーザー検索
   const handleSearch = () => {
     const results = users.filter((u:any) => {
       if (keyword && !u.name.toLowerCase().includes(keyword.toLowerCase()) && !(u.message||'').toLowerCase().includes(keyword.toLowerCase())) return false;
@@ -77,6 +83,7 @@ const ChatListScreen: React.FC = () => {
     setSearchResults([]);
   };
 
+  // コミュニティ検索
   const handleCommunitySearch = () => {
     const results = communities.filter((c:any) => {
       if (communityKeyword && !c.name.toLowerCase().includes(communityKeyword.toLowerCase())) return false;
@@ -93,6 +100,7 @@ const ChatListScreen: React.FC = () => {
     setCommunityShowResults(false);
     setCommunitySearchResults([]);
   };
+  
 
   // ユーザーのフィルタリング
   const getFilteredUsers = () => {
@@ -280,7 +288,7 @@ const ChatListScreen: React.FC = () => {
             padding: `${designTokens.spacing.md} ${designTokens.spacing.md} ${designTokens.spacing.xl} ${designTokens.spacing.md}`, 
             background: designTokens.colors.background.primary
           }}>
-            <div style={{ display:'flex', gap:designTokens.spacing.lg }}>
+            <div style={{ display:'flex', gap:designTokens.spacing.lg, alignItems:'center' }}>
               <button
                 onClick={() => setUserMode('all')}
                 style={{
@@ -343,6 +351,7 @@ const ChatListScreen: React.FC = () => {
                   }} />
                 )}
               </button>
+              {/* 作成ボタン削除（ユーザー側） */}
             </div>
           </div>
 
@@ -628,7 +637,8 @@ const ChatListScreen: React.FC = () => {
           }}>
             <div style={{ 
               display:'flex', 
-              gap: designTokens.spacing.lg
+              gap: designTokens.spacing.lg,
+              alignItems:'center'
             }}>
               <button
                 onClick={() => setCommunityMode('all')}
@@ -691,6 +701,26 @@ const ChatListScreen: React.FC = () => {
                     borderRadius: designTokens.radius.xs
                   }} />
                 )}
+              </button>
+              {/* 作成ボタン（モダンスタイル） */}
+              <button
+                onClick={() => setShowCreateModal(true)}
+                style={{
+                  marginLeft:'auto',
+                  padding:'10px 16px',
+                  background:`linear-gradient(135deg, ${designTokens.colors.primary.main} 0%, ${designTokens.colors.secondary.main} 100%)`,
+                  color:'#fff',
+                  border:'none',
+                  borderRadius:999,
+                  cursor:'pointer',
+                  fontWeight:700,
+                  boxShadow:'0 4px 12px rgba(14,165,233,0.25)',
+                  transition:'transform .15s ease, opacity .15s ease'
+                }}
+                onMouseOver={e=>{ e.currentTarget.style.transform='translateY(-1px)'; e.currentTarget.style.opacity='0.95'; }}
+                onMouseOut={e=>{ e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.opacity='1'; }}
+              >
+                作成
               </button>
             </div>
           </div>
@@ -1898,6 +1928,204 @@ const ChatListScreen: React.FC = () => {
         </div>
       )}
 
+      {/* コミュニティ作成モーダル */}
+      {showCreateModal && (
+        <div 
+          style={{ 
+            position:'fixed', 
+            inset:0, 
+            background: 'rgba(0,0,0,0.45)',
+            backdropFilter:'blur(6px)',
+            zIndex: 1000,
+            display:'flex',
+            alignItems:'flex-end',
+            justifyContent:'center'
+          }}
+          onClick={()=> setShowCreateModal(false)}
+        >
+          <style>{`
+            @keyframes slideUpCreate {
+              from { transform: translateY(100%); }
+              to { transform: translateY(0); }
+            }
+          `}</style>
+          <div 
+            style={{
+              background:'#fff',
+              width:'100%',
+              maxWidth:560,
+              borderRadius:'24px 24px 0 0',
+              border:`1px solid ${designTokens.colors.border.medium}`,
+              animation:'slideUpCreate .3s cubic-bezier(0.16, 1, 0.3, 1)',
+              overflow:'hidden'
+            }}
+            onClick={e=> e.stopPropagation()}
+          >
+            {/* Header */}
+            <div style={{
+              padding:`${designTokens.spacing.lg} ${designTokens.spacing.xl}`,
+              borderBottom:`1px solid ${designTokens.colors.border.light}`,
+              display:'flex',
+              alignItems:'center',
+              justifyContent:'space-between'
+            }}>
+              <h3 style={{ margin:0, fontSize:18, fontWeight:700 }}>コミュニティを作成</h3>
+              <button
+                onClick={()=> setShowCreateModal(false)}
+                style={{
+                  background:'rgba(15,23,42,0.05)',
+                  border:'none',
+                  width:36,
+                  height:36,
+                  borderRadius:'50%',
+                  cursor:'pointer'
+                }}
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Body */}
+            <div style={{ padding:`${designTokens.spacing.xl}` }}>
+              <div style={{ marginBottom:designTokens.spacing.lg }}>
+                <label style={{ display:'block', fontSize:13, color:'#64748b', marginBottom:6 }}>名前</label>
+                <input
+                  value={newCommunityName}
+                  onChange={e=> setNewCommunityName(e.target.value)}
+                  placeholder='コミュニティ名'
+                  style={{
+                    width:'100%',
+                    padding:'12px 14px',
+                    border:`1px solid ${designTokens.colors.border.medium}`,
+                    borderRadius:3,
+                    outline:'none'
+                  }}
+                />
+              </div>
+              <div style={{ marginBottom:designTokens.spacing.lg }}>
+                <label style={{ display:'block', fontSize:13, color:'#64748b', marginBottom:6 }}>カテゴリ</label>
+                <input
+                  value={newCommunityCategory}
+                  onChange={e=> setNewCommunityCategory(e.target.value)}
+                  placeholder='例: 音楽・旅行'
+                  style={{
+                    width:'100%',
+                    padding:'12px 14px',
+                    border:`1px solid ${designTokens.colors.border.medium}`,
+                    borderRadius:3,
+                    outline:'none'
+                  }}
+                />
+              </div>
+              <div style={{ marginBottom:designTokens.spacing.lg }}>
+                <label style={{ display:'block', fontSize:13, color:'#64748b', marginBottom:6 }}>画像URL</label>
+                {/* プレビュー */}
+                <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:8 }}>
+                  <div style={{
+                    width:56,
+                    height:56,
+                    borderRadius:3,
+                    border:`1px solid ${designTokens.colors.border.medium}`,
+                    background:designTokens.colors.background.secondary,
+                    overflow:'hidden',
+                    display:'flex', alignItems:'center', justifyContent:'center'
+                  }}>
+                    {newCommunityImage ? (
+                      <img src={newCommunityImage} alt="preview" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+                    ) : (
+                      <span style={{ fontSize:12, color:'#9ca3af' }}>IMG</span>
+                    )}
+                  </div>
+                  <span style={{ fontSize:12, color:'#94a3b8' }}>URLを入力するとプレビュー表示されます</span>
+                </div>
+                <input
+                  value={newCommunityImage}
+                  onChange={e=> setNewCommunityImage(e.target.value)}
+                  placeholder='/com/image.png など'
+                  style={{
+                    width:'100%',
+                    padding:'12px 14px',
+                    border:`1px solid ${designTokens.colors.border.medium}`,
+                    borderRadius:3,
+                    outline:'none'
+                  }}
+                />
+              </div>
+              <div style={{ marginBottom:designTokens.spacing.xl }}>
+                <label style={{ display:'block', fontSize:13, color:'#64748b', marginBottom:6 }}>説明</label>
+                <textarea
+                  value={newCommunityDesc}
+                  onChange={e=> setNewCommunityDesc(e.target.value)}
+                  placeholder='コミュニティの説明'
+                  rows={3}
+                  style={{
+                    width:'100%',
+                    padding:'12px 14px',
+                    border:`1px solid ${designTokens.colors.border.medium}`,
+                    borderRadius:3,
+                    outline:'none',
+                    resize:'vertical'
+                  }}
+                />
+              </div>
+
+              <div style={{ display:'flex', gap:12 }}>
+                <button
+                  onClick={()=> setShowCreateModal(false)}
+                  style={{
+                    flex:1,
+                    padding:'12px 16px',
+                    background:designTokens.colors.background.secondary,
+                    color:designTokens.colors.text.primary,
+                    border:`1px solid ${designTokens.colors.border.medium}`,
+                    borderRadius:3,
+                    cursor:'pointer'
+                  }}
+                >
+                  キャンセル
+                </button>
+                <button
+                  onClick={()=> {
+                    if (!newCommunityName.trim()) return;
+                    const newItem = {
+                      id: `new_${Date.now()}`,
+                      name: newCommunityName.trim(),
+                      category: newCommunityCategory.trim() || undefined,
+                      image: newCommunityImage.trim() || '/com/image.png',
+                      desc: newCommunityDesc.trim() || undefined,
+                      members: 1,
+                      posts: 0
+                    };
+                    const updated = [...communities, newItem];
+                    // 一覧へ追加（正規アクション）
+                    dispatch(setCommunities(updated));
+                    // 追加後に詳細を開く
+                    dispatch(setActiveCommunity(newItem.id));
+                    setSelectedCommunity(newItem);
+                    setShowCommunityDetail(true);
+                    setShowCreateModal(false);
+                    setNewCommunityName('');
+                    setNewCommunityCategory('');
+                    setNewCommunityImage('');
+                    setNewCommunityDesc('');
+                  }}
+                  style={{
+                    flex:1,
+                    padding:'12px 16px',
+                    background:designTokens.colors.primary.main,
+                    color:'#fff',
+                    border:'none',
+                    borderRadius:3,
+                    cursor:'pointer'
+                  }}
+                >
+                  作成
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* コミュニティ詳細モーダル */}
       {showCommunityDetail && selectedCommunity && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(6px)', zIndex: 9999, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', overflow: 'hidden' }}>
