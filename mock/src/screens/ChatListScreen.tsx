@@ -704,7 +704,13 @@ const ChatListScreen: React.FC = () => {
               </button>
               {/* 作成ボタン（モダンスタイル） */}
               <button
-                onClick={() => setShowCreateModal(true)}
+                onClick={() => {
+                  if (!isAuthenticated || !me) {
+                    dispatch(openSmsModal());
+                    return;
+                  }
+                  setShowCreateModal(true);
+                }}
                 style={{
                   marginLeft:'auto',
                   padding:'10px 16px',
@@ -1705,93 +1711,53 @@ const ChatListScreen: React.FC = () => {
                 カテゴリ
               </h3>
               
-              {/* カテゴリグリッド */}
-              <div style={{ 
-                display:'grid', 
-                gridTemplateColumns:'repeat(2, 1fr)', 
-                gap:12 
+              {/* カテゴリグリッド（画像なし・シンプル） */}
+              <div style={{
+                display:'grid',
+                gridTemplateColumns:'repeat(2, 1fr)',
+                gap:12
               }}>
                 {[
-                  { name: '音楽', image: '/com/image.png' },
-                  { name: '映画', image: '/com/image copy.png' },
-                  { name: '芸能人・テレビ', image: '/com/image copy 2.png' },
-                  { name: 'ゲーム', image: '/com/image copy 3.png' },
-                  { name: '本・マンガ', image: '/com/image copy 4.png' },
-                  { name: 'アート', image: '/com/image copy 5.png' },
-                  { name: 'スポーツ', image: '/com/image.png' },
-                  { name: '車・バイク', image: '/com/image copy.png' },
-                  { name: '旅行', image: '/com/image copy 2.png' },
-                  { name: 'ホーム・DIY', image: '/com/image copy 3.png' },
-                ].map((category, index) => (
+                  '音楽',
+                  '映画',
+                  '芸能人・テレビ',
+                  'ゲーム',
+                  '本・マンガ',
+                  'アート',
+                  'スポーツ',
+                  '車・バイク',
+                  '旅行',
+                  'ホーム・DIY',
+                ].map((name, index) => (
                   <button
                     key={index}
                     onClick={() => {
-                      setCommunityCategory(category.name);
+                      setCommunityCategory(name);
                       handleCommunitySearch();
                     }}
                     style={{
-                      position:'relative',
-                      height:120,
-                      borderRadius:16,
+                      height:48,
+                      borderRadius: designTokens.radius.sm,
                       border:'none',
                       cursor:'pointer',
-                      overflow:'hidden',
+                      background: designTokens.colors.background.secondary,
+                      color: designTokens.colors.text.primary,
                       display:'flex',
-                      alignItems:'flex-end',
+                      alignItems:'center',
                       justifyContent:'center',
-                      padding:0,
-                      transition:'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease',
-                      /* boxShadow removed */
-                      animation:`scaleIn 0.3s ease ${0.25 + index * 0.05}s backwards`
+                      fontSize: 16,
+                      fontWeight: 700,
+                      transition:'background 0.15s ease',
+                      animation:`fadeIn 0.25s ease ${0.2 + index * 0.04}s backwards`
                     }}
                     onMouseOver={e=>{
-                      e.currentTarget.style.transform='scale(0.98)';
-                      e.currentTarget.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';
+                      e.currentTarget.style.background = '#f0f2f5';
                     }}
                     onMouseOut={e=>{
-                      e.currentTarget.style.transform='scale(1)';
-                      e.currentTarget.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)';
+                      e.currentTarget.style.background = designTokens.colors.background.secondary;
                     }}
                   >
-                    {/* 背景画像 */}
-                    <img 
-                      src={category.image}
-                      alt={category.name}
-                      style={{
-                        position:'absolute',
-                        inset:0,
-                        width:'100%',
-                        height:'100%',
-                        objectFit:'cover',
-                        filter:'brightness(0.85)'
-                      }}
-                    />
-                    
-                    {/* グラデーションオーバーレイ */}
-                    <div style={{
-                      position:'absolute',
-                      inset:0,
-                      background:'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)'
-                    }} />
-                    
-                    {/* カテゴリ名 */}
-                    <div style={{
-                      position:'relative',
-                      zIndex:1,
-                      padding:'16px',
-                      width:'100%',
-                      textAlign:'center'
-                    }}>
-                      <div style={{
-                        fontSize:16,
-                        fontWeight:700,
-                        color:'#fff',
-                        lineHeight:1.3,
-                        textShadow:'0 2px 8px rgba(0,0,0,0.5)'
-                      }}>
-                        {category.name}
-                      </div>
-                    </div>
+                    {name}
                   </button>
                 ))}
               </div>
@@ -2018,12 +1984,12 @@ const ChatListScreen: React.FC = () => {
                 />
               </div>
               <div style={{ marginBottom:designTokens.spacing.lg }}>
-                <label style={{ display:'block', fontSize:13, color:'#64748b', marginBottom:6 }}>画像URL</label>
-                {/* プレビュー */}
-                <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:8 }}>
+                <label style={{ display:'block', fontSize:13, color:'#64748b', marginBottom:6 }}>アイコン</label>
+                {/* アップロード＆プレビュー */}
+                <div style={{ display:'flex', alignItems:'center', gap:12 }}>
                   <div style={{
-                    width:56,
-                    height:56,
+                    width:64,
+                    height:64,
                     borderRadius:3,
                     border:`1px solid ${designTokens.colors.border.medium}`,
                     background:designTokens.colors.background.secondary,
@@ -2031,25 +1997,28 @@ const ChatListScreen: React.FC = () => {
                     display:'flex', alignItems:'center', justifyContent:'center'
                   }}>
                     {newCommunityImage ? (
-                      <img src={newCommunityImage} alt="preview" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+                      <img src={newCommunityImage} alt="icon" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
                     ) : (
                       <span style={{ fontSize:12, color:'#9ca3af' }}>IMG</span>
                     )}
                   </div>
-                  <span style={{ fontSize:12, color:'#94a3b8' }}>URLを入力するとプレビュー表示されます</span>
+                  <div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e)=>{
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                          setNewCommunityImage(String(reader.result || ''));
+                        };
+                        reader.readAsDataURL(file);
+                      }}
+                    />
+                    <div style={{ fontSize:12, color:'#94a3b8', marginTop:6 }}>JPG/PNG/SVG、1MB 以内推奨</div>
+                  </div>
                 </div>
-                <input
-                  value={newCommunityImage}
-                  onChange={e=> setNewCommunityImage(e.target.value)}
-                  placeholder='/com/image.png など'
-                  style={{
-                    width:'100%',
-                    padding:'12px 14px',
-                    border:`1px solid ${designTokens.colors.border.medium}`,
-                    borderRadius:3,
-                    outline:'none'
-                  }}
-                />
               </div>
               <div style={{ marginBottom:designTokens.spacing.xl }}>
                 <label style={{ display:'block', fontSize:13, color:'#64748b', marginBottom:6 }}>説明</label>
@@ -2091,7 +2060,7 @@ const ChatListScreen: React.FC = () => {
                       id: `new_${Date.now()}`,
                       name: newCommunityName.trim(),
                       category: newCommunityCategory.trim() || undefined,
-                      image: newCommunityImage.trim() || '/com/image.png',
+                      image: newCommunityImage || '/com/image.png',
                       desc: newCommunityDesc.trim() || undefined,
                       members: 1,
                       posts: 0
