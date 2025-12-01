@@ -239,7 +239,7 @@ const ChatListScreen: React.FC = () => {
               transition: designTokens.transition.base
             }}
           >
-            さがす
+            ユーザー
             {tab === 'following' && (
               <div style={{
                 position:'absolute',
