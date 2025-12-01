@@ -75,7 +75,7 @@ const FollowRequestsScreen: React.FC = () => {
       <div style={{ padding: `${designTokens.spacing.lg} ${designTokens.spacing.lg}` }}>
         <div style={{ marginBottom: designTokens.spacing.lg, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <p style={{ margin: 0, fontSize: designTokens.typography.body.fontSize, fontWeight: 500, color: designTokens.colors.text.tertiary }}>
-            <span style={{ borderRadius: designTokens.radius.full, background: designTokens.colors.background.secondary, padding: `${designTokens.spacing.xs} ${designTokens.spacing.md}`, fontSize: designTokens.typography.caption.fontSize, fontWeight: 600, color: designTokens.colors.text.secondary, boxShadow: designTokens.shadow.xs }}>
+            <span style={{ borderRadius: designTokens.radius.pill, background: designTokens.colors.background.secondary, padding: `${designTokens.spacing.xs} ${designTokens.spacing.md}`, fontSize: designTokens.typography.caption.fontSize, fontWeight: 600, color: designTokens.colors.text.secondary, boxShadow: designTokens.shadow.sm }}>
               {requests.length}件の申請
             </span>
           </p>
@@ -121,7 +121,7 @@ const FollowRequestsScreen: React.FC = () => {
                     <span style={{
                       display: 'inline-flex',
                       alignItems: 'center',
-                      borderRadius: designTokens.radius.full,
+                      borderRadius: designTokens.radius.pill,
                       background: designTokens.colors.primary.pale,
                       padding: `${designTokens.spacing.xs} ${designTokens.spacing.sm}`,
                       fontSize: designTokens.typography.caption.fontSize,
@@ -194,7 +194,7 @@ const FollowRequestsScreen: React.FC = () => {
               borderRadius: designTokens.radius.xxl,
               background: designTokens.colors.background.primary,
               padding: `${designTokens.spacing.xxl} ${designTokens.spacing.xl}`,
-              boxShadow: designTokens.shadow.xxl,
+              boxShadow: designTokens.shadow.xl,
               animation: 'scale .35s cubic-bezier(.34,1.56,.64,1)'
             }}
             onClick={(e) => e.stopPropagation()}

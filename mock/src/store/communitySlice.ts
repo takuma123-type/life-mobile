@@ -31,9 +31,17 @@ const communitySlice = createSlice({
     toggleJoin(state, action: PayloadAction<string>) {
       const id = action.payload;
       state.joined[id] = !state.joined[id];
+    },
+    leaveCommunity(state, action: PayloadAction<string>) {
+      const id = action.payload;
+      state.joined[id] = false;
+    },
+    joinCommunity(state, action: PayloadAction<string>) {
+      const id = action.payload;
+      state.joined[id] = true;
     }
   }
 });
 
-export const { setCommunities, setActiveCommunity, toggleJoin } = communitySlice.actions;
+export const { setCommunities, setActiveCommunity, toggleJoin, leaveCommunity, joinCommunity } = communitySlice.actions;
 export default communitySlice.reducer;

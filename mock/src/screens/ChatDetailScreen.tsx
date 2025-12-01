@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { pushMessage } from '../store/chatSlice';
 import { navigate } from '../store/uiSlice';
 import { IconBack, IconGlobe, IconSend, IconPlus, IconStamp, IconFileText } from '../components/icons';
+import { blockUser } from '../store/userSlice';
 import { mockTranslate } from '../data/mockData';
 import { designTokens } from '../styles/designTokens';
 
@@ -15,6 +16,7 @@ const ChatDetailScreen: React.FC = () => {
   const [input, setInput] = useState('');
   const [translated, setTranslated] = useState<Record<string,string>>({});
   const [showAttachMenu, setShowAttachMenu] = useState(false);
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
 
   const toggleTranslate = async (id:string, message:string) => {
     if(translated[id]) {
@@ -159,6 +161,101 @@ const ChatDetailScreen: React.FC = () => {
             <p style={{ margin: '2px 0 0', fontSize: 12, color: '#10b981', fontWeight: 500 }}>
               オンライン
             </p>
+          )}
+        </div>
+
+        {/* 三点リーダー（その他メニュー） */}
+        <div style={{ position:'relative' }}>
+          <button
+            aria-label='その他'
+            onClick={()=> setShowMoreMenu(prev=> !prev)}
+            style={{
+              background: '#eef2ff',
+              border: 'none',
+              cursor: 'pointer',
+              width: 32,
+              height: 32,
+              borderRadius: 999,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#334155',
+              boxShadow: designTokens.shadow.md,
+              transition: 'all .18s ease-out'
+            }}
+            onMouseOver={e=>{
+              e.currentTarget.style.transform='translateY(-2px)';
+              e.currentTarget.style.background='#e0e7ff';
+            }}
+            onMouseOut={e=>{
+              e.currentTarget.style.transform='translateY(0)';
+              e.currentTarget.style.background='#eef2ff';
+            }}
+          >
+            {/* シンプルな三点 */}
+            <span style={{ fontSize: 18, lineHeight: 1 }}>⋯</span>
+          </button>
+
+          {showMoreMenu && (
+            <div
+              style={{
+                position:'absolute',
+                right:0,
+                top:40,
+                background:'#fff',
+                border:'1px solid rgba(226,232,240,0.9)',
+                borderRadius:12,
+                boxShadow:'0 8px 24px rgba(15,23,42,0.12)',
+                minWidth:160,
+                overflow:'hidden',
+                zIndex: 50
+              }}
+            >
+              <button
+                style={{
+                  width:'100%',
+                  padding:'12px 14px',
+                  background:'none',
+                  border:'none',
+                  textAlign:'left',
+                  cursor:'pointer',
+                  fontSize:14,
+                  color:'#b91c1c',
+                  fontWeight:600
+                }}
+                onClick={()=>{
+                  if (!activeChatId) return;
+                  const ok = window.confirm('このユーザーをブロックしますか？\nブロックすると一覧に表示されなくなります。');
+                  if (!ok) return;
+                  dispatch(blockUser(activeChatId));
+                  setShowMoreMenu(false);
+                  // チャット一覧へ戻る
+                  dispatch(navigate('chat'));
+                }}
+                onMouseOver={e=> e.currentTarget.style.background = '#fff1f2'}
+                onMouseOut={e=> e.currentTarget.style.background = 'none'}
+              >
+                ブロックする
+              </button>
+
+              <button
+                style={{
+                  width:'100%',
+                  padding:'12px 14px',
+                  background:'none',
+                  border:'none',
+                  textAlign:'left',
+                  cursor:'pointer',
+                  fontSize:14,
+                  color:'#0f172a'
+                }}
+                onClick={()=> setShowMoreMenu(false)}
+                onMouseOver={e=> e.currentTarget.style.background = '#f8fafc'}
+                onMouseOut={e=> e.currentTarget.style.background = 'none'}
+              >
+                キャンセル
+              </button>
+            </div>
           )}
         </div>
       </div>

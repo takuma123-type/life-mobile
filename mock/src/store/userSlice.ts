@@ -45,6 +45,7 @@ interface UserState {
   points: number;
   ownedStamps: string[]; // stampPackIds
   activeUserId: string | null; // 表示中のユーザープロフィールID
+  blocked: Record<string, boolean>; // userId => blocked
 }
 
 const initialState: UserState = {
@@ -54,7 +55,8 @@ const initialState: UserState = {
   followRequests: [],
   points: 50,
   ownedStamps: [],
-  activeUserId: null
+  activeUserId: null,
+  blocked: {}
 };
 
 const userSlice = createSlice({
@@ -88,9 +90,19 @@ const userSlice = createSlice({
     },
     setActiveUserId(state, action: PayloadAction<string | null>) {
       state.activeUserId = action.payload;
+    },
+    blockUser(state, action: PayloadAction<string>) {
+      const id = action.payload;
+      state.blocked[id] = true;
+      // フォロー状態も解除（任意の挙動）
+      if (state.following[id]) delete state.following[id];
+    },
+    unblockUser(state, action: PayloadAction<string>) {
+      const id = action.payload;
+      if (state.blocked[id]) delete state.blocked[id];
     }
   }
 });
 
-export const { setMe, setUsers, addUser, toggleFollow, setFollowRequests, acceptFollowRequest, rejectFollowRequest, addPoints, purchaseStamp, setActiveUserId } = userSlice.actions;
+export const { setMe, setUsers, addUser, toggleFollow, setFollowRequests, acceptFollowRequest, rejectFollowRequest, addPoints, purchaseStamp, setActiveUserId, blockUser, unblockUser } = userSlice.actions;
 export default userSlice.reducer;

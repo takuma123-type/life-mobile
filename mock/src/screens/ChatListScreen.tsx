@@ -103,8 +103,11 @@ const ChatListScreen: React.FC = () => {
   
 
   // ユーザーのフィルタリング
+  const blocked = useAppSelector((s:any)=> s.user.blocked || {});
   const getFilteredUsers = () => {
-    let filtered = users.filter((u:any)=> !keyword || u.name.toLowerCase().includes(keyword.toLowerCase()) || (u.message||'').toLowerCase().includes(keyword.toLowerCase()));
+    let filtered = users
+      .filter((u:any)=> !keyword || u.name.toLowerCase().includes(keyword.toLowerCase()) || (u.message||'').toLowerCase().includes(keyword.toLowerCase()))
+      .filter((u:any)=> !blocked[u.id]);
     
     // モードによる絞り込み
     if (userMode === 'friends') {
