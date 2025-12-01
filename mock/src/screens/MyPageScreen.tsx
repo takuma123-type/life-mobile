@@ -3,8 +3,8 @@ import { useAppSelector, useAppDispatch } from '../hooks';
 import BottomNav from '../components/common/BottomNav';
 import { openProfileModal, navigate, openLanguageModal, setAuthenticated, setRegistered, openLoginModal, openFollowRequestsModal } from '../store/uiSlice';
 import { clearSession } from '../utils/session';
-import { setMe } from '../store/userSlice';
-import { IconUser, IconUsers, IconStamp, IconLanguage, IconLogout } from '../components/icons';
+import { setMe, updatePassword } from '../store/userSlice';
+import { IconUser, IconUsers, IconStamp, IconLanguage, IconLogout, IconLock } from '../components/icons';
 import { IconShield } from '../components/icons';
 import { designTokens } from '../styles/designTokens';
 import Button from '../components/common/Button';
@@ -19,6 +19,13 @@ const MyPageScreen: React.FC = () => {
   const [confirmText, setConfirmText] = useState('');
   const [showDeletedModal, setShowDeletedModal] = useState(false);
   const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
+  // パスワード変更モーダル
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const me = useAppSelector((s:any)=> s.user.me);
 
   const handleLogout = () => {
     if (window.confirm('ログアウトしますか？')) {
@@ -279,6 +286,49 @@ const MyPageScreen: React.FC = () => {
                 言語設定
               </span>
             </button>
+
+            {/* パスワード変更（カード） */}
+            <button
+              type="button"
+              onClick={() => { setShowPasswordModal(true); setPasswordError(''); setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); }}
+              style={{
+                padding: '28px 20px',
+                background: '#fff',
+                border: 'none',
+                borderRadius: 20,
+                cursor: 'pointer',
+                boxShadow: '0 1px 3px rgba(15, 23, 42, 0.08)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 14
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.boxShadow = '0 12px 24px rgba(14, 165, 233, 0.12)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(15, 23, 42, 0.08)';
+              }}
+            >
+              <div style={{
+                width: 64,
+                height: 64,
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(14, 165, 233, 0.15)'
+              }}>
+                <IconLock size={32} color="#0284c7" />
+              </div>
+              <span style={{ fontSize: 14, fontWeight: 700, color: '#0f172a', textAlign: 'center', lineHeight: 1.3, letterSpacing: '0.01em' }}>
+                パスワード変更
+              </span>
+            </button>
           </div>
         )}
 
@@ -490,6 +540,61 @@ const MyPageScreen: React.FC = () => {
       <BottomNav />
     </div>
   );
+
+      {/* パスワード変更モーダル（ボトムシート） */}
+      {showPasswordModal && (
+        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.45)', backdropFilter:'blur(6px)', zIndex:1003, display:'flex', alignItems:'flex-end', justifyContent:'center' }} onClick={()=> setShowPasswordModal(false)}>
+          <style>{`@keyframes slideUpPassword { from { transform: translateY(100%);} to { transform: translateY(0);} }`}</style>
+          <div style={{ background:'#fff', width:'100%', maxWidth:560, borderRadius:'24px 24px 0 0', border:'1px solid #e5e7eb', boxShadow:'0 -6px 24px rgba(0,0,0,0.08)', overflow:'hidden', animation:'slideUpPassword .3s cubic-bezier(0.16, 1, 0.3, 1)' }} onClick={e=> e.stopPropagation()}>
+            <div style={{ padding:'18px 22px', borderBottom:'1px solid #e5e7eb', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+              <h3 style={{ margin:0, fontSize:18, fontWeight:800, color:'#0f172a' }}>パスワード変更</h3>
+              <button onClick={()=> setShowPasswordModal(false)} style={{ background:'rgba(15,23,42,0.06)', border:'none', width:36, height:36, borderRadius:'50%', cursor:'pointer' }}>×</button>
+            </div>
+            <div style={{ padding:'20px 22px' }}>
+              {me?.password && (
+                <div style={{ marginBottom:16 }}>
+                  <label style={{ display:'block', fontSize:13, fontWeight:600, color:'#475569', marginBottom:6 }}>現在のパスワード</label>
+                  <input type="password" value={currentPassword} onChange={e=> setCurrentPassword(e.target.value)} placeholder="現在のパスワード" style={{ width:'100%', padding:'12px 14px', border:'1px solid #e5e7eb', borderRadius:10, outline:'none' }} />
+                </div>
+              )}
+              <div style={{ marginBottom:16 }}>
+                <label style={{ display:'block', fontSize:13, fontWeight:600, color:'#475569', marginBottom:6 }}>新しいパスワード</label>
+                <input type="password" value={newPassword} onChange={e=> setNewPassword(e.target.value)} placeholder="英数字8文字以上" style={{ width:'100%', padding:'12px 14px', border:'1px solid #e5e7eb', borderRadius:10, outline:'none' }} />
+              </div>
+              <div style={{ marginBottom:8 }}>
+                <label style={{ display:'block', fontSize:13, fontWeight:600, color:'#475569', marginBottom:6 }}>新しいパスワード（確認）</label>
+                <input type="password" value={confirmNewPassword} onChange={e=> setConfirmNewPassword(e.target.value)} placeholder="もう一度入力" style={{ width:'100%', padding:'12px 14px', border:'1px solid #e5e7eb', borderRadius:10, outline:'none' }} />
+              </div>
+              {passwordError && <div style={{ marginBottom:16, fontSize:12, color:'#dc2626', fontWeight:600 }}>{passwordError}</div>}
+              <div style={{ display:'flex', gap:12, marginTop:4 }}>
+                <button onClick={()=> setShowPasswordModal(false)} style={{ flex:1, padding:'12px 16px', background:'#f8fafc', border:'1px solid #e5e7eb', borderRadius:10, cursor:'pointer' }}>キャンセル</button>
+                <button
+                  onClick={()=> {
+                    // バリデーション
+                    if (!newPassword || !confirmNewPassword) { setPasswordError('新しいパスワードを入力してください'); return; }
+                    if (newPassword.length < 8) { setPasswordError('8文字以上にしてください'); return; }
+                    if (newPassword !== confirmNewPassword) { setPasswordError('確認用が一致しません'); return; }
+                    if (me?.password && me.password !== currentPassword) { setPasswordError('現在のパスワードが違います'); return; }
+                    // 更新
+                    if (me) {
+                      dispatch(updatePassword({ userId: me.id, newPassword }));
+                    }
+                    setPasswordError('');
+                    setShowPasswordModal(false);
+                    // 簡易通知
+                    alert('パスワードを更新しました');
+                  }}
+                  style={{ flex:1, padding:'12px 16px', background:'#0EA5E9', color:'#fff', border:'none', borderRadius:10, cursor:'pointer', fontWeight:700 }}
+                >更新する</button>
+              </div>
+              <div style={{ marginTop:16, fontSize:11, color:'#64748b', lineHeight:1.5 }}>
+                パスワードはデモ用途でローカル状態に保存されます。本番環境では安全なハッシュ化とサーバー側検証を実装してください。
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
 };
 
 export default MyPageScreen;

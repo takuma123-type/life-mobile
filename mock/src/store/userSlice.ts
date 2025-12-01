@@ -100,9 +100,19 @@ const userSlice = createSlice({
     unblockUser(state, action: PayloadAction<string>) {
       const id = action.payload;
       if (state.blocked[id]) delete state.blocked[id];
+    },
+    updatePassword(state, action: PayloadAction<{ userId: string, newPassword: string }>) {
+      const { userId, newPassword } = action.payload;
+      if (state.me && state.me.id === userId) {
+        state.me.password = newPassword;
+      }
+      const target = state.users.find(u => u.id === userId);
+      if (target) {
+        target.password = newPassword;
+      }
     }
   }
 });
 
-export const { setMe, setUsers, addUser, toggleFollow, setFollowRequests, acceptFollowRequest, rejectFollowRequest, addPoints, purchaseStamp, setActiveUserId, blockUser, unblockUser } = userSlice.actions;
+export const { setMe, setUsers, addUser, toggleFollow, setFollowRequests, acceptFollowRequest, rejectFollowRequest, addPoints, purchaseStamp, setActiveUserId, blockUser, unblockUser, updatePassword } = userSlice.actions;
 export default userSlice.reducer;
