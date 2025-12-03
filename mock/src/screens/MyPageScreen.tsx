@@ -537,10 +537,6 @@ const MyPageScreen: React.FC = () => {
         </div>
       )}
 
-      <BottomNav />
-    </div>
-  );
-
       {/* パスワード変更モーダル（ボトムシート） */}
       {showPasswordModal && (
         <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.45)', backdropFilter:'blur(6px)', zIndex:1003, display:'flex', alignItems:'flex-end', justifyContent:'center' }} onClick={()=> setShowPasswordModal(false)}>
@@ -560,6 +556,28 @@ const MyPageScreen: React.FC = () => {
               <div style={{ marginBottom:16 }}>
                 <label style={{ display:'block', fontSize:13, fontWeight:600, color:'#475569', marginBottom:6 }}>新しいパスワード</label>
                 <input type="password" value={newPassword} onChange={e=> setNewPassword(e.target.value)} placeholder="英数字8文字以上" style={{ width:'100%', padding:'12px 14px', border:'1px solid #e5e7eb', borderRadius:10, outline:'none' }} />
+                {/* 強度メーター */}
+                <div style={{ marginTop:8 }}>
+                  {(() => {
+                    const len = newPassword.length;
+                    const hasLower = /[a-z]/.test(newPassword);
+                    const hasUpper = /[A-Z]/.test(newPassword);
+                    const hasNum = /\d/.test(newPassword);
+                    const hasSym = /[^A-Za-z0-9]/.test(newPassword);
+                    const score = (len >= 8 ? 1 : 0) + (hasLower ? 1 : 0) + (hasUpper ? 1 : 0) + (hasNum ? 1 : 0) + (hasSym ? 1 : 0);
+                    const pct = Math.min(100, score * 20);
+                    const label = score <= 2 ? '弱い' : score <= 3 ? '普通' : score <= 4 ? '強い' : 'とても強い';
+                    const color = score <= 2 ? '#ef4444' : score <= 3 ? '#f59e0b' : score <= 4 ? '#10b981' : '#0ea5e9';
+                    return (
+                      <div>
+                        <div style={{ height:8, background:'#e5e7eb', borderRadius:8, overflow:'hidden' }}>
+                          <div style={{ width: pct+'%', height:'100%', background: color, transition:'width .2s ease' }} />
+                        </div>
+                        <div style={{ fontSize:11, color:'#64748b', marginTop:6 }}>強度: <span style={{ color }}>{label}</span></div>
+                      </div>
+                    );
+                  })()}
+                </div>
               </div>
               <div style={{ marginBottom:8 }}>
                 <label style={{ display:'block', fontSize:13, fontWeight:600, color:'#475569', marginBottom:6 }}>新しいパスワード（確認）</label>
@@ -595,6 +613,9 @@ const MyPageScreen: React.FC = () => {
         </div>
       )}
 
+      <BottomNav />
+    </div>
+  );
 };
 
 export default MyPageScreen;
