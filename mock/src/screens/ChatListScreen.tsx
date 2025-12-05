@@ -1957,44 +1957,56 @@ const ChatListScreen: React.FC = () => {
             {/* Body */}
             <div style={{ padding:`${designTokens.spacing.xl}` }}>
               <div style={{ marginBottom:designTokens.spacing.lg }}>
-                <label style={{ display:'block', fontSize:13, color:'#64748b', marginBottom:6 }}>名前</label>
+                <label style={{ display:'flex', alignItems:'center', gap:8, fontSize:13, color:'#334155', marginBottom:8, fontWeight:700 }}>名前 <span style={{ fontSize:11, color:'#0ea5e9', background:'#E0F2FE', padding:'2px 6px', borderRadius:999 }}>必須</span></label>
                 <input
                   value={newCommunityName}
                   onChange={e=> setNewCommunityName(e.target.value)}
                   placeholder='コミュニティ名'
                   style={{
                     width:'100%',
-                    padding:'12px 14px',
-                    border:`1px solid ${designTokens.colors.border.medium}`,
-                    borderRadius:3,
-                    outline:'none'
+                    padding:'14px 16px',
+                    border:`1px solid ${designTokens.colors.border.light}`,
+                    borderRadius:12,
+                    outline:'none',
+                    background:'#f8fafc'
                   }}
                 />
+                {(!newCommunityName || newCommunityName.trim().length === 0) && (
+                  <div style={{ marginTop:8, fontSize:12, color:'#ef4444' }}>名前は必須です</div>
+                )}
               </div>
               <div style={{ marginBottom:designTokens.spacing.lg }}>
-                <label style={{ display:'block', fontSize:13, color:'#64748b', marginBottom:6 }}>カテゴリ</label>
+                <label style={{ display:'block', fontSize:13, color:'#334155', marginBottom:8, fontWeight:700 }}>カテゴリ</label>
                 <input
                   value={newCommunityCategory}
                   onChange={e=> setNewCommunityCategory(e.target.value)}
                   placeholder='例: 音楽・旅行'
                   style={{
                     width:'100%',
-                    padding:'12px 14px',
-                    border:`1px solid ${designTokens.colors.border.medium}`,
-                    borderRadius:3,
-                    outline:'none'
+                    padding:'14px 16px',
+                    border:`1px solid ${designTokens.colors.border.light}`,
+                    borderRadius:12,
+                    outline:'none',
+                    background:'#f8fafc'
                   }}
                 />
+                <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginTop:10 }}>
+                  {['音楽','旅行','ゲーム','語学','スポーツ','映画'].map(tag=> (
+                    <button key={tag} type='button' onClick={()=> setNewCommunityCategory(tag)} style={{ padding:'6px 10px', border:'1px solid #e5e7eb', borderRadius:999, background:'#fff', color:'#334155', cursor:'pointer', fontSize:12 }}>
+                      {tag}
+                    </button>
+                  ))}
+                </div>
               </div>
               <div style={{ marginBottom:designTokens.spacing.lg }}>
-                <label style={{ display:'block', fontSize:13, color:'#64748b', marginBottom:6 }}>アイコン</label>
+                <label style={{ display:'block', fontSize:13, color:'#334155', marginBottom:8, fontWeight:700 }}>アイコン</label>
                 {/* アップロード＆プレビュー */}
                 <div style={{ display:'flex', alignItems:'center', gap:12 }}>
                   <div style={{
-                    width:64,
-                    height:64,
-                    borderRadius:3,
-                    border:`1px solid ${designTokens.colors.border.medium}`,
+                    width:72,
+                    height:72,
+                    borderRadius:16,
+                    border:'1px dashed #cbd5e1',
                     background:designTokens.colors.background.secondary,
                     overflow:'hidden',
                     display:'flex', alignItems:'center', justifyContent:'center'
@@ -2002,7 +2014,7 @@ const ChatListScreen: React.FC = () => {
                     {newCommunityImage ? (
                       <img src={newCommunityImage} alt="icon" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
                     ) : (
-                      <span style={{ fontSize:12, color:'#9ca3af' }}>IMG</span>
+                      <span style={{ fontSize:12, color:'#9ca3af' }}>Drag&Drop</span>
                     )}
                   </div>
                   <div>
@@ -2019,12 +2031,12 @@ const ChatListScreen: React.FC = () => {
                         reader.readAsDataURL(file);
                       }}
                     />
-                    <div style={{ fontSize:12, color:'#94a3b8', marginTop:6 }}>JPG/PNG/SVG、1MB 以内推奨</div>
+                    <div style={{ fontSize:12, color:'#94a3b8', marginTop:6 }}>JPG/PNG/SVG、1MB 以内推奨。ドラッグ＆ドロップにも対応</div>
                   </div>
                 </div>
               </div>
               <div style={{ marginBottom:designTokens.spacing.xl }}>
-                <label style={{ display:'block', fontSize:13, color:'#64748b', marginBottom:6 }}>説明</label>
+                <label style={{ display:'block', fontSize:13, color:'#334155', marginBottom:8, fontWeight:700 }}>説明</label>
                 <textarea
                   value={newCommunityDesc}
                   onChange={e=> setNewCommunityDesc(e.target.value)}
@@ -2032,11 +2044,12 @@ const ChatListScreen: React.FC = () => {
                   rows={3}
                   style={{
                     width:'100%',
-                    padding:'12px 14px',
-                    border:`1px solid ${designTokens.colors.border.medium}`,
-                    borderRadius:3,
+                    padding:'14px 16px',
+                    border:`1px solid ${designTokens.colors.border.light}`,
+                    borderRadius:12,
                     outline:'none',
-                    resize:'vertical'
+                    resize:'vertical',
+                    background:'#f8fafc'
                   }}
                 />
               </div>
@@ -2047,10 +2060,10 @@ const ChatListScreen: React.FC = () => {
                   style={{
                     flex:1,
                     padding:'12px 16px',
-                    background:designTokens.colors.background.secondary,
-                    color:designTokens.colors.text.primary,
-                    border:`1px solid ${designTokens.colors.border.medium}`,
-                    borderRadius:3,
+                    background:'#f8fafc',
+                    color:'#0f172a',
+                    border:`1px solid ${designTokens.colors.border.light}`,
+                    borderRadius:12,
                     cursor:'pointer'
                   }}
                 >
@@ -2084,11 +2097,12 @@ const ChatListScreen: React.FC = () => {
                   style={{
                     flex:1,
                     padding:'12px 16px',
-                    background:designTokens.colors.primary.main,
+                    background:'linear-gradient(135deg,#0EA5E9 0%, #06B6D4 100%)',
                     color:'#fff',
                     border:'none',
-                    borderRadius:3,
-                    cursor:'pointer'
+                    borderRadius:12,
+                    cursor:'pointer',
+                    fontWeight:700
                   }}
                 >
                   作成
