@@ -11,6 +11,9 @@ import { VerificationModal } from '../components/VerificationModal';
 import { Toast } from '../components/Toast';
 import UserProfileModal from '../components/UserProfileModal';
 import CommunityProfileModal from '../components/CommunityProfileModal';
+import SearchFilterModal from '../components/SearchFilterModal';
+import CommunitySearchModal from '../components/CommunitySearchModal';
+import CommunityCreateModal from '../components/CommunityCreateModal';
 
 // NOTE: Uは変更しない → 既存のUIトーン・構成を尊重
 // 画像や既存コードの構成を参考に、ネイティブ向けに移植
@@ -120,6 +123,9 @@ const ChatListScreen: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<{ id: string; name: string; age: string; message: string; image: string } | null>(null);
   const [showCommunityProfileModal, setShowCommunityProfileModal] = useState(false);
   const [selectedCommunity, setSelectedCommunity] = useState<{ id: string; name: string; members: number; posts: number; tag: string; description?: string } | null>(null);
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [showCommunitySearchModal, setShowCommunitySearchModal] = useState(false);
+  const [showCommunityCreateModal, setShowCommunityCreateModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showToast, setShowToast] = useState(false);
   // Debug state transitions
@@ -150,7 +156,13 @@ const ChatListScreen: React.FC = () => {
       {/* ヘッダー */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>LIFE</Text>
-        <TouchableOpacity style={styles.headerAction}>
+        <TouchableOpacity
+          style={styles.headerAction}
+          onPress={() => {
+            if (activeTab === 'users') setShowSearchModal(true);
+            else setShowCommunitySearchModal(true);
+          }}
+        >
           <SearchIcon size={22} color="#0f172a" />
         </TouchableOpacity>
       </View>
@@ -283,8 +295,7 @@ const ChatListScreen: React.FC = () => {
                     return;
                   }
                   console.log('[ChatList] Create community pressed (logged in)');
-                  setShowToast(true);
-                  setTimeout(() => setShowToast(false), 1500);
+                  setShowCommunityCreateModal(true);
                 }}
               >
                 <Text style={styles.createBtnText}>{t('cta.create')}</Text>
@@ -405,6 +416,36 @@ const ChatListScreen: React.FC = () => {
           }
         }}
         community={selectedCommunity}
+      />
+
+      <SearchFilterModal
+        visible={showSearchModal}
+        onClose={() => setShowSearchModal(false)}
+        onSearch={(filters) => {
+          // モック: キーワードがあれば「すべて」表示にし、年齢や時間帯は今後のフィルター連携で使用
+          console.log('[Search] filters:', filters);
+          setUserFilter('all');
+        }}
+      />
+
+      <CommunitySearchModal
+        visible={showCommunitySearchModal}
+        onClose={() => setShowCommunitySearchModal(false)}
+        onSearch={(filters) => {
+          console.log('[CommunitySearch] filters:', filters);
+          // モック: カテゴリやキーワードを今後のコミュニティフィルタに連携予定
+        }}
+      />
+
+      <CommunityCreateModal
+        visible={showCommunityCreateModal}
+        onClose={() => setShowCommunityCreateModal(false)}
+        onCreate={(payload) => {
+          console.log('[CommunityCreate] payload:', payload);
+          setShowCommunityCreateModal(false);
+          setShowToast(true);
+          setTimeout(() => setShowToast(false), 1500);
+        }}
       />
     </SafeAreaView>
   );
