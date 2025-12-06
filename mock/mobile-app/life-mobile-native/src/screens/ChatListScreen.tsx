@@ -9,6 +9,7 @@ import { SignupModal } from '../components/SignupModal';
 import { LoginModal } from '../components/LoginModal';
 import { VerificationModal } from '../components/VerificationModal';
 import { Toast } from '../components/Toast';
+import UserProfileModal from '../components/UserProfileModal';
 
 // NOTE: Uは変更しない → 既存のUIトーン・構成を尊重
 // 画像や既存コードの構成を参考に、ネイティブ向けに移植
@@ -113,6 +114,8 @@ const ChatListScreen: React.FC = () => {
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [showUserProfileModal, setShowUserProfileModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<{ id: string; name: string; age: string; message: string; image: string } | null>(null);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showToast, setShowToast] = useState(false);
   // Debug state transitions
@@ -206,7 +209,12 @@ const ChatListScreen: React.FC = () => {
                     isUserCard={true}
                     onPress={() => {
                       console.log('[ChatList] User card pressed:', u.id);
-                      setShowSignupModal(true);
+                      if (!isLoggedIn) {
+                        setShowSignupModal(true);
+                        return;
+                      }
+                      setSelectedUser(u);
+                      setShowUserProfileModal(true);
                     }}
                   />
                 ))}
@@ -358,6 +366,12 @@ const ChatListScreen: React.FC = () => {
         visible={showVerificationModal}
         onClose={() => setShowVerificationModal(false)}
         phoneNumber={phoneNumber}
+      />
+
+      <UserProfileModal
+        visible={showUserProfileModal}
+        onClose={() => setShowUserProfileModal(false)}
+        user={selectedUser}
       />
     </SafeAreaView>
   );
