@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { designTokens } from '@styles/designTokens.native';
 
 interface VerificationModalProps {
@@ -21,6 +22,7 @@ interface VerificationModalProps {
 }
 
 export const VerificationModal: React.FC<VerificationModalProps> = ({ visible, onClose, phoneNumber }) => {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [showBackdrop, setShowBackdrop] = useState(false);
   const [code, setCode] = useState(['', '', '', '', '', '']);
@@ -127,7 +129,14 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({ visible, o
             </View>
 
             {/* 送信ボタン */}
-            <TouchableOpacity style={styles.submitButton}>
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={() => {
+                // 認証コード入力後の遷移（ダミー）: プロフィール登録画面へ
+                onClose();
+                router.push('/profile-registration');
+              }}
+            >
               <Text style={styles.submitText}>送信</Text>
             </TouchableOpacity>
 

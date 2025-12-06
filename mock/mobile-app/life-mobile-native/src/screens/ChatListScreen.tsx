@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Keyboard } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { designTokens } from '@styles/designTokens.native';
 import SearchIcon from '../components/icons/SearchIcon';
@@ -21,9 +22,9 @@ const mockUsers = [
 ];
 
 const mockCommunities = [
-  { id: 'c1', name: 'カフェ好き集まれ', members: 231, posts: 120, tag: '旅行', image: 'https://picsum.photos/seed/cafe/400/300' },
-  { id: 'c2', name: '夜型エンジニア', members: 88, posts: 54, tag: '雑談', image: 'https://picsum.photos/seed/night/400/300' },
-  { id: 'c3', name: 'ゲーム作り勉強会', members: 140, posts: 320, tag: 'ゲーム', image: 'https://picsum.photos/seed/game/400/300' },
+  { id: 'c1', name: 'カフェ好き集まれ', members: 231, posts: 120, tag: '旅行', image: 'https://picsum.photos/seed/cafe/400/300', lastMessage: '最新のメッセージがここに表示されます', time: '2時間前' },
+  { id: 'c2', name: '夜型エンジニア', members: 88, posts: 54, tag: '雑談', image: 'https://picsum.photos/seed/night/400/300', lastMessage: '最新のメッセージがここに表示されます', time: '2時間前' },
+  { id: 'c3', name: 'ゲーム作り勉強会', members: 140, posts: 320, tag: 'ゲーム', image: 'https://picsum.photos/seed/game/400/300', lastMessage: '最新のメッセージがここに表示されます', time: '1日前' },
 ];
 
 const Card: React.FC<{ title: string; subtitle?: string; image: string; isUserCard?: boolean; onPress?: () => void }> = ({ title, subtitle, image, onPress }) => {
@@ -46,6 +47,48 @@ const Card: React.FC<{ title: string; subtitle?: string; image: string; isUserCa
   );
 };
 
+const ListItem: React.FC<{ name: string; message: string; image: string; time?: string; online?: boolean; onPress?: () => void }>
+  = ({ name, message, image, time = '10:30', online = true, onPress }) => {
+  return (
+    <TouchableOpacity style={styles.listItem} onPress={onPress} activeOpacity={0.8}>
+      <View style={styles.listItemLeft}>
+        <View style={styles.avatarWrap}>
+          <Image source={{ uri: image }} style={styles.avatar} />
+          {online && <View style={styles.avatarDot} />}
+        </View>
+        <View style={styles.listTexts}>
+          <Text style={styles.listTitle} numberOfLines={1}>{name}</Text>
+          <Text style={styles.listSubtitle} numberOfLines={1}>{message}</Text>
+        </View>
+      </View>
+      <Text style={styles.listTime}>{time}</Text>
+    </TouchableOpacity>
+  );
+};
+
+const CommunityListItem: React.FC<{ name: string; tag: string; members: number; lastMessage: string; time?: string; onPress?: () => void }>
+  = ({ name, tag, members, lastMessage, time = '2時間前', onPress }) => {
+  return (
+    <TouchableOpacity style={styles.comItem} onPress={onPress} activeOpacity={0.8}>
+      <View style={styles.comLeft}>
+        <View style={styles.comImgPlaceholder}><Text style={styles.comImgText}>IMG</Text></View>
+        <View style={styles.comTexts}>
+          <View style={styles.comTitleRow}>
+            <Text style={styles.comTitle} numberOfLines={1}>{name}</Text>
+            <View style={styles.comTag}><Text style={styles.comTagText}>{tag}</Text></View>
+            <Text style={styles.comTime}>{time}</Text>
+          </View>
+          <Text style={styles.comSubtitle} numberOfLines={1}>{lastMessage}</Text>
+          <View style={styles.comMetaRow}>
+            <Text style={styles.comMetaIcon}>👥</Text>
+            <Text style={styles.comMetaText}>{members}人</Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
 const SectionHeader: React.FC<{ title: string; actions?: React.ReactNode }> = ({ title, actions }) => (
   <View style={styles.sectionHeaderWrap}>
     <View style={styles.sectionHeader}>
@@ -58,8 +101,15 @@ const SectionHeader: React.FC<{ title: string; actions?: React.ReactNode }> = ({
 
 const ChatListScreen: React.FC = () => {
   const { t } = useTranslation();
+  const params = useLocalSearchParams<{ initialFilter?: string; loggedIn?: string }>();
   const [activeTab, setActiveTab] = useState<'users' | 'communities'>('users');
   const [userFilter, setUserFilter] = useState<'all' | 'friends'>('all');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+    React.useEffect(() => {
+      if (params.initialFilter === 'friends') {
+        setUserFilter('friends');
+      }
+    }, [params.initialFilter]);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
@@ -73,6 +123,16 @@ const ChatListScreen: React.FC = () => {
   React.useEffect(() => {
     console.log('[ChatList] showVerificationModal:', showVerificationModal, 'phoneNumber:', phoneNumber);
   }, [showVerificationModal, phoneNumber]);
+
+  // 初期選択とログイン状態（ルートパラメータから）
+  React.useEffect(() => {
+    if (params.initialFilter === 'friends') {
+      setUserFilter('friends');
+    }
+    if (params.loggedIn === 'true') {
+      setIsLoggedIn(true);
+    }
+  }, [params.initialFilter, params.loggedIn]);
 
   const insets = useSafeAreaInsets();
   return (
@@ -121,26 +181,55 @@ const ChatListScreen: React.FC = () => {
               </TouchableOpacity>
               <TouchableOpacity 
                 style={[styles.filterBtn, userFilter === 'friends' && styles.filterBtnActive]}
-                onPress={() => setUserFilter('friends')}
+                onPress={() => {
+                  if (!isLoggedIn) {
+                    setShowSignupModal(true);
+                    return;
+                  }
+                  setUserFilter('friends');
+                }}
               >
                 <Text style={[styles.filterBtnText, userFilter === 'friends' && styles.filterBtnTextActive]}>トーク</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.userGrid}>
-              {mockUsers.map(u => (
-                <Card 
-                  key={u.id} 
-                  title={u.message} 
-                  subtitle={`${u.name} ${u.age}`} 
-                  image={u.image} 
-                  isUserCard={true}
-                  onPress={() => {
-                    console.log('[ChatList] User card pressed:', u.id);
-                    setShowSignupModal(true);
-                  }}
-                />
-              ))}
-            </View>
+            {userFilter === 'all' && (
+              <View style={styles.userGrid}>
+                {mockUsers.map(u => (
+                  <Card 
+                    key={u.id} 
+                    title={u.message} 
+                    subtitle={`${u.name} ${u.age}`} 
+                    image={u.image} 
+                    isUserCard={true}
+                    onPress={() => {
+                      console.log('[ChatList] User card pressed:', u.id);
+                      setShowSignupModal(true);
+                    }}
+                  />
+                ))}
+              </View>
+            )}
+            {userFilter === 'friends' && (
+              <View style={styles.listSection}>
+                <View style={styles.listHeaderRow}>
+                  <Text style={styles.listHeaderTitle}>フレンド</Text>
+                  <Text style={styles.listHeaderCount}>5人</Text>
+                </View>
+                {mockUsers.map(u => (
+                  <ListItem
+                    key={u.id}
+                    name={u.name}
+                    message={u.message}
+                    image={u.image}
+                    online
+                    onPress={() => {
+                      console.log('[ChatList] Friend pressed:', u.id);
+                      setShowSignupModal(true);
+                    }}
+                  />
+                ))}
+              </View>
+            )}
           </View>
         )}
 
@@ -148,32 +237,79 @@ const ChatListScreen: React.FC = () => {
           <View style={styles.section}>
             <View style={styles.communityHeader}>
               <View style={styles.filterButtons}>
-                <TouchableOpacity style={[styles.filterBtn, styles.filterBtnActive]}>
-                  <Text style={[styles.filterBtnText, styles.filterBtnTextActive]}>すべて</Text>
+                <TouchableOpacity 
+                  style={[styles.filterBtn, userFilter === 'all' && styles.filterBtnActive]}
+                  onPress={() => setUserFilter('all')}
+                >
+                  <Text style={[styles.filterBtnText, userFilter === 'all' && styles.filterBtnTextActive]}>すべて</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.filterBtn}>
-                  <Text style={styles.filterBtnText}>トーク</Text>
+                <TouchableOpacity 
+                  style={[styles.filterBtn, userFilter === 'friends' && styles.filterBtnActive]}
+                  onPress={() => {
+                    if (!isLoggedIn) {
+                      setShowSignupModal(true);
+                      return;
+                    }
+                    setUserFilter('friends');
+                  }}
+                >
+                  <Text style={[styles.filterBtnText, userFilter === 'friends' && styles.filterBtnTextActive]}>トーク</Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity style={styles.createBtn}>
+              <TouchableOpacity
+                style={styles.createBtn}
+                onPress={() => {
+                  if (!isLoggedIn) {
+                    setShowSignupModal(true);
+                    return;
+                  }
+                  console.log('[ChatList] Create community pressed (logged in)');
+                  setShowToast(true);
+                  setTimeout(() => setShowToast(false), 1500);
+                }}
+              >
                 <Text style={styles.createBtnText}>{t('cta.create')}</Text>
               </TouchableOpacity>
             </View>
-            <View style={styles.userGrid}>
-              {mockCommunities.map(c => (
-                <Card 
-                  key={c.id} 
-                  title={c.name} 
-                  subtitle={`${c.members}人  ${c.posts}投稿`} 
-                  image={c.image} 
-                  isUserCard={true}
-                  onPress={() => {
-                    console.log('[ChatList] Community card pressed:', c.id);
-                    setShowSignupModal(true);
-                  }}
-                />
-              ))}
-            </View>
+            {userFilter === 'all' && (
+              <View style={styles.userGrid}>
+                {mockCommunities.map(c => (
+                  <Card 
+                    key={c.id} 
+                    title={c.name} 
+                    subtitle={`${c.members}人  ${c.posts}投稿`} 
+                    image={c.image} 
+                    isUserCard={true}
+                    onPress={() => {
+                      console.log('[ChatList] Community card pressed:', c.id);
+                      setShowSignupModal(true);
+                    }}
+                  />
+                ))}
+              </View>
+            )}
+            {userFilter === 'friends' && (
+              <View style={styles.listSection}>
+                <View style={styles.listHeaderRow}>
+                  <Text style={styles.listHeaderTitle}>参加中のコミュニティ</Text>
+                  <Text style={styles.listHeaderCount}>{mockCommunities.length}件</Text>
+                </View>
+                {mockCommunities.map(c => (
+                  <CommunityListItem
+                    key={c.id}
+                    name={c.name}
+                    tag={c.tag}
+                    members={c.members}
+                    lastMessage={c.lastMessage!}
+                    time={c.time}
+                    onPress={() => {
+                      console.log('[ChatList] Community talk pressed:', c.id);
+                      setShowSignupModal(true);
+                    }}
+                  />
+                ))}
+              </View>
+            )}
           </View>
         )}
       </ScrollView>
@@ -329,6 +465,44 @@ const styles = StyleSheet.create({
   pillText: { color: '#475569', fontWeight: '700' },
   primaryBtn: { backgroundColor: '#22c3ff', borderRadius: 20, paddingVertical: 8, paddingHorizontal: 16 },
   primaryBtnText: { color: '#fff', fontWeight: '800' },
+  // Friends list styles
+  listSection: { paddingTop: 8 },
+  listHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+  listHeaderTitle: { fontSize: 18, fontWeight: '800', color: designTokens.colors.text.primary },
+  listHeaderCount: { fontSize: 13, color: designTokens.colors.text.secondary, fontWeight: '600' },
+  listItem: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb',
+    paddingVertical: 12, paddingHorizontal: 12, marginBottom: 12,
+    shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 2, shadowOffset: { width: 0, height: 1 }, elevation: 1
+  },
+  listItemLeft: { flexDirection: 'row', alignItems: 'center' },
+  avatarWrap: { position: 'relative', marginRight: 12 },
+  avatar: { width: 44, height: 44, borderRadius: 22 },
+  avatarDot: { position: 'absolute', right: 2, bottom: 2, width: 10, height: 10, borderRadius: 5, backgroundColor: '#22c55e', borderWidth: 2, borderColor: '#fff' },
+  listTexts: { maxWidth: 220 },
+  listTitle: { fontSize: 16, fontWeight: '800', color: designTokens.colors.text.primary, marginBottom: 2 },
+  listSubtitle: { fontSize: 14, color: designTokens.colors.text.secondary, fontWeight: '600' },
+  listTime: { fontSize: 13, color: designTokens.colors.text.secondary, fontWeight: '600' },
+  // Community talk list styles
+  comItem: {
+    backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb',
+    paddingVertical: 12, paddingHorizontal: 12, marginBottom: 12,
+    shadowColor: '#000', shadowOpacity: 0.04, shadowRadius: 2, shadowOffset: { width: 0, height: 1 }, elevation: 1
+  },
+  comLeft: { flexDirection: 'row', alignItems: 'center' },
+  comImgPlaceholder: { width: 48, height: 48, borderRadius: 12, backgroundColor: '#93c5fd', alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  comImgText: { color: '#fff', fontWeight: '800' },
+  comTexts: { flex: 1 },
+  comTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  comTitle: { fontSize: 16, fontWeight: '800', color: designTokens.colors.text.primary },
+  comTag: { backgroundColor: '#22c3ff', borderRadius: 999, paddingVertical: 4, paddingHorizontal: 8 },
+  comTagText: { color: '#fff', fontWeight: '800', fontSize: 12 },
+  comTime: { marginLeft: 'auto', fontSize: 12, color: designTokens.colors.text.secondary, fontWeight: '600' },
+  comSubtitle: { fontSize: 14, color: designTokens.colors.text.secondary, fontWeight: '600', marginTop: 4 },
+  comMetaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 6, gap: 6 },
+  comMetaIcon: { fontSize: 12 },
+  comMetaText: { fontSize: 12, color: designTokens.colors.text.secondary, fontWeight: '600' },
   // bottomNavWrap: 削除（タブバー重複回避）
 });
 
