@@ -10,6 +10,7 @@ import { LoginModal } from '../components/LoginModal';
 import { VerificationModal } from '../components/VerificationModal';
 import { Toast } from '../components/Toast';
 import UserProfileModal from '../components/UserProfileModal';
+import CommunityProfileModal from '../components/CommunityProfileModal';
 
 // NOTE: Uは変更しない → 既存のUIトーン・構成を尊重
 // 画像や既存コードの構成を参考に、ネイティブ向けに移植
@@ -116,6 +117,8 @@ const ChatListScreen: React.FC = () => {
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [showUserProfileModal, setShowUserProfileModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<{ id: string; name: string; age: string; message: string; image: string } | null>(null);
+  const [showCommunityProfileModal, setShowCommunityProfileModal] = useState(false);
+  const [selectedCommunity, setSelectedCommunity] = useState<{ id: string; name: string; members: number; posts: number; tag: string; description?: string } | null>(null);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showToast, setShowToast] = useState(false);
   // Debug state transitions
@@ -293,7 +296,12 @@ const ChatListScreen: React.FC = () => {
                     isUserCard={true}
                     onPress={() => {
                       console.log('[ChatList] Community card pressed:', c.id);
-                      setShowSignupModal(true);
+                      if (!isLoggedIn) {
+                        setShowSignupModal(true);
+                        return;
+                      }
+                      setSelectedCommunity({ id: c.id, name: c.name, members: c.members, posts: c.posts, tag: c.tag });
+                      setShowCommunityProfileModal(true);
                     }}
                   />
                 ))}
@@ -372,6 +380,12 @@ const ChatListScreen: React.FC = () => {
         visible={showUserProfileModal}
         onClose={() => setShowUserProfileModal(false)}
         user={selectedUser}
+      />
+
+      <CommunityProfileModal
+        visible={showCommunityProfileModal}
+        onClose={() => setShowCommunityProfileModal(false)}
+        community={selectedCommunity}
       />
     </SafeAreaView>
   );
