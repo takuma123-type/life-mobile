@@ -1,0 +1,20 @@
+{
+  "name": "life-mobile-app",
+  "private": true,
+  "version": "0.0.1",
+  "dependencies": {
+    "react": "18.x",
+    "react-native": "0.74.x",
+    "@react-navigation/native": "^6",
+    "@react-navigation/native-stack": "^6",
+    "@react-navigation/bottom-tabs": "^6",
+    "react-redux": "^9",
+    "@reduxjs/toolkit": "^2",
+    "i18next": "^23",
+    "react-i18next": "^13"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/react": "^18"
+  }
+}

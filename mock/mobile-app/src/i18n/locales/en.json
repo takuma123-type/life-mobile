@@ -1,0 +1,46 @@
+{
+  "screen": {
+    "chat": {
+      "title": "Chat"
+    },
+    "community": {
+      "title": "Community"
+    },
+    "mypage": {
+      "title": "My Page",
+      "password": {
+        "change": "Change Password"
+      }
+    }
+  },
+  "cta": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "create": "Create",
+    "startChat": "Start Chatting"
+  },
+  "msg": {
+    "updated": "Updated",
+    "required": "Required"
+  },
+  "onboarding": {
+    "pages": {
+      "1": {
+        "title": "Connect through hobbies, a new community",
+        "desc": "Welcome to LIFE. A place where your interests meet others'."
+      },
+      "2": {
+        "title": "Find companions with your favorites",
+        "desc": "Join various communities like anime, games, cooking, and more."
+      },
+      "3": {
+        "title": "Connect casually with messages",
+        "desc": "Enjoy chatting and stickers with hobby friends."
+      },
+      "4": {
+        "title": "Let’s get started",
+        "desc": "Join now and take a look at communities."
+      }
+    }
+  }
+}
