@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Keyboard } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { designTokens } from '@styles/designTokens.native';
 import SearchIcon from '../components/icons/SearchIcon';
@@ -104,6 +104,7 @@ const SectionHeader: React.FC<{ title: string; actions?: React.ReactNode }> = ({
 const ChatListScreen: React.FC = () => {
   const { t } = useTranslation();
   const params = useLocalSearchParams<{ initialFilter?: string; loggedIn?: string; openSignup?: string }>();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'users' | 'communities'>('users');
   const [userFilter, setUserFilter] = useState<'all' | 'friends'>('all');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -238,7 +239,11 @@ const ChatListScreen: React.FC = () => {
                     online
                     onPress={() => {
                       console.log('[ChatList] Friend pressed:', u.id);
-                      setShowSignupModal(true);
+                      if (!isLoggedIn) {
+                        setShowSignupModal(true);
+                        return;
+                      }
+                      router.push({ pathname: '/chat-room', params: { name: u.name, status: '未', dateLabel: '2025.11.13. 木曜日' } });
                     }}
                   />
                 ))}
@@ -323,7 +328,11 @@ const ChatListScreen: React.FC = () => {
                     time={c.time}
                     onPress={() => {
                       console.log('[ChatList] Community talk pressed:', c.id);
-                      setShowSignupModal(true);
+                      if (!isLoggedIn) {
+                        setShowSignupModal(true);
+                        return;
+                      }
+                      router.push({ pathname: '/community-chat', params: { name: c.name, members: String(c.members), dateLabel: '2025.11.13. 木曜日' } });
                     }}
                   />
                 ))}
@@ -384,7 +393,17 @@ const ChatListScreen: React.FC = () => {
 
       <CommunityProfileModal
         visible={showCommunityProfileModal}
-        onClose={() => setShowCommunityProfileModal(false)}
+        onClose={() => {
+          if (showCommunityProfileModal && selectedCommunity) {
+            // モーダルクローズ後にチャットへ遷移
+            setShowCommunityProfileModal(false);
+            setTimeout(() => {
+              router.push({ pathname: '/community-chat', params: { name: selectedCommunity.name, members: String(selectedCommunity.members || 0), dateLabel: '2025.11.13. 木曜日' } });
+            }, 150);
+          } else {
+            setShowCommunityProfileModal(false);
+          }
+        }}
         community={selectedCommunity}
       />
     </SafeAreaView>

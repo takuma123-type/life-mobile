@@ -78,7 +78,8 @@ const CommunityProfileModal: React.FC<CommunityProfileModalProps> = ({ visible, 
             </View>
           </View>
 
-          <TouchableOpacity style={styles.joinBtn} activeOpacity={0.9}>
+          <TouchableOpacity style={styles.joinBtn} activeOpacity={0.9} onPress={handleClose}
+          >
             <Text style={styles.joinBtnText}>チャットに参加</Text>
           </TouchableOpacity>
 
