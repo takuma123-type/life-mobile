@@ -5,7 +5,7 @@ import { navigate, openSmsModal, openGuestProfileModal } from '../store/uiSlice'
 import { toggleFollow, setActiveUserId } from '../store/userSlice';
 import { setActiveCommunity, setCommunities } from '../store/communitySlice';
 import BottomNav from '../components/common/BottomNav';
-import { IconSearch, IconAvatar, IconCalendar, IconMapPin, IconClock } from '../components/icons';
+import { IconFilter, IconAvatar, IconCalendar, IconMapPin, IconClock } from '../components/icons';
 import Button from '../components/common/Button';
 import { mockTranslate } from '../data/mockData';
 import { designTokens } from '../styles/designTokens';
@@ -213,7 +213,7 @@ const ChatListScreen: React.FC = () => {
               justifyContent:'center'
             }}
           >
-            <IconSearch size={24} color="#000" />
+            <IconFilter size={24} color="#000" />
           </button>
         </div>
         
@@ -1118,7 +1118,7 @@ const ChatListScreen: React.FC = () => {
                 fontWeight:600,
                 color:'#6b7280'
               }}>
-                <IconSearch size={18} color='#6b7280' />
+                <IconFilter size={18} color='#6b7280' />
                 キーワード
               </label>
               <input 

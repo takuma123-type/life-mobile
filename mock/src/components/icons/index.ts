@@ -2,6 +2,7 @@ export { default as IconChat } from './IconChat';
 export { default as IconUser } from './IconUser';
 export { default as IconStore } from './IconStore';
 export { default as IconSearch } from './IconSearch';
+export { default as IconFilter } from './IconFilter';
 export { default as IconBack } from './IconBack';
 export { default as IconGlobe } from './IconGlobe';
 export { default as IconStamp } from './IconStamp';
