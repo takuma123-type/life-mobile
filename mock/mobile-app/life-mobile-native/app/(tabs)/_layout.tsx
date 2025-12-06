@@ -30,6 +30,11 @@ export default function TabLayout() {
           ),
         }}
       />
+      {/** 念のため、存在してもタブに出さない */}
+      <Tabs.Screen
+        name="onboarding"
+        options={{ href: null }}
+      />
     </Tabs>
   );
 }

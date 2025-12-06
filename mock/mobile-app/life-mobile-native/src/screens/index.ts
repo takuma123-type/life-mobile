@@ -1,1 +1,1 @@
-export * from "../src/screens";
+export * from "./";

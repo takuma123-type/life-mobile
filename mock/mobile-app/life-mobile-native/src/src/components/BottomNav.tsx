@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-type Tab = 'chat' | 'community' | 'mypage';
+type Tab = 'chat' | 'mypage';
 
 type Props = {
   active?: Tab;
@@ -19,7 +19,6 @@ export const BottomNav: React.FC<Props> = ({ active = 'chat', onChange }) => {
   return (
     <View style={styles.container}>
       <Item label={t('screen.chat.title')} tab="chat" />
-      <Item label={t('screen.community.title')} tab="community" />
       <Item label={t('screen.mypage.title')} tab="mypage" />
     </View>
   );
