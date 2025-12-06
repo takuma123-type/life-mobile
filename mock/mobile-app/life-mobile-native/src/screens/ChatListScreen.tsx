@@ -101,7 +101,7 @@ const SectionHeader: React.FC<{ title: string; actions?: React.ReactNode }> = ({
 
 const ChatListScreen: React.FC = () => {
   const { t } = useTranslation();
-  const params = useLocalSearchParams<{ initialFilter?: string; loggedIn?: string }>();
+  const params = useLocalSearchParams<{ initialFilter?: string; loggedIn?: string; openSignup?: string }>();
   const [activeTab, setActiveTab] = useState<'users' | 'communities'>('users');
   const [userFilter, setUserFilter] = useState<'all' | 'friends'>('all');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -131,6 +131,9 @@ const ChatListScreen: React.FC = () => {
     }
     if (params.loggedIn === 'true') {
       setIsLoggedIn(true);
+    }
+    if (params.openSignup === 'true') {
+      setShowSignupModal(true);
     }
   }, [params.initialFilter, params.loggedIn]);
 

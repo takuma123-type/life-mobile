@@ -14,6 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { designTokens } from '@styles/designTokens.native';
+import { setLoggedIn } from '../src/store/authState';
 
 interface VerificationModalProps {
   visible: boolean;
@@ -133,6 +134,7 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({ visible, o
               style={styles.submitButton}
               onPress={() => {
                 // 認証コード入力後の遷移（ダミー）: プロフィール登録画面へ
+                setLoggedIn(true);
                 onClose();
                 router.push('/profile-registration');
               }}

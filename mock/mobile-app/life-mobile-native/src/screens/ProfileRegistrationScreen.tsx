@@ -25,6 +25,7 @@ export const ProfileRegistrationScreen: React.FC = () => {
   const [iconSet, setIconSet] = React.useState(false);
   const [username, setUsername] = React.useState<string | null>(null);
   const [ageRange, setAgeRange] = React.useState<string | null>(null);
+  const { setLoggedIn } = require('../src/store/authState');
 
   const isValid = iconSet && !!username && !!ageRange;
 
@@ -66,7 +67,11 @@ export const ProfileRegistrationScreen: React.FC = () => {
           disabled={!isValid}
           onPress={() => {
             // ログイン完了後の導線: チャット画面へ遷移し、トークタブを初期選択
-            router.replace({ pathname: '/chat', params: { initialFilter: 'friends', loggedIn: 'true' } });
+              if (!iconSet || !username || !ageRange) {
+                return;
+              }
+              setLoggedIn(true);
+              router.replace({ pathname: '/chat', params: { initialFilter: 'friends', loggedIn: 'true' } });
           }}
         >
           <Text style={styles.primaryButtonText}>保存して次へ</Text>
