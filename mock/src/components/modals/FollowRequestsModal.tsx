@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { closeFollowRequestsModal } from '../../store/uiSlice';
-import { acceptFollowRequest, rejectFollowRequest } from '../../store/userSlice';
+import { acceptFollowRequest, rejectFollowRequest, setActiveUserId } from '../../store/userSlice';
+import { openGuestProfileModal } from '../../store/uiSlice';
 import type { FollowRequest } from '../../store/userSlice';
 import { IconX, IconAvatar } from '../icons';
 import { designTokens } from '../../styles/designTokens';
@@ -13,6 +14,7 @@ const FollowRequestsModal: React.FC = () => {
   const open = useAppSelector((s:any) => s.ui.followRequestsModalOpen);
   const requests = useAppSelector((s:any) => s.user.followRequests as FollowRequest[]);
   const [confirm, setConfirm] = useState<{ type:'accept'|'reject', id:string }|null>(null);
+  const [toast, setToast] = useState<{ type: 'success' | 'danger'; message: string } | null>(null);
 
   if (!open) return null;
 
@@ -23,7 +25,16 @@ const FollowRequestsModal: React.FC = () => {
     if(confirm.type === 'accept') dispatch(acceptFollowRequest(confirm.id));
     else dispatch(rejectFollowRequest(confirm.id));
     setConfirm(null);
+    const actedName = reqObj(confirm.id)?.name || '';
+    setToast({ type: confirm.type === 'accept' ? 'success' : 'danger', message: `${actedName}さんの申請を${confirm.type === 'accept' ? '承認' : '拒否'}しました` });
   };
+
+  useEffect(() => {
+    if (toast) {
+      const t = setTimeout(() => setToast(null), 1800);
+      return () => clearTimeout(t);
+    }
+  }, [toast]);
 
   return (
     <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.45)', display:'flex', alignItems:'flex-end', justifyContent:'center', padding:0, zIndex:400, animation:'fadeIn .25s ease' }}>
@@ -81,7 +92,10 @@ const FollowRequestsModal: React.FC = () => {
                 <div style={{ width:72, height:72, borderRadius:'50%', background:'#f8fafc', border:'2px solid #e2e8f0', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden' }}>
                   {r.avatar ? <img src={r.avatar} alt={r.name} style={{ width:'100%', height:'100%', objectFit:'cover' }} /> : <IconAvatar size={34} color="#94a3b8" />}
                 </div>
-                <div style={{ flex:1, minWidth:0 }}>
+                <div
+                  onClick={() => { dispatch(setActiveUserId(r.userId)); dispatch(openGuestProfileModal()); }}
+                  style={{ flex:1, minWidth:0, cursor:'pointer' }}
+                >
                   <div style={{ display:'flex', alignItems:'center', flexWrap:'wrap', gap:8, marginBottom:6 }}>
                     <span style={{ fontSize:16, fontWeight:700, color:'#0f172a' }}>{r.name}</span>
                     {r.age && <span style={{ fontSize:11, fontWeight:600, background:'#e0f2fe', color:'#0369a1', padding:'4px 10px', borderRadius:999 }}>{r.age}</span>}
@@ -128,6 +142,13 @@ const FollowRequestsModal: React.FC = () => {
               <button onClick={doAction} style={{ flex:1, background: confirm.type==='accept' ? '#0EA5E9' : '#dc2626', color:'#fff', border:'none', padding:'14px 0', fontSize:15, fontWeight:700, borderRadius:16, cursor:'pointer', boxShadow: confirm.type==='accept' ? '0 4px 14px rgba(14,165,233,.3)' : '0 4px 14px rgba(220,38,38,.3)' }}>{confirm.type==='accept'?'承認する':'拒否する'}</button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* トースト通知 */}
+      {toast && (
+        <div style={{ position:'fixed', left:'50%', transform:'translateX(-50%)', bottom:24, zIndex:600, background: toast.type==='success' ? 'linear-gradient(135deg,#0EA5E9 0%, #06B6D4 100%)' : '#dc2626', color:'#fff', borderRadius:999, padding:'12px 16px', boxShadow:'0 10px 24px rgba(0,0,0,.18)', fontWeight:700 }}>
+          {toast.message}
         </div>
       )}
     </div>

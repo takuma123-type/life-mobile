@@ -5,6 +5,10 @@ import { SignupModal } from "../../src/components/SignupModal";
 import { LoginModal } from "../../src/components/LoginModal";
 import { VerificationModal } from "../../src/components/VerificationModal";
 import { Toast } from "../../src/components/Toast";
+import MyProfileModal from "../../src/components/MyProfileModal";
+import LanguageModal from "../../components/LanguageModal";
+import FollowRequestsModal from "../../components/FollowRequestsModal";
+import { router } from "expo-router";
 import { useLoggedIn } from "../../src/src/store/authState";
 
 export default function MyPageScreen() {
@@ -13,7 +17,16 @@ export default function MyPageScreen() {
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('090-1234-5678');
   const [showToast, setShowToast] = useState(false);
+  const [showMyProfileModal, setShowMyProfileModal] = useState(false);
+  const [showLanguage, setShowLanguage] = useState(false);
+  const [lang, setLang] = useState<'ja'|'en'>('ja');
   const isLoggedIn = useLoggedIn();
+  const [showRequests, setShowRequests] = useState(false);
+  const [requests, setRequests] = useState([
+    { id: '1', name: '佐藤太郎', ageLabel: '20代', message: 'よろしくお願いします！共通の趣味があると嬉しいです。' },
+    { id: '2', name: '田中花子', ageLabel: '10代後半', message: '友達募集中です！気軽に話しかけてください。' },
+    { id: '3', name: '鈴木一郎', ageLabel: '30代', message: '同じ地域の人と繋がりたいです。' },
+  ]);
 
   console.log('MyPageScreen render - showVerificationModal:', showVerificationModal, 'phoneNumber:', phoneNumber);
 
@@ -26,28 +39,28 @@ export default function MyPageScreen() {
         {isLoggedIn ? (
           <>
             <View style={styles.gridRow}>
-              <TouchableOpacity style={styles.gridCard}>
+              <TouchableOpacity style={styles.gridCard} onPress={() => setShowMyProfileModal(true)}>
                 <View style={[styles.iconCircleSm, { backgroundColor: '#cce7ff' }]}>
                   <Ionicons name="person-outline" size={26} color="#1e3a8a" />
                 </View>
                 <Text style={styles.gridLabel}>プロフィール</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.gridCard}>
+              <TouchableOpacity style={styles.gridCard} onPress={() => setShowRequests(true)}>
                 <View style={[styles.iconCircleSm, { backgroundColor: '#ffd6d6' }]}>
                   <Ionicons name="people-outline" size={26} color="#9f1239" />
                 </View>
                 <Text style={styles.gridLabel}>フレンド申請</Text>
-                <View style={styles.badge}><Text style={styles.badgeText}>3</Text></View>
+                <View style={styles.badge}><Text style={styles.badgeText}>{requests.length}</Text></View>
               </TouchableOpacity>
             </View>
             <View style={styles.gridRow}>
-              <TouchableOpacity style={styles.gridCard}>
+              <TouchableOpacity style={styles.gridCard} onPress={() => router.push('/stamp-shop')}>
                 <View style={[styles.iconCircleSm, { backgroundColor: '#ffe9a8' }]}>
                   <Ionicons name="pricetag-outline" size={26} color="#92400e" />
                 </View>
                 <Text style={styles.gridLabel}>スタンプ購入</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.gridCard}>
+              <TouchableOpacity style={styles.gridCard} onPress={() => setShowLanguage(true)}>
                 <View style={[styles.iconCircleSm, { backgroundColor: '#e3d5ff' }]}>
                   <Ionicons name="globe-outline" size={26} color="#6d28d9" />
                 </View>
@@ -137,6 +150,31 @@ export default function MyPageScreen() {
         visible={showVerificationModal}
         onClose={() => setShowVerificationModal(false)}
         phoneNumber={phoneNumber}
+      />
+
+      <MyProfileModal
+        visible={showMyProfileModal}
+        onClose={() => setShowMyProfileModal(false)}
+        user={{ id: 'me', name: undefined, age: undefined, region: undefined, time: undefined, intro: 'よろしくお願いします！' }}
+        onEdit={() => {
+          setShowMyProfileModal(false);
+          router.push('/edit-profile');
+        }}
+      />
+
+      <FollowRequestsModal
+        visible={showRequests}
+        requests={requests}
+        onClose={() => setShowRequests(false)}
+        onApprove={(id) => setRequests(prev => prev.filter(r => r.id !== id))}
+        onReject={(id) => setRequests(prev => prev.filter(r => r.id !== id))}
+      />
+
+      <LanguageModal
+        visible={showLanguage}
+        value={lang}
+        onClose={() => setShowLanguage(false)}
+        onChange={(v) => { setLang(v); setShowLanguage(false); }}
       />
     </View>
   );

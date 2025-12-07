@@ -142,7 +142,7 @@ const MyPageScreen: React.FC = () => {
             {/* フレンド申請 */}
             <button
               type="button"
-              onClick={() => dispatch(openFollowRequestsModal())}
+              onClick={() => { dispatch(openFollowRequestsModal()); }}
               style={{
                 padding: '28px 20px',
                 background: '#fff',
