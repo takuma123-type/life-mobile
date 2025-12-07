@@ -8,6 +8,8 @@ import { Toast } from "../../src/components/Toast";
 import MyProfileModal from "../../src/components/MyProfileModal";
 import LanguageModal from "../../components/LanguageModal";
 import FollowRequestsModal from "../../components/FollowRequestsModal";
+import PasswordModal from "../../components/PasswordModal";
+import DeleteAccountModal from "../../components/DeleteAccountModal";
 import { router } from "expo-router";
 import { useLoggedIn } from "../../src/src/store/authState";
 
@@ -18,7 +20,9 @@ export default function MyPageScreen() {
   const [phoneNumber, setPhoneNumber] = useState('090-1234-5678');
   const [showToast, setShowToast] = useState(false);
   const [showMyProfileModal, setShowMyProfileModal] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [showLanguage, setShowLanguage] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const [lang, setLang] = useState<'ja'|'en'>('ja');
   const isLoggedIn = useLoggedIn();
   const [showRequests, setShowRequests] = useState(false);
@@ -68,7 +72,7 @@ export default function MyPageScreen() {
               </TouchableOpacity>
             </View>
             <View style={styles.gridRow}>
-              <TouchableOpacity style={styles.gridCard}>
+              <TouchableOpacity style={styles.gridCard} onPress={() => setShowPassword(true)}>
                 <View style={[styles.iconCircleSm, { backgroundColor: '#cce7ff' }]}>
                   <Ionicons name="lock-closed-outline" size={26} color="#1e3a8a" />
                 </View>
@@ -82,7 +86,7 @@ export default function MyPageScreen() {
                 <Text style={styles.actionText}>ログアウト</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.actionCard}>
+            <TouchableOpacity style={styles.actionCard} onPress={() => setShowDelete(true)}>
               <View style={styles.actionRow}>
                 <Ionicons name="shield-outline" size={22} color="#ef4444" style={styles.actionIcon} />
                 <Text style={styles.actionText}>退会（アカウント削除）</Text>
@@ -170,11 +174,34 @@ export default function MyPageScreen() {
         onReject={(id) => setRequests(prev => prev.filter(r => r.id !== id))}
       />
 
+      <PasswordModal
+        visible={showPassword}
+        onClose={() => setShowPassword(false)}
+        onUpdate={(pwd) => {
+          // Demo: just toast via existing state
+          setShowPassword(false);
+          setShowToast(true);
+          setTimeout(() => setShowToast(false), 1800);
+        }}
+        requiresCurrent={false}
+      />
+
       <LanguageModal
         visible={showLanguage}
         value={lang}
         onClose={() => setShowLanguage(false)}
         onChange={(v) => { setLang(v); setShowLanguage(false); }}
+      />
+
+      <DeleteAccountModal
+        visible={showDelete}
+        onClose={() => setShowDelete(false)}
+        onDeleted={() => {
+          setShowDelete(false);
+          // Demo: show success toast and navigate to splash/login if needed
+          setShowToast(true);
+          setTimeout(() => setShowToast(false), 2000);
+        }}
       />
     </View>
   );
